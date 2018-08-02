@@ -21,4 +21,11 @@ public interface XbNewsService {
      * @throws XbServiceException
      */
     void insertNews(XbNewsEntity xbNewsEntity) throws XbServiceException;
+
+    /**
+     * 删除新闻
+     * @param id
+     * @throws XbServiceException
+     */
+    void deleteNews(String id) throws XbServiceException;
 }

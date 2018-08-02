@@ -57,4 +57,9 @@ public class XbNewsModel implements Serializable {
      * 新闻状态
      */
     private Byte status;
+
+    /**
+     * 新闻是否已删除标记
+     */
+    private Byte deleteFlag;
 }

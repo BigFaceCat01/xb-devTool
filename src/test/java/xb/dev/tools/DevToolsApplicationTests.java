@@ -1,5 +1,6 @@
 package xb.dev.tools;
 
+import org.apache.ibatis.type.JdbcType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,23 +54,32 @@ public class DevToolsApplicationTests {
             e.printStackTrace();
         }
     }
-    @Test
+//    @Test
     public void testInsertXbNews(){
         XbNewsEntity newsModel = new XbNewsEntity();
         String s =new SimpleDateFormat("yyyyMMdd").format(new Date());
-        newsModel.setNewsId("XB"+s+"00001");
-        newsModel.setAuthor("zhang san");
-        newsModel.setBody("this is a test body");
-        newsModel.setBrowseCount(8245L);
+        newsModel.setNewsId("XB"+s+"00005");
+        newsModel.setAuthor("zhao si");
+        newsModel.setBody("body create by zhao si");
+        newsModel.setBrowseCount(89245L);
         newsModel.setCreateTime(new Date());
-        newsModel.setOpposeCount(50L);
-        newsModel.setSource("CCTV");
-        newsModel.setTitle("this is a test title");
-        newsModel.setType("history,culture,life");
+        newsModel.setOpposeCount(90L);
+        newsModel.setSource("BILI BILI");
+        newsModel.setTitle("title create by zhao si");
+        newsModel.setType("math,computer");
         newsModel.setStatus((byte)1);
-        newsModel.setSupportCount(3025L);
+        newsModel.setSupportCount(7568L);
+        newsModel.setDeleteFlag(false);
         try {
             xbNewsService.insertNews(newsModel);
+        } catch (XbServiceException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void deleteNews(){
+        try {
+            xbNewsService.deleteNews("XB2018080200005");
         } catch (XbServiceException e) {
             e.printStackTrace();
         }

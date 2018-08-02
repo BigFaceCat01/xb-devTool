@@ -59,4 +59,9 @@ public class XbNewsEntity {
      */
     private Byte status;
 
+    /**
+     * 新闻是否已删除标记
+     */
+    private Boolean deleteFlag;
+
 }

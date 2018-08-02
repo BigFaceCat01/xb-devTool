@@ -13,11 +13,12 @@
     <result column="oppose_count" jdbcType="BIGINT" property="opposeCount" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="support_count" jdbcType="BIGINT" property="supportCount" />
+    <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
   </resultMap>
 
   <sql id="Base_Column_List">
     news_id, title, body, source, author, create_time, type, browse_count, oppose_count,
-    status, support_count
+    status, support_count,delete_flag
   </sql>
 
   <!-- 查询全部新闻，没有任何过滤条件    -->
@@ -35,14 +36,14 @@
 
   <!-- 添加新闻，不过滤为空的字段    -->
   <insert id="insert" parameterType="xb.dev.tools.mybatis.dao.entity.XbNewsEntity">
-    insert into xb_news (news_id, title, body, 
+    insert into xb_news (news_id, title, body,
       source, author, create_time, 
       type, browse_count, oppose_count,
-      status, support_count)
+      status, support_count,delete_flag)
     values (#{newsId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{body,jdbcType=VARCHAR}, 
       #{source,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{type,jdbcType=VARCHAR}, #{browseCount,jdbcType=BIGINT}, #{opposeCount,jdbcType=BIGINT},
-      #{status,jdbcType=TINYINT}, #{supportCount,jdbcType=BIGINT})
+      #{status,jdbcType=TINYINT}, #{supportCount,jdbcType=BIGINT},#{deleteFlag,jdbcType=TINYINT})
   </insert>
 
   <!-- 添加新闻，为空的属性不加入sql语句中    -->
@@ -79,6 +80,9 @@
       <if test="status != null">
         status,
       </if>
+      <if test="deleteFlag != null">
+        delete_flag,
+      </if>
       <if test="supportCount != null">
         support_count,
       </if>
@@ -113,6 +117,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=TINYINT},
       </if>
       <if test="supportCount != null">
         #{supportCount,jdbcType=BIGINT},
@@ -178,7 +185,12 @@
       browse_count = #{record.browseCount,jdbcType=BIGINT},
       oppose_count = #{record.opposeCount,jdbcType=BIGINT},
       status = #{record.status,jdbcType=TINYINT},
+      delete_flag = #{record.deleteFlag,jdbcType=TINYINT},
       support_count = #{record.supportCount,jdbcType=BIGINT}
+  </update>
+
+  <update id="deleteNewsById" parameterType="map">
+    update xb_news set delete_flag = #{deleteFlag,jdbcType=BIT} where news_id = #{newsId,jdbcType=VARCHAR}
   </update>
 
 </mapper>
