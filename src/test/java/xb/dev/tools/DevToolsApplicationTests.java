@@ -35,6 +35,9 @@ public class DevToolsApplicationTests {
         newsModel.setStatus((byte)1);
         newsModel.setSupportCount(3025L);
         Comment comment = new Comment();
+        comment.setStatus((byte)1);
+        comment.setCommentTime(new Date());
+        comment.setContent("this is a comment");
         List<Comment> commentList = new ArrayList<>();
         commentList.add(comment);
         newsModel.setComments(commentList);
