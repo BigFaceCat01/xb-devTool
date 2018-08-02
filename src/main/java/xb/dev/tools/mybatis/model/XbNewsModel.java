@@ -1,20 +1,18 @@
-package xb.dev.tools.mongo.model;
+package xb.dev.tools.mybatis.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import xb.dev.tools.mongo.dao.entity.Comment;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
- * @Author: Created by huangxb on 2018-08-01 17:58:24
- * @Description: 新闻实体类
+ * @Author: Created by huangxb on 2018-08-02 12:07:39
+ * @Description: 新闻数据model
  */
-@Getter
 @Setter
-public class NewsModel implements Serializable {
+@Getter
+public class XbNewsModel implements Serializable {
     /**
      * 新闻id
      */
@@ -59,8 +57,4 @@ public class NewsModel implements Serializable {
      * 新闻状态
      */
     private Byte status;
-    /**
-     * 评论列表
-     */
-    private List<Comment> comments;
 }

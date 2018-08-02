@@ -1,6 +1,5 @@
 package xb.dev.tools.mongo.service;
 
-import org.springframework.stereotype.Service;
 import xb.dev.tools.exception.XbServiceException;
 import xb.dev.tools.mongo.model.NewsModel;
 

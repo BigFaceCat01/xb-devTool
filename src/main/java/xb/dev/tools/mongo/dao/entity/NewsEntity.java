@@ -3,9 +3,10 @@ package xb.dev.tools.mongo.dao.entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import java.util.List;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Created by huangxb on 2018-08-01 17:58:24
