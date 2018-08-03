@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import xb.dev.tools.constant.QueueConstant;
 import xb.dev.tools.dao.entity.Comment;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
 import xb.dev.tools.model.NewsModel;
 import xb.dev.tools.tool.mongo.service.MongoNewsService;
 import xb.dev.tools.tool.mybatis.service.MybatisNewsService;
+import xb.dev.tools.tool.rabbit.service.MessageService;
 import xb.dev.tools.tool.redis.service.RedisNewsService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,10 +26,12 @@ import java.util.List;
 public class DevToolsApplicationTests {
 //    @Autowired
     private MongoNewsService newsService;
-    @Autowired
+//    @Autowired
     private MybatisNewsService xbNewsService;
-    @Autowired
+//    @Autowired
     private RedisNewsService redisXbNewsService;
+    @Autowired
+    private MessageService messageService;
 
 //    @Test
     public void testInsertNews(){
@@ -108,11 +112,19 @@ public class DevToolsApplicationTests {
             e.printStackTrace();
         }
     }
-    @Test
+//    @Test
     public void testQuery(){
         try {
             List<NewsEntity> l = redisXbNewsService.queryAll();
             System.out.println();
+        } catch (XbServiceException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testRabbitMq(){
+        try {
+            messageService.sendMessage("hello world",QueueConstant.HELLO_QUEUE);
         } catch (XbServiceException e) {
             e.printStackTrace();
         }
