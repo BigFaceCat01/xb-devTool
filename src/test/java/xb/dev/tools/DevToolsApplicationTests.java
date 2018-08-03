@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import xb.dev.tools.constant.QueueConstant;
+import xb.dev.tools.constant.RabbitConstant;
 import xb.dev.tools.dao.entity.Comment;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
-import xb.dev.tools.model.NewsModel;
 import xb.dev.tools.tool.mongo.service.MongoNewsService;
 import xb.dev.tools.tool.mybatis.service.MybatisNewsService;
 import xb.dev.tools.tool.rabbit.service.MessageService;
@@ -124,7 +123,7 @@ public class DevToolsApplicationTests {
     @Test
     public void testRabbitMq(){
         try {
-            messageService.sendMessage("hello world",QueueConstant.HELLO_QUEUE);
+            messageService.sendMessage("hello world",RabbitConstant.HELLO_QUEUE);
         } catch (XbServiceException e) {
             e.printStackTrace();
         }

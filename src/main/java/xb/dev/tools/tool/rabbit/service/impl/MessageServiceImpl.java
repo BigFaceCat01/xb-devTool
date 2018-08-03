@@ -3,7 +3,6 @@ package xb.dev.tools.tool.rabbit.service.impl;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xb.dev.tools.constant.QueueConstant;
 import xb.dev.tools.exception.XbServiceException;
 import xb.dev.tools.tool.rabbit.service.MessageService;
 
