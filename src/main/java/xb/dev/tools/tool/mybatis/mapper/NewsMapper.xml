@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="XbNewsMapper">
-  <resultMap id="BaseResultMap" type="xb.dev.tools.mybatis.dao.entity.XbNewsEntity">
+  <resultMap id="BaseResultMap" type="xb.dev.tools.tool.mybatis.dao.entity.XbNewsEntity">
     <id column="news_id" jdbcType="VARCHAR" property="newsId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="body" jdbcType="VARCHAR" property="body" />
@@ -35,7 +35,7 @@
   </delete>
 
   <!-- 添加新闻，不过滤为空的字段    -->
-  <insert id="insert" parameterType="xb.dev.tools.mybatis.dao.entity.XbNewsEntity">
+  <insert id="insert" parameterType="xb.dev.tools.tool.mybatis.dao.entity.XbNewsEntity">
     insert into xb_news (news_id, title, body,
       source, author, create_time, 
       type, browse_count, oppose_count,
@@ -47,7 +47,7 @@
   </insert>
 
   <!-- 添加新闻，为空的属性不加入sql语句中    -->
-  <insert id="insertSelective" parameterType="xb.dev.tools.mybatis.dao.entity.XbNewsEntity">
+  <insert id="insertSelective" parameterType="xb.dev.tools.tool.mybatis.dao.entity.XbNewsEntity">
     insert into xb_news
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="newsId != null">

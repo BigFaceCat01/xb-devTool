@@ -1,12 +1,11 @@
-package xb.dev.tools.mybatis.service.impl;
+package xb.dev.tools.tool.mybatis.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xb.dev.tools.base.BaseMapper;
+import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
-import xb.dev.tools.mybatis.base.BaseMapper;
-import xb.dev.tools.mybatis.dao.entity.XbNewsEntity;
-import xb.dev.tools.mybatis.service.XbNewsService;
-
+import xb.dev.tools.tool.mybatis.service.MybatisNewsService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +15,12 @@ import java.util.Map;
  * @Description:
  */
 @Service
-public class XbNewsServiceImpl implements XbNewsService {
+public class MybatisNewsServiceImpl implements MybatisNewsService {
     @Autowired
     private BaseMapper baseMapper;
 
     @Override
-    public List<XbNewsEntity> queryAll() throws XbServiceException {
+    public List<NewsEntity> queryAll() throws XbServiceException {
         try {
             return baseMapper.findForList("XbNewsMapper.queryAll",null);
         }catch (Exception e){
@@ -42,11 +41,21 @@ public class XbNewsServiceImpl implements XbNewsService {
     }
 
     @Override
-    public void insertNews(XbNewsEntity xbNewsEntity) throws XbServiceException {
+    public NewsEntity queryOne(String id) throws XbServiceException {
+        return null;
+    }
+
+    @Override
+    public void insertNews(NewsEntity newsEntity) throws XbServiceException {
         try {
-            baseMapper.insert("XbNewsMapper.insert", xbNewsEntity);
+            baseMapper.insert("XbNewsMapper.insert", newsEntity);
         }catch (Exception e){
             throw new XbServiceException("添加新闻出错,cause by:"+e.getMessage(),e);
         }
+    }
+
+    @Override
+    public void updateNews(NewsEntity newsEntity) throws XbServiceException {
+
     }
 }

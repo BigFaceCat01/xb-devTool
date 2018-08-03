@@ -1,19 +1,18 @@
 package xb.dev.tools;
 
-import org.apache.ibatis.type.JdbcType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import xb.dev.tools.dao.entity.Comment;
+import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
-import xb.dev.tools.mongo.dao.entity.Comment;
-import xb.dev.tools.mongo.model.NewsModel;
-import xb.dev.tools.mongo.service.NewsService;
-import xb.dev.tools.mybatis.dao.entity.XbNewsEntity;
-import xb.dev.tools.mybatis.service.XbNewsService;
-
+import xb.dev.tools.model.NewsModel;
+import xb.dev.tools.tool.mongo.service.MongoNewsService;
+import xb.dev.tools.tool.mybatis.service.MybatisNewsService;
+import xb.dev.tools.tool.redis.service.RedisNewsService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,13 +23,15 @@ import java.util.List;
 @EnableAutoConfiguration
 public class DevToolsApplicationTests {
 //    @Autowired
-    private NewsService newsService;
+    private MongoNewsService newsService;
     @Autowired
-    private XbNewsService xbNewsService;
+    private MybatisNewsService xbNewsService;
+    @Autowired
+    private RedisNewsService redisXbNewsService;
 
 //    @Test
     public void testInsertNews(){
-        NewsModel newsModel = new NewsModel();
+        NewsEntity newsModel = new NewsEntity();
         newsModel.setAuthor("zhang san");
         newsModel.setBody("this is a test body");
         newsModel.setBrowseCount(8245L);
@@ -56,7 +57,7 @@ public class DevToolsApplicationTests {
     }
 //    @Test
     public void testInsertXbNews(){
-        XbNewsEntity newsModel = new XbNewsEntity();
+        NewsEntity newsModel = new NewsEntity();
         String s =new SimpleDateFormat("yyyyMMdd").format(new Date());
         newsModel.setNewsId("XB"+s+"00005");
         newsModel.setAuthor("zhao si");
@@ -76,10 +77,42 @@ public class DevToolsApplicationTests {
             e.printStackTrace();
         }
     }
-    @Test
+//    @Test
     public void deleteNews(){
         try {
             xbNewsService.deleteNews("XB2018080200005");
+        } catch (XbServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
+//    @Test
+    public void testInsertXbNewsRedis(){
+        NewsEntity newsModel = new NewsEntity();
+        String s =new SimpleDateFormat("yyyyMMdd").format(new Date());
+        newsModel.setNewsId("XB"+s+"00005");
+        newsModel.setAuthor("zhao si");
+        newsModel.setBody("body create by zhao si");
+        newsModel.setBrowseCount(89245L);
+        newsModel.setCreateTime(new Date());
+        newsModel.setOpposeCount(90L);
+        newsModel.setSource("BILI BILI");
+        newsModel.setTitle("title create by zhao si");
+        newsModel.setType("math,computer");
+        newsModel.setStatus((byte)1);
+        newsModel.setSupportCount(7568L);
+        newsModel.setDeleteFlag(false);
+        try {
+            redisXbNewsService.insertNews(newsModel);
+        } catch (XbServiceException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testQuery(){
+        try {
+            List<NewsEntity> l = redisXbNewsService.queryAll();
+            System.out.println();
         } catch (XbServiceException e) {
             e.printStackTrace();
         }

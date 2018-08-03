@@ -1,18 +1,19 @@
-package xb.dev.tools.mybatis.model;
+package xb.dev.tools.model;
 
 import lombok.Getter;
 import lombok.Setter;
-
+import xb.dev.tools.dao.entity.Comment;
+import java.util.List;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @Author: Created by huangxb on 2018-08-02 12:07:39
- * @Description: 新闻数据model
+ * @Author: Created by huangxb on 2018-08-01 17:58:24
+ * @Description: 新闻实体类
  */
-@Setter
 @Getter
-public class XbNewsModel implements Serializable {
+@Setter
+public class NewsModel implements Serializable {
     /**
      * 新闻id
      */
@@ -57,9 +58,8 @@ public class XbNewsModel implements Serializable {
      * 新闻状态
      */
     private Byte status;
-
     /**
-     * 新闻是否已删除标记
+     * 评论列表
      */
-    private Byte deleteFlag;
+    private List<Comment> comments;
 }

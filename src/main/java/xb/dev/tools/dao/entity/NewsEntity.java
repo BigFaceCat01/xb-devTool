@@ -1,18 +1,19 @@
-package xb.dev.tools.mybatis.dao.entity;
+package xb.dev.tools.dao.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
- * @Author: Created by huangxb on 2018-08-02 13:56
+ * @Author: Created by huangxb on 2018-08-01 17:58:24
  * @Description: 新闻实体类
  */
 @Getter
 @Setter
-public class XbNewsEntity {
+public class NewsEntity implements Serializable {
     /**
      * 新闻id
      */
@@ -58,10 +59,12 @@ public class XbNewsEntity {
      * 新闻状态
      */
     private Byte status;
-
     /**
-     * 新闻是否已删除标记
+     * 评论列表
+     */
+    private List<Comment> comments;
+    /**
+     * 是否已删除
      */
     private Boolean deleteFlag;
-
 }

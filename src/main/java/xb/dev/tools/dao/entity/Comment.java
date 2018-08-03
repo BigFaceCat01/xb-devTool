@@ -1,4 +1,4 @@
-package xb.dev.tools.mongo.dao.entity;
+package xb.dev.tools.dao.entity;
 
 import lombok.Getter;
 import lombok.Setter;

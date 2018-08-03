@@ -1,4 +1,4 @@
-package xb.dev.tools.mybatis.generate;
+package xb.dev.tools.tool.mybatis.generate;
 
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;

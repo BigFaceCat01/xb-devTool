@@ -1,4 +1,4 @@
-package xb.dev.tools.mybatis.base;
+package xb.dev.tools.base;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
