@@ -2,6 +2,7 @@ package xb.dev.tools.dao.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.List;
  */
 @Getter
 @Setter
+@ToString
 public class NewsEntity implements Serializable {
     /**
      * 新闻id
