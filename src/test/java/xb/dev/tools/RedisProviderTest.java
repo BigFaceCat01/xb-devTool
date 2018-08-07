@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.Jedis;
+import xb.dev.tools.base.JedisClient;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
 import xb.dev.tools.tool.redis.service.RedisNewsService;
@@ -48,8 +49,11 @@ public class RedisProviderTest {
                 NewsEntity newsEntity = SomeTest.buildWithComment();
                 try {
                     redisNewsService.insertNewsWithTimeout(newsEntity,"XB2018080400006",1);
-
-                } catch (XbServiceException e) {
+                    System.out.println(
+                            "before:"+JedisClient.getJedis().get("XB2018080400006"));
+                    Thread.sleep(2000);
+                    System.out.println("after:"+JedisClient.getJedis().get("XB2018080400006"));
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
