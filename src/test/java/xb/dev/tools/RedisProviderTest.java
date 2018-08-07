@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import redis.clients.jedis.Jedis;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
-import xb.dev.tools.tool.redis.listener.RedisExpireNotify;
 import xb.dev.tools.tool.redis.service.RedisNewsService;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DevToolsApplication.class)
@@ -18,6 +17,7 @@ import java.util.List;
 public class RedisProviderTest {
     @Autowired
     private RedisNewsService redisNewsService;
+
 
 //    @Test
     public void testInsertNews(){
@@ -41,6 +41,8 @@ public class RedisProviderTest {
 
     @Test
     public void testInsertTimeout(){
+
+
 
 
                 NewsEntity newsEntity = SomeTest.buildWithComment();

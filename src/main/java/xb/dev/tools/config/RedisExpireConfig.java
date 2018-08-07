@@ -3,7 +3,6 @@ package xb.dev.tools.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
 
@@ -22,26 +21,33 @@ public class RedisExpireConfig implements CommandLineRunner {
      */
     @Value("${redis.openExpireNotify}")
     private boolean openExpireNotify;
+
     @Override
     public void run(String... args) throws Exception {
-        if(openExpireNotify){
-            List<String> notify = jedis.configGet("notify-keyspace-events");
-            if(notify.get(1).equals("")){
-                jedis.configSet("notify-keyspace-events","Ex");
-
-            }
-            jedis.psubscribe(new JedisPubSub() {
+        if (openExpireNotify) {
+            new Thread(new Runnable() {
                 @Override
-                public void onPMessage(String pattern, String channel, String message) {
-                    System.out.println("################################");
-                    System.out.println(jedis.get(message));
-                }
+                public void run() {
+                    List<String> notify = jedis.configGet("notify-keyspace-events");
+                    if (notify.get(1).equals("")) {
+                        jedis.configSet("notify-keyspace-events", "Ex");
 
-                @Override
-                public void onPSubscribe(String pattern, int subscribedChannels) {
-                    System.out.println("发生一次订阅");
+                    }
+                    jedis.psubscribe(new JedisPubSub() {
+                        @Override
+                        public void onPMessage(String pattern, String channel, String message) {
+                            System.out.println("################################");
+                            System.out.println(jedis.get(message));
+                        }
+
+                        @Override
+                        public void onPSubscribe(String pattern, int subscribedChannels) {
+                            System.out.println("发生一次订阅");
+                        }
+                    }, "__keyevent@0__:expired");
+
                 }
-            }, "__keyevent@0__:expired");
+            }).start();
         }
     }
 }

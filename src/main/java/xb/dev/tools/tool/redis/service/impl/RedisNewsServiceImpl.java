@@ -4,12 +4,12 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
+import xb.dev.tools.base.JedisClient;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
-import xb.dev.tools.tool.redis.listener.RedisExpireNotify;
 import xb.dev.tools.tool.redis.service.RedisNewsService;
+
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: Created by huangxb on 2018-08-02 14:00:21
@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class RedisNewsServiceImpl implements RedisNewsService {
-    @Autowired
-    private Jedis jedis;
+
+    private Jedis jedis = JedisClient.getJedis();
 
     @Override
     public List<NewsEntity> queryAll() throws XbServiceException {
@@ -48,16 +48,7 @@ public class RedisNewsServiceImpl implements RedisNewsService {
     }
     @Override
     public void insertNewsWithTimeout(NewsEntity newsEntity, String key, int second) throws XbServiceException{
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                RedisExpireNotify redisExpireNotify = new RedisExpireNotify();
-                jedis.psubscribe(redisExpireNotify,"__key*__:*");
-            }
-        }).start();
-
         String value = JSON.toJSONString(newsEntity);
-        System.out.println(value);
         jedis.setex(key,second,value);
     }
 }
