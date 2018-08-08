@@ -48,7 +48,7 @@ public class MybatisNewsServiceImpl implements MybatisNewsService {
     @Override
     public void insertNews(NewsEntity newsEntity) throws XbServiceException {
         try {
-            baseMapper.insert("XbNewsMapper.insert", newsEntity);
+            baseMapper.insert("XbNewsMapper.insertNews", newsEntity);
         }catch (Exception e){
             throw new XbServiceException("添加新闻出错,cause by:"+e.getMessage(),e);
         }

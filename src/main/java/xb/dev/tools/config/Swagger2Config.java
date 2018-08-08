@@ -24,13 +24,13 @@ public class Swagger2Config {
 		//添加head参数start
 		ParameterBuilder tokenPar = new ParameterBuilder();
 		List<Parameter> pars = new ArrayList<Parameter>();
-		tokenPar.name("X-AUTH-USERID").description("userId").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+		tokenPar.name("X-AUTH-USER").description("userId").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
 		pars.add(tokenPar.build());
 
 		return new Docket(DocumentationType.SWAGGER_2)
 				.apiInfo(apiInfo())
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("xb.dev.tools.*.controller"))
+				.apis(RequestHandlerSelectors.basePackage("xb.dev.tools.tool"))
 				.paths(PathSelectors.any()).build()
 				.globalOperationParameters(pars);
 	}
