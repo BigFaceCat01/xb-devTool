@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xb.dev.tools.base.BaseController;
+import xb.dev.tools.common.CodeEnum;
 import xb.dev.tools.common.Result;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
@@ -45,10 +46,10 @@ public class MybatisNewsController extends BaseController {
         newsEntity.setOpposeCount(0L);
         try {
             mybatisNewsService.insertNews(newsEntity);
-            return Result.build("0",true);
+            return Result.build(CodeEnum.SUCCESS.getCode(),true);
         } catch (XbServiceException e) {
             e.printStackTrace();
-            return Result.build("-1",false);
+            return Result.build(CodeEnum.FAILED.getCode(),false);
         }
     }
 
