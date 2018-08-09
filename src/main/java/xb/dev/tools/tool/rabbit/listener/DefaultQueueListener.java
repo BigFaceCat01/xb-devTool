@@ -10,9 +10,9 @@ import xb.dev.tools.constant.RabbitConstant;
  * @Description:
  */
 @Component
+@RabbitListener(queues = {RabbitConstant.HELLO_QUEUE})
 public class DefaultQueueListener {
     @RabbitHandler
-    @RabbitListener(queues = {RabbitConstant.HELLO_QUEUE})
     public void receive(String msg){
         System.out.println("receive message from "+RabbitConstant.HELLO_QUEUE+":"+msg);
     }
