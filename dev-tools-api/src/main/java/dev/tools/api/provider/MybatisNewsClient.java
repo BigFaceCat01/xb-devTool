@@ -15,7 +15,7 @@ import java.util.List;
  * @Author: Created by huangxb on 2018-08-13 09:26:58
  * @Description:
  */
-@FeignClient(value = "xb-devTools-dev-provider",fallback = MybatisNewsClientFallBack.class)
+@FeignClient(value = "xb-devTools-provider",fallback = MybatisNewsClientFallBack.class)
 public interface MybatisNewsClient {
 
     @PostMapping("/mybatis/news")

@@ -3,11 +3,8 @@ package dev.tools.api.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
-
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @Author: Created by huangxb on 2018-08-01 17:58:24
@@ -20,7 +17,6 @@ public class NewsEntity implements Serializable {
     /**
      * 新闻id
      */
-    @Id
     private String newsId;
     /**
      * 新闻标题

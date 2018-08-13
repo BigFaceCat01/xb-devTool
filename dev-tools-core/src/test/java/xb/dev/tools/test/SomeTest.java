@@ -18,7 +18,7 @@ public class SomeTest {
     private static final Random r = new Random();
 
     public static void main(String[] args){
-        System.out.println("1^2^3".split("^").length);
+        System.out.println("1^2^3".split("\\^").length);
     }
 
     public static NewsEntity buildNewsEntity(){
