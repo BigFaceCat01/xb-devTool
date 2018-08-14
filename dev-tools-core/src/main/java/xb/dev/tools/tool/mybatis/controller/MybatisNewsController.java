@@ -64,4 +64,16 @@ public class MybatisNewsController extends BaseController {
         }
     }
 
+    @ApiOperation(value = "根据id查询新闻-huangxb",httpMethod = "GET")
+    @GetMapping("{newsId}")
+    public Result<NewsEntity> queryNewsById(@PathVariable("newsId") String id){
+        try {
+            NewsEntity api = mybatisNewsService.queryOne(id);
+            return Result.build(CodeEnum.SUCCESS.getCode(),api);
+        } catch (XbServiceException e) {
+            e.printStackTrace();
+            return Result.build(CodeEnum.FAILED.getCode(),CodeEnum.FAILED.getChDesc());
+        }
+    }
+
 }

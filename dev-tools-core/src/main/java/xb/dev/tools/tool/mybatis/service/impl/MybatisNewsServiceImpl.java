@@ -42,7 +42,7 @@ public class MybatisNewsServiceImpl implements MybatisNewsService {
 
     @Override
     public NewsEntity queryOne(String id) throws XbServiceException {
-        return null;
+        return baseMapper.findForObject("XbNewsMapper.queryById",id);
     }
 
     @Override

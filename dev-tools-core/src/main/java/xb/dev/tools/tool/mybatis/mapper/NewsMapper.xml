@@ -15,6 +15,20 @@
     <result column="support_count" jdbcType="BIGINT" property="supportCount" />
     <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
   </resultMap>
+  <resultMap id="BaseResultMap2" type="xb.dev.tools.dao.entity.NewsEntity">
+    <id column="news_id" jdbcType="VARCHAR" property="newsId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="body" jdbcType="VARCHAR" property="body" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="browse_count" jdbcType="BIGINT" property="browseCount" />
+    <result column="oppose_count" jdbcType="BIGINT" property="opposeCount" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="support_count" jdbcType="BIGINT" property="supportCount" />
+    <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
+  </resultMap>
 
   <sql id="Base_Column_List">
     news_id, title, body, source, author, create_time, type, browse_count, oppose_count,
@@ -26,6 +40,14 @@
     select
     <include refid="Base_Column_List"></include>
     from xb_news
+  </select>
+
+  <!-- 根据id查询新闻    -->
+  <select id="queryById" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List"></include>
+    from xb_news
+    where news_id = #{id,jdbcType=VARCHAR}
   </select>
 
   <!-- 通过新闻id删除新闻    -->
