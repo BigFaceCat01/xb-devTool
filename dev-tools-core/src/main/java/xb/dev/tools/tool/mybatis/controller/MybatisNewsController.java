@@ -28,6 +28,7 @@ public class MybatisNewsController extends BaseController {
     @Autowired
     private MybatisNewsService mybatisNewsService;
 
+
     @ApiOperation(value = "添加一条新闻-huangxb",httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "body",dataType = "NewsModel",name = "newsModel",value = "新闻信息")
@@ -44,6 +45,7 @@ public class MybatisNewsController extends BaseController {
         newsEntity.setOpposeCount(0L);
         try {
             mybatisNewsService.insertNews(newsEntity);
+
             return Result.build(CodeEnum.SUCCESS.getCode(),true);
         } catch (XbServiceException e) {
             e.printStackTrace();

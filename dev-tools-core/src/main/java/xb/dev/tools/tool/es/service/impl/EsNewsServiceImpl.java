@@ -12,8 +12,14 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.suggest.Suggest;
+import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilders;
+import org.elasticsearch.search.suggest.SuggestionBuilder;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xb.dev.tools.common.CodeEnum;
 import xb.dev.tools.constant.EsConstant;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
@@ -21,7 +27,10 @@ import xb.dev.tools.tool.es.service.EsNewsService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 /**
  * @Author: Created by huangxb on 2018-08-03 18:01
  * @Description:
@@ -104,5 +113,36 @@ public class EsNewsServiceImpl implements EsNewsService {
     @Override
     public void updateNews(NewsEntity newsEntity) throws XbServiceException {
 
+    }
+
+    @Override
+    public Set<String> suggest(String keywords) {
+        SearchRequest searchRequest = new SearchRequest(EsConstant.NEWS_INDEX);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        SuggestionBuilder completionSuggestionBuilder = SuggestBuilders.completionSuggestion("keywords.suggest").text(keywords);
+        SuggestBuilder suggestBuilder = new SuggestBuilder();
+        suggestBuilder.addSuggestion("suggest_keywords",completionSuggestionBuilder);
+        searchSourceBuilder.suggest(suggestBuilder).size(0);
+
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = client.search(searchRequest);
+        } catch (IOException e) {
+            throw new XbServiceException(CodeEnum.SUGGEST_NEWS_FAILD.getCode(),CodeEnum.SUGGEST_NEWS_FAILD.getChDesc(),e);
+        }
+        Suggest suggest = searchResponse.getSuggest();
+        CompletionSuggestion completionSuggestion = suggest.getSuggestion("suggest_keywords");
+        List<CompletionSuggestion.Entry> entries = completionSuggestion.getEntries();
+
+        Set<String> suggestTexts = new HashSet<>();
+        for(CompletionSuggestion.Entry entry:entries){
+            List<CompletionSuggestion.Entry.Option> options = entry.getOptions();
+            for (CompletionSuggestion.Entry.Option option : options) {
+                String suggestText = option.getText().string();
+                suggestTexts.add(suggestText);
+            }
+        }
+        return suggestTexts;
     }
 }

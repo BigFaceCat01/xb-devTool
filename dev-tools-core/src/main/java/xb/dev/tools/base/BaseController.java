@@ -14,9 +14,11 @@ public class BaseController {
     @ModelAttribute
     public void loginUserInfo(HttpServletRequest request){
         String userId = request.getHeader("X-AUTH-USER");
-        boolean b= userId.matches("[0-9]+");
-        if(b){
-            localUser.set(userId==null?null:Integer.valueOf(userId));
+        if(userId!=null) {
+            boolean b = userId.matches("[0-9]+");
+            if (b) {
+                localUser.set(userId == null ? null : Integer.valueOf(userId));
+            }
         }
     }
 }

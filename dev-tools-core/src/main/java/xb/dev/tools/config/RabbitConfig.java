@@ -13,11 +13,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitConfig {
-    public static final String PRODUCT_QUEUE = "productSearchQueue";
+    public static final String NEWS_SEARCH_QUEUE = "newsSearchQueue";
     public static final String ORDER_QUEUE = "orderQueue";
-    public static final String PRODUCT_INSERT_QUEUE = "productInsertQueue";
-    public static final String PRODUCT_UPDATE_QUEUE = "productUpdateQueue";
-    public static final String PRODUCT_DELETE_QUEUE = "productDeleteQueue";
+    public static final String NEWS_INSERT_QUEUE = "newsInsertQueue";
+    public static final String NEWS_UPDATE_QUEUE = "newsUpdateQueue";
+    public static final String NEWS_DELETE_QUEUE = "newsDeleteQueue";
     @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
@@ -27,7 +27,7 @@ public class RabbitConfig {
     }
     @Bean
     public Queue productQueue(){
-        return new Queue(PRODUCT_QUEUE);
+        return new Queue(NEWS_SEARCH_QUEUE);
     }
     @Bean
     public Queue orderQueue(){
@@ -43,35 +43,35 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Queue productInsertQueue() {
-        return new Queue(PRODUCT_INSERT_QUEUE);
+    public Queue newsInsertQueue() {
+        return new Queue(NEWS_INSERT_QUEUE);
     }
 
     @Bean
-    public Queue productUpdateQueue() {
-        return new Queue(PRODUCT_UPDATE_QUEUE);
+    public Queue newsUpdateQueue() {
+        return new Queue(NEWS_UPDATE_QUEUE);
     }
 
     @Bean
-    public Queue productDeleteQueue() {
-        return new Queue(PRODUCT_DELETE_QUEUE);
+    public Queue newsDeleteQueue() {
+        return new Queue(NEWS_DELETE_QUEUE);
     }
 
     @Bean
     public DirectExchange directExchange() {
-        return new DirectExchange("productDirectExchange");
+        return new DirectExchange("newsDirectExchange");
     }
 
     @Bean
-    public Binding bindingDirectExchangeProductInsertQueue(Queue productInsertQueue,DirectExchange directExchange){
-        return BindingBuilder.bind(productInsertQueue).to(directExchange).withQueueName();
+    public Binding bindingDirectExchangeProductInsertQueue(Queue newsInsertQueue,DirectExchange directExchange){
+        return BindingBuilder.bind(newsInsertQueue).to(directExchange).withQueueName();
     }
     @Bean
-    public Binding bindingDirectExchangeProductUpdateQueue(Queue productUpdateQueue,DirectExchange directExchange){
-        return BindingBuilder.bind(productUpdateQueue).to(directExchange).withQueueName();
+    public Binding bindingDirectExchangeProductUpdateQueue(Queue newsUpdateQueue,DirectExchange directExchange){
+        return BindingBuilder.bind(newsUpdateQueue).to(directExchange).withQueueName();
     }
     @Bean
-    public Binding bindingDirectExchangeProductDeleteQueue(Queue productDeleteQueue,DirectExchange directExchange){
-        return BindingBuilder.bind(productDeleteQueue).to(directExchange).withQueueName();
+    public Binding bindingDirectExchangeProductDeleteQueue(Queue newsDeleteQueue,DirectExchange directExchange){
+        return BindingBuilder.bind(newsDeleteQueue).to(directExchange).withQueueName();
     }
 }

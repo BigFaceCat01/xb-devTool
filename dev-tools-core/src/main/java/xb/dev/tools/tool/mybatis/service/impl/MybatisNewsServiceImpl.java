@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import xb.dev.tools.base.BaseMapper;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
+import xb.dev.tools.sender.NewsMqSender;
 import xb.dev.tools.tool.mybatis.service.MybatisNewsService;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.Map;
 public class MybatisNewsServiceImpl implements MybatisNewsService {
     @Autowired
     private BaseMapper baseMapper;
+    @Autowired
+    private NewsMqSender newsMqSender;
 
     @Override
     public List<NewsEntity> queryAll() throws XbServiceException {
@@ -49,6 +52,7 @@ public class MybatisNewsServiceImpl implements MybatisNewsService {
     public void insertNews(NewsEntity newsEntity) throws XbServiceException {
         try {
             baseMapper.insert("XbNewsMapper.insertNews", newsEntity);
+            newsMqSender.sendNewsInsert(newsEntity);
         }catch (Exception e){
             throw new XbServiceException("添加新闻出错,cause by:"+e.getMessage(),e);
         }
