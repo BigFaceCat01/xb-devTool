@@ -25,27 +25,14 @@
             <artifactId>poi-ooxml</artifactId>
             <version>3.14</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.2</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
-    <distributionManagement>
-        <repository>
-            <id>releases</id>
-            <name>Nexus Release Repository</name>
-            <url>http://193.112.160.56:8081/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>Snapshot</name>
-            <url>http://193.112.160.56:8081/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-    <!-- 资源地址，所有的依赖包将从次地址下载 -->
-    <repositories>
-        <repository>
-            <id>nexus</id>
-            <name>Team Nexus Repository</name>
-            <url>http://193.112.160.56:8081/repository/maven-public/</url>
-        </repository>
-    </repositories>
 
     <build>
         <plugins>
