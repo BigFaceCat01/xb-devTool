@@ -1,6 +1,6 @@
 package xb.dev.document.annotation;
 
-import com.zhongfei.data.document.common.DocumentType;
+import xb.dev.document.common.DocumentType;
 
 import java.lang.annotation.*;
 
