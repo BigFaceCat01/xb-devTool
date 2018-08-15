@@ -9,6 +9,7 @@
     <modules>
         <module>dev-tools-api</module>
         <module>dev-tools-core</module>
+        <module>dev-document-core</module>
     </modules>
     <packaging>pom</packaging>
 
