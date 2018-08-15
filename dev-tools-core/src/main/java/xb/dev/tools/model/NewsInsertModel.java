@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class NewsModel implements Serializable {
+public class NewsInsertModel implements Serializable {
     /**
      * 新闻标题
      */
