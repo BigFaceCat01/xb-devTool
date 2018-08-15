@@ -43,7 +43,7 @@ public class StringTool {
     public static final String REGEX_IP_ADDR = "(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)";
     static {
         try {
-            isThreadLocalRandomAvailable = null != com.zhongfei.data.document.common.StringTool.class.getClassLoader().loadClass("java.util.concurrent.ThreadLocalRandom");
+            isThreadLocalRandomAvailable = null != StringTool.class.getClassLoader().loadClass("java.util.concurrent.ThreadLocalRandom");
         } catch (ClassNotFoundException e) {
             logger.error("ClassNotFoundException",e);
         }

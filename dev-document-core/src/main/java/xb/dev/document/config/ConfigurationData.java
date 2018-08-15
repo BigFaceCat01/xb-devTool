@@ -1,12 +1,12 @@
 package xb.dev.document.config;
 
-import com.zhongfei.data.document.annotation.Document;
-import com.zhongfei.data.document.annotation.Head;
-import com.zhongfei.data.document.common.StringTool;
-import com.zhongfei.data.document.exception.DocumentHandlerException;
-import com.zhongfei.data.document.exception.DocumentNotFoundException;
-import com.zhongfei.data.document.exception.HeadNotFoundException;
-import com.zhongfei.data.document.model.HeadMetaData;
+import xb.dev.document.annotation.Document;
+import xb.dev.document.annotation.Head;
+import xb.dev.document.common.StringTool;
+import xb.dev.document.exception.DocumentHandlerException;
+import xb.dev.document.exception.DocumentNotFoundException;
+import xb.dev.document.exception.HeadNotFoundException;
+import xb.dev.document.model.HeadMetaData;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

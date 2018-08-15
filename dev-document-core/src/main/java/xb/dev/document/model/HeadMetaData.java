@@ -1,6 +1,6 @@
 package xb.dev.document.model;
 
-import com.zhongfei.data.document.annotation.Head;
+import xb.dev.document.annotation.Head;
 
 /**
  *

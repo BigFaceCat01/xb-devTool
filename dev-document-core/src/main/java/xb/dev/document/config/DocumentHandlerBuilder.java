@@ -1,8 +1,8 @@
 package xb.dev.document.config;
 
-import com.zhongfei.data.document.exception.DocumentHandlerException;
-import com.zhongfei.data.document.handler.DocumentHandler;
-import com.zhongfei.data.document.handler.impl.PoiHandler;
+import xb.dev.document.exception.DocumentHandlerException;
+import xb.dev.document.handler.DocumentHandler;
+import xb.dev.document.handler.impl.PoiHandler;
 
 import java.io.InputStream;
 import java.util.List;

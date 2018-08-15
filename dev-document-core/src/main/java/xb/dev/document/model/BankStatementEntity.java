@@ -1,8 +1,8 @@
 package xb.dev.document.model;
 
-import com.zhongfei.data.document.annotation.Document;
-import com.zhongfei.data.document.annotation.Head;
-import com.zhongfei.data.document.common.DocumentType;
+import xb.dev.document.annotation.Document;
+import xb.dev.document.annotation.Head;
+import xb.dev.document.common.DocumentType;
 
 import java.math.BigDecimal;
 import java.util.Date;
