@@ -1,8 +1,14 @@
 package xb.dev.document.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import xb.dev.document.annotation.Document;
 import xb.dev.document.annotation.Head;
+import xb.dev.document.common.DocumentType;
 
-
+@Getter
+@Setter
+@Document(documentType = DocumentType.EXCEL,dateFormat = "yyyyMMdd hh:mm:ss")
 public class XuZhouLogisticModel {
     private Integer id;
     @Head(name = "起运港")
