@@ -5,6 +5,7 @@ import xb.dev.document.config.DocumentHandlerBuilder;
 import xb.dev.document.exception.DocumentHandlerException;
 import xb.dev.document.handler.DocumentHandler;
 import xb.dev.document.model.BankStatementEntity;
+import xb.dev.document.model.XuZhouLogisticModel;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -63,21 +64,21 @@ public class DocumentUtil {
 
     public static void main(String[] args) throws Exception {
 
-        Map<String,List<BankStatementEntity>> map = getDataByPath(BankStatementEntity.class,"D:/26.xls");
-
-        List<BankStatementEntity> data = map.get("DOCUMENT");
-
-        InputStream is = createDocument(data,BankStatementEntity.class);
-
-        FileOutputStream fos = new FileOutputStream("D:/27.xls");
-        int len = 0;
-        byte[] b = new byte[1024];
-        while((len = is.read(b))!=-1){
-            fos.write(b,0,len);
-        }
+        Map<String,List<XuZhouLogisticModel>> map = getDataByPath(XuZhouLogisticModel.class,"D:/xuzhou.xlsx");
         System.out.println();
-        is.close();
-        fos.close();
+        //List<BankStatementEntity> data = map.get("DOCUMENT");
+
+        //InputStream is = createDocument(data,BankStatementEntity.class);
+
+//        FileOutputStream fos = new FileOutputStream("D:/27.xls");
+//        int len = 0;
+//        byte[] b = new byte[1024];
+//        while((len = is.read(b))!=-1){
+//            fos.write(b,0,len);
+//        }
+//        System.out.println();
+//        is.close();
+//        fos.close();
     }
 
 }
