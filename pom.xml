@@ -10,6 +10,7 @@
         <module>dev-tools-api</module>
         <module>dev-tools-core</module>
         <module>dev-document-core</module>
+        <module>dev-tools-web</module>
     </modules>
     <packaging>pom</packaging>
 
