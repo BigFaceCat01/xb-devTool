@@ -10,13 +10,15 @@ import xb.dev.tools.common.CodeEnum;
 import xb.dev.tools.common.Result;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
-import xb.dev.tools.model.NewsModel;
+import xb.dev.tools.model.NewsInsertModel;
 import xb.dev.tools.tool.mybatis.service.MybatisNewsService;
 import xb.dev.tools.utils.CodeUtil;
 import xb.dev.tools.utils.JsonUtil;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Created by huangxb on 2018-08-08 14:08:49
@@ -34,7 +36,7 @@ public class MybatisNewsController extends BaseController {
             @ApiImplicitParam(paramType = "body",dataType = "NewsModel",name = "newsModel",value = "新闻信息")
     })
     @PostMapping("")
-    public Result<Boolean> insertNews(@RequestBody NewsModel newsModel){
+    public Result<Boolean> insertNews(@RequestBody NewsInsertModel newsModel){
         NewsEntity newsEntity = JsonUtil.beanConvert(newsModel,NewsEntity.class);
         newsEntity.setNewsId(CodeUtil.getNewsId());
         newsEntity.setAuthor("AAA");
@@ -51,6 +53,19 @@ public class MybatisNewsController extends BaseController {
             e.printStackTrace();
             return Result.build(CodeEnum.FAILED.getCode(),false);
         }
+    }
+
+    @ApiOperation(value = "测试接口-huangxb",httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body",dataType = "int[]",name = "ids",value="整数数组"),
+            @ApiImplicitParam(paramType = "query",dataType = "string",name = "name",value = "名称")
+    })
+    @PostMapping("test")
+    public Result<Map<String,Object>> test(@RequestBody Integer[] ids, @RequestParam String name){
+        Map<String,Object> param = new HashMap<>();
+        param.put("ids",ids);
+        param.put("name",name);
+        return Result.build(CodeEnum.SUCCESS.getCode(),param);
     }
 
 
