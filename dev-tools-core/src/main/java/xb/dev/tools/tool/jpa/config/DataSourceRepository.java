@@ -12,8 +12,8 @@ import javax.persistence.PersistenceContext;
  * @Author: Created by huangxb on 2018-08-15 11:53:17
  * @Description:
  */
-@NoRepositoryBean
-@Configuration
+//@NoRepositoryBean
+//@Configuration
 public class DataSourceRepository {
     //选择数据源
    /* @PersistenceContext(unitName = "slaveEntityManagerFactoryBean")

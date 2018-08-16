@@ -20,7 +20,7 @@ import java.sql.SQLException;
 /**
  * Druid连接配置
  */
-@Configuration
+//@Configuration
 public class DataSourceFromDruidConfig {
 
     private Logger logger = LoggerFactory.getLogger(DataSourceFromDruidConfig.class);
@@ -63,7 +63,7 @@ public class DataSourceFromDruidConfig {
     private String slave_username;
     @Value("${spring.datasource.slave.password}")
     private String slave_password;
-    @Value("${spring.datasource.slave.driver-class-name}")
+    @Value("${spring.datasource.driver-class-name}")
     private String slave_driverClassName;
     @Value("${spring.datasource.slave.initialSize}")
     private int slave_initialSize;

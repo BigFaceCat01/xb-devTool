@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xb.dev.tools.dao.entity.NewsEntity;
+import xb.dev.tools.dao.entity.QJpaNewsEntity;
 import xb.dev.tools.exception.XbServiceException;
 import xb.dev.tools.tool.jpa.service.JpaNewsService;
 
@@ -15,11 +16,13 @@ import java.util.List;
  */
 @Service
 public class JpaNewsServiceImpl implements JpaNewsService {
-    @Autowired
-    private JPAQueryFactory factory;
+//    @Autowired
+//    private JPAQueryFactory factory;
 
     @Override
     public List<NewsEntity> queryAll() throws XbServiceException {
+        QJpaNewsEntity qJpaNewsEntity = QJpaNewsEntity.jpaNewsEntity;
+
         return null;
     }
 

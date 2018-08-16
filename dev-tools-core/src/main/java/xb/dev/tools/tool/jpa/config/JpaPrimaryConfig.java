@@ -22,13 +22,13 @@ import java.util.Map;
  * @Author: Created by huangxb on 2018-08-15 13:54:26
  * @Description:
  */
-@Configuration
-@EnableTransactionManagement
-@EnableJpaRepositories(
-        entityManagerFactoryRef = "primaryEntityManagerFactory",//配置连接工厂 entityManagerFactory
-        transactionManagerRef = "primaryTransactionManager", //配置 事物管理器  transactionManager
-        basePackages = {"xb.dev.tools.dao.repository"}//设置dao（repo）所在位置
-)
+//@Configuration
+//@EnableTransactionManagement
+//@EnableJpaRepositories(
+//        entityManagerFactoryRef = "primaryEntityManagerFactory",//配置连接工厂 entityManagerFactory
+//        transactionManagerRef = "primaryTransactionManager", //配置 事物管理器  transactionManager
+//        basePackages = {"xb.dev.tools.dao.repository"}//设置dao（repo）所在位置
+//)
 public class JpaPrimaryConfig {
     @Autowired
     private JpaProperties jpaProperties;
