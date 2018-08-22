@@ -1,10 +1,18 @@
 package xb.dev.tools.tool.mybatis.controller;
 
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import xb.dev.document.temp.ExcelParseException;
+import xb.dev.document.temp.ExcelUtils;
+import xb.dev.document.temp.TranslateData;
 import xb.dev.tools.base.BaseController;
 import xb.dev.tools.common.CodeEnum;
 import xb.dev.tools.common.Result;
@@ -15,10 +23,8 @@ import xb.dev.tools.tool.mybatis.service.MybatisNewsService;
 import xb.dev.tools.utils.CodeUtil;
 import xb.dev.tools.utils.JsonUtil;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * @Author: Created by huangxb on 2018-08-08 14:08:49
@@ -27,6 +33,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/mybatis/news")
 public class MybatisNewsController extends BaseController {
+    private Logger logger = LoggerFactory.getLogger(MybatisNewsController.class);
     @Autowired
     private MybatisNewsService mybatisNewsService;
 
@@ -66,6 +73,44 @@ public class MybatisNewsController extends BaseController {
         param.put("ids",ids);
         param.put("name",name);
         return Result.build(CodeEnum.SUCCESS.getCode(),param);
+    }
+
+    @ApiOperation(value = "excel转换",httpMethod = "POST")
+    @PostMapping(value = "excel",consumes = "multipart/*",headers = "content-type=multipart/form-data")
+    public Result<Map<String,Map<String,Map<String,String>>>> excelExchange(@ApiParam(value = "文件",required = true) MultipartFile file){
+        Map<String,List<TranslateData>> map = null;
+        try {
+            InputStream is = file.getInputStream();
+            map = ExcelUtils.excelParse(TranslateData.class,is,logger);
+
+        int count = 0;
+        Map<String,Map<String,Map<String,String>>> api = new HashMap<>();
+        if(map!=null){
+            Set<String> keys = map.keySet();
+            for(String key:keys){
+                Map<String,String> enMap = new HashMap<>();
+                Map<String,String> cnMap = new HashMap<>();
+                Map<String,Map<String,String>> result = new HashMap<>();
+                List<TranslateData> res = map.get(key);
+                for(TranslateData translateData:res) {
+                    if(translateData.getBrief()!=null&&!translateData.getBrief().equals("")) {
+                        enMap.put(translateData.getBrief(), translateData.getEn());
+                        cnMap.put(translateData.getBrief(), translateData.getCn());
+                    }
+                }
+                result.put("moduleCn",cnMap);
+                result.put("moduleEn",enMap);
+                api.put("module"+count,result);
+                count++;
+            }
+            String s =JSON.toJSONString(api);
+            System.out.println();
+        }
+        return Result.build(CodeEnum.SUCCESS.getCode(),api);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.build(CodeEnum.SUCCESS.getCode(),e.getMessage());
+        }
     }
 
 
