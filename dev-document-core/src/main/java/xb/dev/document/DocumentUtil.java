@@ -1,14 +1,12 @@
 package xb.dev.document;
 
 
+import com.alibaba.fastjson.JSON;
 import xb.dev.document.config.DocumentHandlerBuilder;
 import xb.dev.document.exception.DocumentHandlerException;
 import xb.dev.document.handler.DocumentHandler;
-import xb.dev.document.model.BankStatementEntity;
-import xb.dev.document.model.XuZhouLogisticModel;
-
-import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +62,9 @@ public class DocumentUtil {
 
     public static void main(String[] args) throws Exception {
 
-        Map<String,List<XuZhouLogisticModel>> map = getDataByPath(XuZhouLogisticModel.class,"D:/xuzhou.xlsx");
+
+
+
         System.out.println();
         //List<BankStatementEntity> data = map.get("DOCUMENT");
 
