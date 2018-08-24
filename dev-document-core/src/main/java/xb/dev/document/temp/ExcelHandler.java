@@ -214,6 +214,7 @@ public class ExcelHandler<T> {
         for(int j=0;j<=rowNumber;j++){
             //获得表格行对象
             Row row=current.getRow(j);
+            if(row==null){continue;}
             //获得该行包含数据的总单元格数
             int colNumber=row.getLastCellNum();
 
