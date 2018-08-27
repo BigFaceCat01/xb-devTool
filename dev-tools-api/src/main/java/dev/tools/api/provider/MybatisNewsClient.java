@@ -3,12 +3,11 @@ package dev.tools.api.provider;
 import dev.tools.api.fallback.MybatisNewsClientFallBack;
 import dev.tools.api.model.NewsEntity;
 import dev.tools.api.model.NewsModel;
-import dev.tools.api.model.Result;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import xb.dev.tools.common.Result;
 import java.util.List;
 
 /**

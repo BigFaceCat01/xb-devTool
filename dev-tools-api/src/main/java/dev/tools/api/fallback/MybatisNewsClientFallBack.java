@@ -2,10 +2,9 @@ package dev.tools.api.fallback;
 
 import dev.tools.api.model.NewsEntity;
 import dev.tools.api.model.NewsModel;
-import dev.tools.api.model.Result;
 import dev.tools.api.provider.MybatisNewsClient;
 import org.springframework.stereotype.Service;
-
+import xb.dev.tools.common.Result;
 import java.util.List;
 
 /**
