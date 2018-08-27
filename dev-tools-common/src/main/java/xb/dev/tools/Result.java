@@ -1,4 +1,4 @@
-package xb.dev.tools.common;
+package xb.dev.tools;
 
 import java.io.Serializable;
 
@@ -49,18 +49,18 @@ public class Result<E> implements Serializable {
     }
 
     public static <E> Result<E> build(String code) {
-        return new Result<>(code, null, null);
+        return new Result<E>(code, null, null);
     }
 
     public static <E> Result<E> build(String code, E data) {
-        return new Result<>(code, null, data);
+        return new Result<E>(code, null, data);
     }
 
     public static <E> Result<E> build(String code, String msg) {
-        return new Result<>(code, msg, null);
+        return new Result<E>(code, msg, null);
     }
 
     public static <E> Result<E> build(String code, String msg, E data) {
-        return new Result<>(code, msg, data);
+        return new Result<E>(code, msg, data);
     }
 }
