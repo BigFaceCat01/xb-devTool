@@ -18,6 +18,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>xb.dev</groupId>
+            <version>0.0.1-SNAPSHOT</version>
+            <artifactId>xb-tools-common</artifactId>
+        </dependency>
         <!--  mybatis  start  -->
         <!-- https://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
         <dependency>
