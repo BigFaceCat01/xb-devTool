@@ -1,4 +1,4 @@
-package xb.dev.tools;
+package xb.dev.tools.common;
 
 import java.util.ArrayList;
 import java.util.Collections;
