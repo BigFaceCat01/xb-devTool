@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>element-ui index</title>
+    <link type="text/css" rel="stylesheet" href="/plugs/element/index.css" />
+    <style>
+        .bg-purple{
+            background: #67C23A;
+        }
+    </style>
+</head>
+<body >
+    <div id="app">
+        <el-button>element button</el-button>
+        <el-row>
+            <el-col :span="8"><i class="el-icon-edit"></i></el-col>
+            <el-col :span="8"><el-button type="danger"><i class="el-icon-delete"></i></el-button></el-col>
+            <el-col :span="8"><el-button type="primary" icon="el-icon-search">搜索</el-button></el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="24"><div class="bg-purple">1</div></el-col>
+        </el-row>
+    </div>
+    <script type="text/javascript" src="/plugs/vue.min-2.5.13.js"></script>
+    <script type="text/javascript" src="/plugs/element/index.js"></script>
+    <script type="text/javascript" src="/news/element-ui.js"></script>
+</body>
+</html>

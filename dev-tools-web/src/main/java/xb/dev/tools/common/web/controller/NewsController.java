@@ -1,4 +1,4 @@
-package xb.dev.tools.web.controller;
+package xb.dev.tools.common.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +12,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/news")
 public class NewsController {
-    @GetMapping("")
-    public ModelAndView index(){
+    @GetMapping("layui")
+    public ModelAndView layui(){
         return new ModelAndView("layui");
+    }
+
+    @GetMapping("vue")
+    public ModelAndView vue(){
+        return new ModelAndView("element_ui");
     }
 }

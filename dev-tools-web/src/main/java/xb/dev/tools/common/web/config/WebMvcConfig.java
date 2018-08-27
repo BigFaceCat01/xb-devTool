@@ -1,4 +1,4 @@
-package xb.dev.tools.web.config;
+package xb.dev.tools.common.web.config;
 
 /**
  * @Author: Created by huangxb on 2018-08-24 15:37:14

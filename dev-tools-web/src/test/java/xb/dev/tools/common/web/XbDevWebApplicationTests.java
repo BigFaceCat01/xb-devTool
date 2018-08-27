@@ -1,4 +1,4 @@
-package xb.dev.tools.web;
+package xb.dev.tools.common.web;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

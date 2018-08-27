@@ -1,4 +1,4 @@
-package xb.dev.tools.web;
+package xb.dev.tools.common.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
