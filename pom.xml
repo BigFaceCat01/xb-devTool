@@ -11,6 +11,7 @@
         <module>dev-tools-core</module>
         <module>dev-document-core</module>
         <module>dev-tools-web</module>
+        <module>dev-tools-common</module>
     </modules>
     <packaging>pom</packaging>
 
