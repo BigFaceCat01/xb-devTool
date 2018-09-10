@@ -117,8 +117,8 @@ public class MybatisNewsController extends BaseController {
     @GetMapping("")
     public Result<List<NewsEntity>> queryAllNews(){
         try {
-            List<NewsEntity> apis = mybatisNewsService.queryAll();
-            return Result.build(CodeEnum.SUCCESS.getCode(),apis);
+            Result<List<NewsEntity>> apis = mybatisNewsService.queryAll();
+            return apis;
         } catch (XbServiceException e) {
             e.printStackTrace();
             return Result.build(CodeEnum.FAILED.getCode(),CodeEnum.FAILED.getChDesc());
@@ -129,8 +129,8 @@ public class MybatisNewsController extends BaseController {
     @GetMapping("{newsId}")
     public Result<NewsEntity> queryNewsById(@PathVariable("newsId") String id){
         try {
-            NewsEntity api = mybatisNewsService.queryOne(id);
-            return Result.build(CodeEnum.SUCCESS.getCode(),api);
+            Result<NewsEntity> api = mybatisNewsService.queryOne(id);
+            return api;
         } catch (XbServiceException e) {
             e.printStackTrace();
             return Result.build(CodeEnum.FAILED.getCode(),CodeEnum.FAILED.getChDesc());

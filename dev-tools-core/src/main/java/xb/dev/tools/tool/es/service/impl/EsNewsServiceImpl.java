@@ -1,6 +1,7 @@
 package xb.dev.tools.tool.es.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.sun.org.apache.regexp.internal.RE;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
@@ -20,6 +21,7 @@ import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xb.dev.tools.common.CodeEnum;
+import xb.dev.tools.common.Result;
 import xb.dev.tools.constant.EsConstant;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
@@ -42,7 +44,7 @@ public class EsNewsServiceImpl implements EsNewsService {
     private RestHighLevelClient client;
 
     @Override
-    public List<NewsEntity> queryAll() throws XbServiceException {
+    public Result<List<NewsEntity>> queryAll() throws XbServiceException {
         String author = null;
         String title = null;
         String releaseDate = null;
@@ -81,38 +83,40 @@ public class EsNewsServiceImpl implements EsNewsService {
             NewsEntity b=JSON.parseObject(ss,NewsEntity.class);
             newsEntityList.add(b);
         }
-        return newsEntityList;
+        return Result.build(CodeEnum.SUCCESS.getCode(),newsEntityList);
     }
 
     @Override
-    public void insert(NewsEntity newsEntity) throws XbServiceException {
+    public Result<Boolean> insert(NewsEntity newsEntity) throws XbServiceException {
         String newsJson= JSON.toJSONStringWithDateFormat(newsEntity,EsConstant.DATE_FORMAT);
         IndexRequest indexRequest = new IndexRequest(EsConstant.NEWS_INDEX,EsConstant.NEWS_TYPE,newsEntity.getNewsId()).source(newsJson,XContentType.JSON);
         try {
             client.index(indexRequest);
+            return Result.build(CodeEnum.SUCCESS.getCode(),true);
         } catch (IOException e) {
             throw new XbServiceException("新闻保存异常,cause by "+e.getMessage(),e);
         }
     }
 
     @Override
-    public void delete(String id) throws XbServiceException {
+    public Result<Boolean> delete(String id) throws XbServiceException {
         DeleteRequest deleteRequest = new DeleteRequest(EsConstant.NEWS_INDEX,EsConstant.NEWS_TYPE,id);
         try {
             client.delete(deleteRequest);
+            return Result.build(CodeEnum.SUCCESS.getCode(),true);
         } catch (IOException e) {
             throw new XbServiceException("新闻删除异常,cause by "+e.getMessage(),e);
         }
     }
 
     @Override
-    public NewsEntity queryOne(String id) throws XbServiceException {
+    public Result<NewsEntity> queryOne(String id) throws XbServiceException {
         return null;
     }
 
     @Override
-    public void update(NewsEntity newsEntity) throws XbServiceException {
-
+    public Result<Boolean> update(NewsEntity newsEntity) throws XbServiceException {
+        return null;
     }
 
     @Override

@@ -3,6 +3,7 @@ package xb.dev.tools.tool.jpa.service.impl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xb.dev.tools.common.Result;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.dao.entity.QJpaNewsEntity;
 import xb.dev.tools.exception.XbServiceException;
@@ -21,27 +22,27 @@ public class JpaNewsServiceImpl implements JpaNewsService {
 
 
     @Override
-    public List<NewsEntity> queryAll() throws XbServiceException {
+    public Result<List<NewsEntity>> queryAll() throws XbServiceException {
         return null;
     }
 
     @Override
-    public NewsEntity queryOne(String s) throws XbServiceException {
+    public Result<NewsEntity> queryOne(String s) throws XbServiceException {
         return null;
     }
 
     @Override
-    public void insert(NewsEntity newsEntity) throws XbServiceException {
-
+    public Result<Boolean> insert(NewsEntity newsEntity) throws XbServiceException {
+        return null;
     }
 
     @Override
-    public void delete(String s) throws XbServiceException {
-
+    public Result<Boolean> delete(String s) throws XbServiceException {
+        return null;
     }
 
     @Override
-    public void update(NewsEntity newsEntity) throws XbServiceException {
-
+    public Result<Boolean> update(NewsEntity newsEntity) throws XbServiceException {
+        return null;
     }
 }

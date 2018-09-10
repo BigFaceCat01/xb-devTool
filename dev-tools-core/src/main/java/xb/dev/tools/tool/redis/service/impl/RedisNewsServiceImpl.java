@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import xb.dev.tools.base.JedisClient;
+import xb.dev.tools.common.Result;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;
 import xb.dev.tools.tool.redis.service.RedisNewsService;
@@ -21,34 +22,32 @@ public class RedisNewsServiceImpl implements RedisNewsService {
     private Jedis jedis = JedisClient.getJedis();
 
     @Override
-    public List<NewsEntity> queryAll() throws XbServiceException {
+    public void insertNewsWithTimeout(NewsEntity newsEntity, String key, int second) throws XbServiceException {
+
+    }
+
+    @Override
+    public Result<List<NewsEntity>> queryAll() throws XbServiceException {
         return null;
     }
 
     @Override
-    public NewsEntity queryOne(String id) throws XbServiceException {
-        String obj = jedis.get(id);
-        return JSON.parseObject(obj,NewsEntity.class);
+    public Result<NewsEntity> queryOne(String s) throws XbServiceException {
+        return null;
     }
 
     @Override
-    public void insert(NewsEntity newsEntity) throws XbServiceException {
-        String value = JSON.toJSONString(newsEntity);
-        jedis.set(newsEntity.getNewsId(),value);
+    public Result<Boolean> insert(NewsEntity newsEntity) throws XbServiceException {
+        return null;
     }
 
     @Override
-    public void delete(String id) throws XbServiceException {
-
+    public Result<Boolean> delete(String s) throws XbServiceException {
+        return null;
     }
 
     @Override
-    public void update(NewsEntity newsEntity) throws XbServiceException {
-
-    }
-    @Override
-    public void insertNewsWithTimeout(NewsEntity newsEntity, String key, int second) throws XbServiceException{
-        String value = JSON.toJSONString(newsEntity);
-        jedis.setex(key,second,value);
+    public Result<Boolean> update(NewsEntity newsEntity) throws XbServiceException {
+        return null;
     }
 }
