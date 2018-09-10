@@ -3,6 +3,7 @@ package xb.dev.document.temp;
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xb.dev.document.handler.impl.DefaultExcelHandle;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -31,7 +32,14 @@ public class ExcelUtils {
      * @return 返回map对象，key为excel中工作表名称，value为该工作表解析出的记录列表
      */
     public static <T>  Map<String,List<T>> excelParse(Class<T> target,String path,Logger logger) throws ExcelParseException{
+        Map<String,List<T>> resul=new DefaultExcelHandle<T>(target,path,logger).parse();
+        long s = System.currentTimeMillis();
+        Map<String,List<T>> resultss=new DefaultExcelHandle<T>(target,path,logger).parse();
+        long s2 = System.currentTimeMillis();
         Map<String,List<T>> results=new ExcelHandler<T>(target,path,logger).parse();
+        long s3 = System.currentTimeMillis();
+        System.out.println("before:"+(s2-s));
+        System.out.println("after: "+(s3-s2));
         return results;
     }
     /**
@@ -58,7 +66,7 @@ public class ExcelUtils {
 
 
     public static void goodsProp() throws Exception{
-        Map<String,List<GoodsPropData>> map = excelParse(GoodsPropData.class,"D:/goodsProp.xlsx",logger);
+        Map<String,List<GoodsPropData>> map = excelParse(GoodsPropData.class,"D:/goodsProp20180903.xlsx",logger);
 
         List<GoodsPropInsert> inserts = new ArrayList<>();
 
@@ -86,9 +94,25 @@ public class ExcelUtils {
                             goodsPropInsert.setPropList(gpl);
                             inserts.add(goodsPropInsert);
                             goodsPropList.clear();
+                            GoodsProp goodsProp = new GoodsProp();
+                            goodsProp.setMustFill(g.getMustFill());
+                            goodsProp.setPropEn(g.getPropEn());
+                            goodsProp.setPropType(g.getPropType());
+                            goodsProp.setPropValueEn(g.getPropValueEn());
+                            goodsProp.setSpecsEn(g.getSpecsEn());
+                            goodsProp.setSpecsValueEn(g.getSpecsValueEn());
+                            goodsPropList.add(goodsProp);
                         }
 
                     }else {//start = false 表示遇到的是第一个个产品名称
+                        GoodsProp goodsProp = new GoodsProp();
+                        goodsProp.setMustFill(g.getMustFill());
+                        goodsProp.setPropEn(g.getPropEn());
+                        goodsProp.setPropType(g.getPropType());
+                        goodsProp.setPropValueEn(g.getPropValueEn());
+                        goodsProp.setSpecsEn(g.getSpecsEn());
+                        goodsProp.setSpecsValueEn(g.getSpecsValueEn());
+                        goodsPropList.add(goodsProp);
                         start = true;
                     }
                 }else{
@@ -150,6 +174,10 @@ public class ExcelUtils {
 
     public static void category() throws Exception{
         Map<String,List<CategoryData>> map = excelParse(CategoryData.class,"D:/category.xlsx",logger);
+        if(true) {
+            System.out.println();
+            return;
+        }
         int zero = 0;
         int one = 0;
         int two = 0;

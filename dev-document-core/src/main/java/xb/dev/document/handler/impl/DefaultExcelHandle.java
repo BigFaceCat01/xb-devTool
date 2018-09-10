@@ -15,10 +15,10 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
+import java.util.concurrent.RecursiveTask;
 
 /**
  * 表格处理工具类类
@@ -32,6 +32,7 @@ public class DefaultExcelHandle<T> {
     private Class<T> target;
     private Workbook wb;
     private InputStream is;
+    private final ForkJoinPool forkJoinPool = new ForkJoinPool(4);
 
 
     public enum ParseError{
@@ -155,48 +156,11 @@ public class DefaultExcelHandle<T> {
      * @param sheetIndex
      */
     private List<T> readDataFromExcel(int sheetIndex) throws Exception{
-        List<T> lists=new ArrayList<T>();
-        //行偏移
-        int rowSkep=1;
-        //获得指定索引工作表
         Sheet current=wb.getSheetAt(sheetIndex);
-        //获得该工作表总行数
-        int rowNumber=current.getLastRowNum();
-        if(rowNumber<=0){
-            return lists;
-        }
-        //无限循环直到行偏移加上表头行索引大于工作表总行数
-        while(true) {
-            T instance=target.newInstance();
-            boolean flag=true;
-            boolean add=true;
-            for (TableHeadMetaData tb : excelMetadata.getThmd()) {
-                    int rowIndex=tb.getLocationRowIndex()+rowSkep;
-                    int cellIndex=tb.getLocationColIndex();
-
-                    if(rowIndex>rowNumber){//如果当前数据行大于总行数
-                        //退出无限循环
-                        flag=false;
-                        //结束当前循环
-                        break;
-                    };
-                    if(current.getRow(rowIndex).getLastCellNum()<0){
-                        add=false;
-                        break;
-                    }
-                    Cell c=current.getRow(rowIndex).getCell(cellIndex);
-                    setCellValueToObj(c,instance,tb);
-            }
-            if(!flag){
-                break;
-            }
-            //行偏移自增，读取下一行表格数据
-            rowSkep++;
-            if(add) {
-                lists.add(instance);
-            }
-        }
-        return lists;
+        int lastRowNumber = current.getLastRowNum();
+        ExcelDataTask excelDataTask = new ExcelDataTask(0,lastRowNumber,current);
+        Future<List<T>> future = forkJoinPool.submit(excelDataTask);
+        return future.get();
     }
 
     /**
@@ -356,7 +320,85 @@ public class DefaultExcelHandle<T> {
             }
         }
     }
+
+    private class ExcelDataTask extends RecursiveTask<List<T>>{
+        //当前工作表
+        private Sheet current;
+        //行起始索引
+        private int from;
+        //行结束索引
+        private int to;
+        //最小任务切分量
+        private final int threshold = 15;
+
+        ExcelDataTask(Integer from,Integer to,Sheet current){
+            this.from = from;
+            this.to = to;
+            this.current = current;
+        }
+
+        @Override
+        protected List<T> compute() {
+            //如果任务足够小
+            if (to - from <= threshold) {
+                List<T> lists = new ArrayList<>();
+                for(int i=from;i<to;i++){
+                    //获得行
+                    Row row = current.getRow(i);
+                    if(row == null){
+                        //判空
+                        continue;
+                    }
+                    //获得该行对应的对象
+                    T t = getRowData(row);
+                    if(t!=null) {
+                        //不为空则添加到list中
+                        lists.add(getRowData(row));
+                    }
+                }
+                return lists;
+            }
+
+
+            //任务还不是最小
+            int middle = (from+to) / 2;
+            //拆分任务
+            ExcelDataTask excelDataTask1 = new ExcelDataTask(from,middle,current);
+            ExcelDataTask excelDataTask2 = new ExcelDataTask(middle,to,current);
+            invokeAll(excelDataTask1,excelDataTask2);
+
+            List<T> task1Result = excelDataTask1.join();
+            List<T> task2Result = excelDataTask2.join();
+
+            task1Result.addAll(task2Result);
+            return task1Result;
+        }
+    }
+    private T getRowData(Row row){
+        T instance = null;
+        try {
+            instance = target.newInstance();
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage(),e);
+        }
+        for (TableHeadMetaData tb : excelMetadata.getThmd()) {
+            int cellIndex=tb.getLocationColIndex();
+            if(row.getLastCellNum()<0){
+
+            }
+            Cell c=row.getCell(cellIndex);
+            setCellValueToObj(c,instance,tb);
+        }
+        return instance;
+    }
     private class Configuration{
+
+        Configuration(String jsonConfig){}
+
+        Configuration(InputStream propertiesConfig){}
+
+        Configuration(){}
+
 
         public void buildFromProperties(InputStream is){
 
@@ -366,4 +408,6 @@ public class DefaultExcelHandle<T> {
 
         }
     }
+
+
 }
