@@ -1,6 +1,7 @@
 package xb.dev.tools.tool.mongo.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.dao.repository.MongoNewsRepository;
@@ -16,6 +17,8 @@ import java.util.List;
 public class MongoNewsServiceImpl implements MongoNewsService {
     @Autowired
     private MongoNewsRepository newsRepository;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public List<NewsEntity> queryAll() throws XbServiceException {
@@ -24,6 +27,7 @@ public class MongoNewsServiceImpl implements MongoNewsService {
 
     @Override
     public NewsEntity queryOne(String id) throws XbServiceException {
+
         return null;
     }
 

@@ -12,14 +12,20 @@
 </head>
 <body >
     <div id="app">
-        <el-button>element button</el-button>
-        <el-row>
-            <el-col :span="8"><i class="el-icon-edit"></i></el-col>
-            <el-col :span="8"><el-button type="danger"><i class="el-icon-delete"></i></el-button></el-col>
-            <el-col :span="8"><el-button type="primary" icon="el-icon-search">搜索</el-button></el-col>
+        <el-row :span="24">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item>商品属性管理</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{path:'www.baidu.com'}">商品品牌</el-breadcrumb-item>
+            </el-breadcrumb>
         </el-row>
-        <el-row>
-            <el-col :span="24"><div class="bg-purple">1</div></el-col>
+        <el-row :span="24">
+            <el-date-picker
+                    v-model="test"
+                    type="datetimerange"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+            </el-date-picker>
         </el-row>
     </div>
     <script type="text/javascript" src="/plugs/vue.min-2.5.13.js"></script>
