@@ -32,18 +32,18 @@ public class RedisNewsServiceImpl implements RedisNewsService {
     }
 
     @Override
-    public void insertNews(NewsEntity newsEntity) throws XbServiceException {
+    public void insert(NewsEntity newsEntity) throws XbServiceException {
         String value = JSON.toJSONString(newsEntity);
         jedis.set(newsEntity.getNewsId(),value);
     }
 
     @Override
-    public void deleteNews(String id) throws XbServiceException {
+    public void delete(String id) throws XbServiceException {
 
     }
 
     @Override
-    public void updateNews(NewsEntity newsEntity) throws XbServiceException {
+    public void update(NewsEntity newsEntity) throws XbServiceException {
 
     }
     @Override

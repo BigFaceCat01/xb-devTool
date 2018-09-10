@@ -85,7 +85,7 @@ public class EsNewsServiceImpl implements EsNewsService {
     }
 
     @Override
-    public void insertNews(NewsEntity newsEntity) throws XbServiceException {
+    public void insert(NewsEntity newsEntity) throws XbServiceException {
         String newsJson= JSON.toJSONStringWithDateFormat(newsEntity,EsConstant.DATE_FORMAT);
         IndexRequest indexRequest = new IndexRequest(EsConstant.NEWS_INDEX,EsConstant.NEWS_TYPE,newsEntity.getNewsId()).source(newsJson,XContentType.JSON);
         try {
@@ -96,7 +96,7 @@ public class EsNewsServiceImpl implements EsNewsService {
     }
 
     @Override
-    public void deleteNews(String id) throws XbServiceException {
+    public void delete(String id) throws XbServiceException {
         DeleteRequest deleteRequest = new DeleteRequest(EsConstant.NEWS_INDEX,EsConstant.NEWS_TYPE,id);
         try {
             client.delete(deleteRequest);
@@ -111,7 +111,7 @@ public class EsNewsServiceImpl implements EsNewsService {
     }
 
     @Override
-    public void updateNews(NewsEntity newsEntity) throws XbServiceException {
+    public void update(NewsEntity newsEntity) throws XbServiceException {
 
     }
 

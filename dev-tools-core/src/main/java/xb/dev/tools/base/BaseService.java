@@ -8,37 +8,37 @@ import java.util.List;
  * @Author: Created by huangxb on 2018-08-03 15:58:57
  * @Description: 基础服务类
  */
-public interface BaseService {
+public interface BaseService<T,ID> {
     /**
-     * 查询新闻列表
+     * 查询记录列表
      * @return
      */
-    List<NewsEntity> queryAll() throws XbServiceException;
+    List<T> queryAll() throws XbServiceException;
 
     /**
-     * 根据id查询一条新闻
+     * 根据id查询一条记录
      * @return
      */
-    NewsEntity queryOne(String id) throws XbServiceException;
+    T queryOne(ID id) throws XbServiceException;
 
     /**
-     * 添加一条新闻
-     * @param newsEntity
+     * 向数据库添加一条记录
+     * @param t
      * @throws XbServiceException
      */
-    void insertNews(NewsEntity newsEntity) throws XbServiceException;
+    void insert(T t) throws XbServiceException;
 
     /**
-     * 删除新闻
+     * 删除记录
      * @param id
      * @throws XbServiceException
      */
-    void deleteNews(String id) throws XbServiceException;
+    void delete(ID id) throws XbServiceException;
 
     /**
-     * 修改新闻
-     * @param newsEntity
+     * 修改记录
+     * @param t
      * @throws XbServiceException
      */
-    void updateNews(NewsEntity newsEntity) throws XbServiceException;
+    void update(T t) throws XbServiceException;
 }

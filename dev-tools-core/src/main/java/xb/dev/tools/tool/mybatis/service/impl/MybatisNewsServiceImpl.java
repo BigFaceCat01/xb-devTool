@@ -32,7 +32,7 @@ public class MybatisNewsServiceImpl implements MybatisNewsService {
     }
 
     @Override
-    public void deleteNews(String id) throws XbServiceException {
+    public void delete(String id) throws XbServiceException {
         Map<String,Object> map = new HashMap<>();
         map.put("newsId",id);
         map.put("deleteFlag",true);
@@ -49,7 +49,7 @@ public class MybatisNewsServiceImpl implements MybatisNewsService {
     }
 
     @Override
-    public void insertNews(NewsEntity newsEntity) throws XbServiceException {
+    public void insert(NewsEntity newsEntity) throws XbServiceException {
         try {
             baseMapper.insert("XbNewsMapper.insertNews", newsEntity);
             newsMqSender.sendNewsInsert(newsEntity);
@@ -59,7 +59,7 @@ public class MybatisNewsServiceImpl implements MybatisNewsService {
     }
 
     @Override
-    public void updateNews(NewsEntity newsEntity) throws XbServiceException {
+    public void update(NewsEntity newsEntity) throws XbServiceException {
 
     }
 }

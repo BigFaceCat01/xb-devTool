@@ -52,7 +52,7 @@ public class MybatisNewsController extends BaseController {
         newsEntity.setStatus((byte)0);
         newsEntity.setOpposeCount(0L);
         try {
-            mybatisNewsService.insertNews(newsEntity);
+            mybatisNewsService.insert(newsEntity);
 
             return Result.build(CodeEnum.SUCCESS.getCode(),true);
         } catch (XbServiceException e) {

@@ -32,7 +32,7 @@ public class MongoNewsServiceImpl implements MongoNewsService {
     }
 
     @Override
-    public void insertNews(NewsEntity newsEntity) throws XbServiceException {
+    public void insert(NewsEntity newsEntity) throws XbServiceException {
         try {
             newsRepository.insert(newsEntity);
         }catch (Exception e){
@@ -41,12 +41,12 @@ public class MongoNewsServiceImpl implements MongoNewsService {
     }
 
     @Override
-    public void deleteNews(String id) throws XbServiceException {
+    public void delete(String id) throws XbServiceException {
 
     }
 
     @Override
-    public void updateNews(NewsEntity newsEntity) throws XbServiceException {
+    public void update(NewsEntity newsEntity) throws XbServiceException {
 
     }
 }

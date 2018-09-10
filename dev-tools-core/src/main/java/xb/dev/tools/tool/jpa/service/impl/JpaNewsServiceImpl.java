@@ -19,30 +19,29 @@ public class JpaNewsServiceImpl implements JpaNewsService {
 //    @Autowired
 //    private JPAQueryFactory factory;
 
+
     @Override
     public List<NewsEntity> queryAll() throws XbServiceException {
-        QJpaNewsEntity qJpaNewsEntity = QJpaNewsEntity.jpaNewsEntity;
-
         return null;
     }
 
     @Override
-    public NewsEntity queryOne(String id) throws XbServiceException {
+    public NewsEntity queryOne(String s) throws XbServiceException {
         return null;
     }
 
     @Override
-    public void insertNews(NewsEntity newsEntity) throws XbServiceException {
+    public void insert(NewsEntity newsEntity) throws XbServiceException {
 
     }
 
     @Override
-    public void deleteNews(String id) throws XbServiceException {
+    public void delete(String s) throws XbServiceException {
 
     }
 
     @Override
-    public void updateNews(NewsEntity newsEntity) throws XbServiceException {
+    public void update(NewsEntity newsEntity) throws XbServiceException {
 
     }
 }

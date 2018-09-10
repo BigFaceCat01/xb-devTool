@@ -24,7 +24,7 @@ public class RedisProviderTest {
     public void testInsertNews(){
         NewsEntity newsEntity = SomeTest.buildWithComment();
         try {
-            redisNewsService.insertNews(newsEntity);
+            redisNewsService.insert(newsEntity);
         } catch (XbServiceException e) {
             e.printStackTrace();
         }
