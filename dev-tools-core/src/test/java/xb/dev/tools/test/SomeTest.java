@@ -18,8 +18,13 @@ public class SomeTest {
     private static final Random r = new Random();
 
     public static void main(String[] args){
-        System.out.println("1^2^3".split("\\^").length);
+//        System.out.println("1^2^3".split("\\^").length);
+        Long l = null;
+        System.out.println(l==1);
+        NewsEntity newsEntity = new NewsEntity();
+
     }
+
 
     public static NewsEntity buildNewsEntity(){
         NewsEntity newsModel = new NewsEntity();

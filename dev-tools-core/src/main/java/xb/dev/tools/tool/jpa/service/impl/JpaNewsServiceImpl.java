@@ -1,11 +1,8 @@
 package xb.dev.tools.tool.jpa.service.impl;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xb.dev.tools.common.Result;
 import xb.dev.tools.dao.entity.NewsEntity;
-import xb.dev.tools.dao.entity.QJpaNewsEntity;
 import xb.dev.tools.exception.XbServiceException;
 import xb.dev.tools.tool.jpa.service.JpaNewsService;
 
