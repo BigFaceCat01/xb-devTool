@@ -32,14 +32,8 @@ public class ExcelUtils {
      * @return 返回map对象，key为excel中工作表名称，value为该工作表解析出的记录列表
      */
     public static <T>  Map<String,List<T>> excelParse(Class<T> target,String path,Logger logger) throws ExcelParseException{
-        Map<String,List<T>> resul=new DefaultExcelHandle<T>(target,path,logger).parse();
-        long s = System.currentTimeMillis();
-        Map<String,List<T>> resultss=new DefaultExcelHandle<T>(target,path,logger).parse();
-        long s2 = System.currentTimeMillis();
+
         Map<String,List<T>> results=new ExcelHandler<T>(target,path,logger).parse();
-        long s3 = System.currentTimeMillis();
-        System.out.println("before:"+(s2-s));
-        System.out.println("after: "+(s3-s2));
         return results;
     }
     /**
@@ -57,11 +51,11 @@ public class ExcelUtils {
 
     public static void main(String[] args) throws Exception {
         //添加类目
-//        category();
+        category();
         //添加参数
 //        prop();
         //添加商品参数
-        goodsProp();
+//        goodsProp();
     }
 
 
@@ -173,11 +167,8 @@ public class ExcelUtils {
     }
 
     public static void category() throws Exception{
-        Map<String,List<CategoryData>> map = excelParse(CategoryData.class,"D:/category.xlsx",logger);
-        if(true) {
-            System.out.println();
-            return;
-        }
+        Map<String,List<CategoryData>> map = excelParse(CategoryData.class,"D:/category_1.xlsx",logger);
+
         int zero = 0;
         int one = 0;
         int two = 0;
@@ -230,7 +221,7 @@ public class ExcelUtils {
 
     public static Integer getId(String name,Integer parentId){
         try {
-            name = URLEncoder.encode(name,"utf-8");
+            name = URLEncoder.encode(name.trim(),"utf-8");
             String url = "http://192.168.10.158:8081/category/addCaItemCategoryWithBack?categoryName=" + name + "&parentId=" + parentId;
             URL urlConnect = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) urlConnect.openConnection();
@@ -242,9 +233,11 @@ public class ExcelUtils {
             InputStreamReader isr = new InputStreamReader(connection.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(isr);
             String s = bufferedReader.readLine();
+            System.err.println("insert "+name+" success");
             return Integer.parseInt(s);
         }catch (Exception e){
             e.printStackTrace();
+            System.err.println("insert "+name+" error");
             throw new RuntimeException("数据异常");
         }
     }

@@ -3,11 +3,9 @@ package xb.dev.tools.test;
 import xb.dev.tools.dao.entity.Comment;
 import xb.dev.tools.dao.entity.NewsEntity;
 
+import javax.swing.text.html.parser.Entity;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @Author: Created by huangxb on 2018-08-03 14:51:28
@@ -19,9 +17,18 @@ public class SomeTest {
 
     public static void main(String[] args){
 //        System.out.println("1^2^3".split("\\^").length);
-        Long l = null;
-        System.out.println(l==1);
-        NewsEntity newsEntity = new NewsEntity();
+        System.out.println();
+        Map<String,Object> params = new HashMap<>(156);
+        params.put("one",1);
+        params.put("one",2);
+        params.put("two",2);
+        params.put("three",3);
+        params.put("four",4);
+        Set<Map.Entry<String,Object>> r = params.entrySet();
+        params.forEach((key,value)->
+            System.out.println(key+":"+value)
+        );
+        System.out.println();
 
     }
 
