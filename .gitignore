@@ -9,8 +9,10 @@
 .settings
 .springBeans
 .sts4-cache
-*/target/*
 ### IntelliJ IDEA ###
+dev-basic-service/basic-service-eureka/target/*
+dev-basic-service/basic-service-swagger/target/*
+*/target/*
 .idea/*
 *.iws
 *.iml
