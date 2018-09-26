@@ -1,45 +1,38 @@
 package xb.dev.tools.base;
 
-import xb.dev.tools.common.Result;
-import xb.dev.tools.dao.entity.NewsEntity;
-import xb.dev.tools.exception.XbServiceException;
-import java.util.List;
-
 /**
- * @Author: Created by huangxb on 2018-08-03 15:58:57
- * @Description: 基础服务类
+ * @author: Created by huangxb on 2018-08-03 15:58:57
+ * 基础服务类
  */
 public interface BaseService<T,ID> {
     /**
-     * 查询记录列表
-     * @return
-     */
-    Result<List<T>> queryAll() throws XbServiceException;
-
-    /**
      * 根据id查询一条记录
-     * @return
+     * @param id 数据id
+     * @return id对应的对象
      */
-    Result<T> queryOne(ID id) throws XbServiceException;
+    T queryOne(ID id);
 
     /**
      * 向数据库添加一条记录
-     * @param t
-     * @throws XbServiceException
+     * @param t 插入的实体对象
      */
-    Result<Boolean> insert(T t) throws XbServiceException;
+    void insert(T t);
 
     /**
      * 删除记录
-     * @param id
-     * @throws XbServiceException
+     * @param id id
      */
-    Result<Boolean> delete(ID id) throws XbServiceException;
+    void delete(ID id);
+
+    /**
+     * 逻辑删除记录
+     * @param id id
+     */
+    void deleteWithLogic(ID id);
 
     /**
      * 修改记录
-     * @param t
-     * @throws XbServiceException
+     * @param t 修改实体
      */
-    Result<Boolean> update(T t) throws XbServiceException;
+    void update(T t);
 }

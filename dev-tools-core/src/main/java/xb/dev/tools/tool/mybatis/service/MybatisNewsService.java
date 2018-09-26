@@ -4,8 +4,8 @@ import xb.dev.tools.base.BaseService;
 import xb.dev.tools.dao.entity.NewsEntity;
 
 /**
- * @Author: Created by huangxb on 2018-08-02 14:00:03
- * @Description:
+ * @author: Created by huangxb on 2018-08-02 14:00:03
+ *
  */
 public interface MybatisNewsService extends BaseService<NewsEntity,String> {
 

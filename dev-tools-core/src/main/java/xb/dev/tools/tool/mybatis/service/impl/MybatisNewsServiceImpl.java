@@ -2,6 +2,7 @@ package xb.dev.tools.tool.mybatis.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xb.dev.tools.base.BaseMapper;
 import xb.dev.tools.common.CodeEnum;
 import xb.dev.tools.common.Result;
@@ -14,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Author: Created by huangxb on 2018-08-02 14:00:21
- * @Description:
+ * @Author Created by huangxb on 2018-08-02 14:00:21
+ *
  */
 @Service
 public class MybatisNewsServiceImpl implements MybatisNewsService {
@@ -25,46 +26,44 @@ public class MybatisNewsServiceImpl implements MybatisNewsService {
     private NewsMqSender newsMqSender;
 
     @Override
-    public Result<List<NewsEntity>> queryAll() throws XbServiceException {
-        try {
-            return Result.build(CodeEnum.SUCCESS.getCode(),baseMapper.findForList("XbNewsMapper.queryAll",null));
-        }catch (Exception e){
-            throw new XbServiceException("查找所有新闻出错,cause by:"+e.getMessage(),e);
-        }
-    }
-
-    @Override
-    public Result<Boolean> delete(String id) throws XbServiceException {
-        Map<String,Object> map = new HashMap<>();
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(String id) throws XbServiceException {
+        Map<String,Object> map = new HashMap<>(16);
         map.put("newsId",id);
         map.put("deleteFlag",true);
         try {
             baseMapper.insert("XbNewsMapper.deleteNewsById", map);
-            return Result.build(CodeEnum.SUCCESS.getCode(),true);
+
         }catch (Exception e){
             throw new XbServiceException("删除新闻出错,cause by:"+e.getMessage(),e);
         }
     }
 
     @Override
-    public Result<NewsEntity> queryOne(String id) throws XbServiceException {
+    public NewsEntity queryOne(String id) throws XbServiceException {
 
-        return Result.build(CodeEnum.SUCCESS.getCode(),baseMapper.findForObject("XbNewsMapper.queryById",id));
+        return baseMapper.findForObject("XbNewsMapper.queryById",id);
     }
 
     @Override
-    public Result<Boolean> insert(NewsEntity newsEntity) throws XbServiceException {
+    @Transactional(rollbackFor = Exception.class)
+    public void insert(NewsEntity newsEntity) throws XbServiceException {
         try {
             baseMapper.insert("XbNewsMapper.insertNews", newsEntity);
             newsMqSender.sendNewsInsert(newsEntity);
-            return Result.build(CodeEnum.SUCCESS.getCode(),true);
         }catch (Exception e){
             throw new XbServiceException("添加新闻出错,cause by:"+e.getMessage(),e);
         }
     }
 
     @Override
-    public Result<Boolean> update(NewsEntity newsEntity) throws XbServiceException {
-        return null;
+    @Transactional(rollbackFor = Exception.class)
+    public void update(NewsEntity newsEntity) throws XbServiceException {
+
+    }
+
+    @Override
+    public void deleteWithLogic(String s) {
+
     }
 }

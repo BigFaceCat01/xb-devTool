@@ -21,4 +21,14 @@ public class NewsController {
     public ModelAndView vue(){
         return new ModelAndView("element_ui");
     }
+
+    @GetMapping("")
+    public ModelAndView newsList(){
+        return new ModelAndView("news/news_index");
+    }
+
+    @GetMapping("add")
+    public ModelAndView addNews(){
+        return new ModelAndView("news/news_add");
+    }
 }

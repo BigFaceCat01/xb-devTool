@@ -32,13 +32,7 @@ public class RedisProviderTest {
     }
 //    @Test
     public void testQueryOne(){
-        try {
 
-            Result<NewsEntity> l = redisNewsService.queryOne("XB2018080400006");
-            System.out.println(l);
-        } catch (XbServiceException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test

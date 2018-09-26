@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import xb.dev.tools.common.CodeEnum;
 import xb.dev.tools.common.Result;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +20,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.UnexpectedTypeException;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @Author: Created by huangxb on 2018-08-02 15:25
- * @Description: 全局异常异常类
+ * @author Created by huangxb on 2018-08-02 15:25
+ * 全局异常异常类
  */
 @RestControllerAdvice
 @Component
@@ -35,8 +37,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public Object handle(XbServiceException exception, HttpServletRequest request) {
-//        CaCodeEnum caCodeEnum = getCodeEnum(exception.getCode());
-//        logger.error("[" + caCodeEnum.getType() + "]-" + "[" + exception.getCode() + "]:" + exception.getMessage(), exception);
+        CodeEnum codeEnum = getCodeEnum(exception.getCode());
+        logger.error("[" + exception.getCode() + "]:" + codeEnum.getChDesc(), exception);
         //返回错误码对应信息，返回前端
         return Result.build(exception.getCode(), exception.getMessage());
     }
@@ -107,20 +109,22 @@ public class GlobalExceptionHandler {
 //    }
 //
 //    //缓存本地的caCodeEnum
-//    private static ConcurrentHashMap<String, CaCodeEnum> codeMap = new ConcurrentHashMap();
+    private static ConcurrentHashMap<String, CodeEnum> codeMap = new ConcurrentHashMap();
 //
 //    //懒加载
-//    private static CaCodeEnum getCodeEnum(String code) {
-//        CaCodeEnum caCodeEnum = codeMap.get(code);
-//        //没有做null的判断,因为这里的null应该在开发测试阶段被消除,不应出现！！！
-//        if (caCodeEnum == null) {
-//            for (CaCodeEnum c : CaCodeEnum.values()) {
-//                if (c.getCode().equals(code)) {
-//                    codeMap.put(c.getCode(), c);
-//                    return c;
-//                }
-//            }
-//            return null;
-//        } else return caCodeEnum;
-//    }
+    private static CodeEnum getCodeEnum(String code) {
+        CodeEnum codeEnum = codeMap.get(code);
+        //没有做null的判断,因为这里的null应该在开发测试阶段被消除,不应出现！！！
+        if (codeEnum == null) {
+            for (CodeEnum c : CodeEnum.values()) {
+                if (c.getCode().equals(code)) {
+                    codeMap.put(c.getCode(), c);
+                    return c;
+                }
+            }
+            return null;
+        } else {
+            return codeEnum;
+        }
+    }
 }

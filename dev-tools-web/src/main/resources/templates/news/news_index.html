@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻列表</title>
+    <link rel="stylesheet" type="text/css" href="/plugs/layui/v2.3.0/css/layui.css" />
+    <link type="text/css" rel="stylesheet" href="/plugs/element/index.css" />
+    <link type="text/css" rel="stylesheet" href="/css/news.css" />
+</head>
+<body>
+    <div id="news_index">
+        <el-row :span="24">
+            <el-col :span="18" :offset="2">
+                <el-button type="primary" @click="window.location.href='/news/add'">新增新闻</el-button></el-col>
+        </el-row>
+        <el-row :span="24">
+            <el-col :span="18" :offset="2">
+                <el-row>
+                    <el-table
+                            :data="newsList"
+                            border
+                            @row-click="newsDetail"
+                            style="width: 100%">
+                        <el-table-column
+                                prop="title"
+                                label="新闻标题">
+                        </el-table-column>
+                        <el-table-column
+                                prop="title"
+                                label="浏览情况">
+                            <template slot-scope="scope">
+                                <span class="browse" v-if="scope.row.status==2"><i class="layui-icon layui-icon-praise" style="font-size: 16px;"><span style="font-size: 5px;">&nbsp;{{scope.row.supportCount}}</span></i></span>
+                                <span class="browse" v-if="scope.row.status!=2"><i class="layui-icon layui-icon-praise" style="font-size: 16px;"><span style="font-size: 5px;">&nbsp;-</span></i></span>
+
+                                <span class="browse" v-if="scope.row.status==2"><i class="layui-icon layui-icon-tread" style="font-size: 16px;"><span style="font-size: 5px;">&nbsp;{{scope.row.opposeCount}}</span></i></span>
+                                <span class="browse" v-if="scope.row.status!=2"><i class="layui-icon layui-icon-tread" style="font-size: 16px;"><span style="font-size: 5px;">&nbsp;-</span></i></span>
+
+                                <span class="browse" v-if="scope.row.status==2"><i class="layui-icon layui-icon-reply-fill" style="font-size: 16px;"><span style="font-size: 5px;">&nbsp;{{scope.row.browseCount}}</span></i></span>
+                                <span class="browse" v-if="scope.row.status!=2"><i class="layui-icon layui-icon-reply-fill" style="font-size: 16px;"><span style="font-size: 5px;">&nbsp;-</span></i></span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="source"
+                                label="新闻来源">
+                        </el-table-column>
+                        <el-table-column
+                                prop="type"
+                                label="新闻分类">
+                        </el-table-column>
+                        <el-table-column
+                                prop="createTime"
+                                label="创建时间"
+                                @formatter="formatTime">
+                        </el-table-column>
+                        <el-table-column
+                                prop="status"
+                                label="状态">
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.status==0">待提交</span>
+                                <span v-if="scope.row.status==1">审核中</span>
+                                <span v-if="scope.row.status==2">审核通过</span>
+                                <span v-if="scope.row.status==3">审核不通过</span>
+                                <span v-if="scope.row.status==4">禁用</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="操作">
+                            <template slot-scope="scope">
+                                <el-button type="text" v-if="scope.row.status==0">提交</el-button>
+                                <el-button type="text" v-if="scope.row.status==0">删除</el-button>
+
+                                <el-button type="text" v-if="scope.row.status==2">删除</el-button>
+
+                                <el-button type="text" v-if="scope.row.status==3">修改</el-button>
+                                <el-button type="text" v-if="scope.row.status==3">删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-row>
+                <el-row>
+                    <el-pagination
+                            background
+                            @size-change="pageSizeChange"
+                            @current-change="pageNumChange"
+                            :current-page="pageNum"
+                            :page-sizes="pageSizeArray"
+                            :page-size="pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="totalSize">
+                    </el-pagination>
+                </el-row>
+
+            </el-col>
+
+        </el-row>
+    </div>
+    <script type="text/javascript" src="/js/util.js"></script>
+    <script type="text/javascript" src="/plugs/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/plugs/vue.min-2.5.13.js"></script>
+    <script type="text/javascript" src="/plugs/element/index.js"></script>
+    <script type="text/javascript" src="/js/news/news_index.js"></script>
+</body>
+</html>
