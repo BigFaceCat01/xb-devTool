@@ -25,6 +25,25 @@
                 <el-row>
                     <div v-html="newsInfo.body"></div>
                 </el-row>
+                <!-- 评论-->
+                <el-row style="margin-top:40px;">
+                    <el-form :model="comment" label-width="100px">
+                        <el-form-item label="评论">
+                            <el-input  type="textarea" rows="7"  v-model="comment.content"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary">保存</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-row>
+
+                <!-- 评论列表-->
+                <el-row>
+                    <el-row>
+
+                    </el-row>
+                </el-row>
+
             </el-col>
         </el-row>
     </div>
@@ -33,5 +52,6 @@
     <script type="text/javascript" src="/plugs/vue.min-2.5.13.js"></script>
     <script type="text/javascript" src="/plugs/element/index.js"></script>
     <script type="text/javascript" src="/js/news/news_detail.js"></script>
+
 </body>
 </html>

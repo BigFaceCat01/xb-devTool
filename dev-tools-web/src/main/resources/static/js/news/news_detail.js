@@ -4,6 +4,9 @@ var newsDetail = new Vue({
     el:'#news_detail',
     data:{
         newsInfo:'',
+        comment:{
+            content:''
+        }
     },
     methods:{
         queryInfo:function () {

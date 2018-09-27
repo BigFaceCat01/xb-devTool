@@ -23,3 +23,6 @@
     font-size:13px ;
     color:#a6a9ad;
 }
+.el-form-item__content{
+    margin-left:0px;
+}
