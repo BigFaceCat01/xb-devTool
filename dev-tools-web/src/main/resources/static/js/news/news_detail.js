@@ -6,63 +6,29 @@ var newsDetail = new Vue({
         newsInfo:'',
     },
     methods:{
-        clear:function(){
-            this.newsInfo.type = '';
-            this.newsInfo.body = '';
-            this.newsInfo.source = '';
-            this.newsInfo.title = '';
-            editor.txt.html('');
-        },
-        save:function () {
-            var userId = "2422736121541824512";
-            this.newsInfo.body = editor.txt.html();
-            var data = JSON.stringify(this.newsInfo);
+        queryInfo:function () {
+            var newsId = this.$refs.newsId.value;
+            var url = "http://localhost:19090/mongo/news/"+newsId;
             $.ajax({
                 headers: {
-                    "Content-type": "application/json; charset=utf-8",
-                    "X-AUTH-USER":userId
+                    "Content-type": "application/json; charset=utf-8"
                 },
-                type: "POST",
-                url:"http://localhost:19090/mongo/news",
-                data:data,
+                type: "GET",
+                url:url,
                 success: function (res) {
                     if(res.code=="0"){
-                        addNews.$message.success("保存成功");
-                        addNews.clear();
+                        var d = new Date(res.data.createTime);
+                        var r = util.formatDate(d,"yyyy年MM月dd日 hh:mm:ss")
+                        newsDetail.newsInfo=res.data;
+                        newsDetail.newsInfo.createTime = r;
                     }else {
-                        addNews.$message.error(res.msg);
-                    }
-                }
-            });
-        },
-        confirm:function () {
-            var userId = "2422736121541824512";
-            this.newsInfo.body = editor.txt.html();
-            var data = JSON.stringify(this.newsInfo);
-            $.ajax({
-                headers: {
-                    "Content-type": "application/json; charset=utf-8",
-                    "X-AUTH-USER":userId
-                },
-                type: "POST",
-                url:"http://localhost:19090/mongo/news/confirm",
-                data:data,
-                success: function (res) {
-                    if(res.code=="0"){
-                        addNews.$message.success("提交成功");
-                        addNews.clear();
-                    }else {
-                        addNews.$message.error(res.msg);
+                        newsDetail.$message.error(res.msg);
                     }
                 }
             });
         }
+    },
+    mounted:function () {
+        this.queryInfo();
     }
 });
-
-//editor
-var E = window.wangEditor;
-var editor = new E('#news_body');
-editor.customConfig.uploadImgShowBase64 = true   // 使用 base64 保存图片
-editor.customConfig.uploadImgServer = '/upload'  // 上传图片到服务器
-editor.create();

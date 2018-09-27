@@ -45,7 +45,8 @@ var newsIndex = new Vue({
             return util.formatDate(date,"yyyy-MM-dd hh:mm:ss")
         },
         newsDetail:function (row,event,column) {
-            console.log(row.newsId);
+            var url = "/news/"+row.newsId;
+            window.location.href = url
         }
     },
     mounted:function () {

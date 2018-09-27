@@ -1,32 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>新闻详情</title>
     <link type="text/css" rel="stylesheet" href="/plugs/element/index.css" />
-    <link type="text/css" rel="stylesheet" href="/plugs/wangEditor-3.1.1/wangEditor.css" />
     <link type="text/css" rel="stylesheet" href="/css/news.css" />
 </head>
 <body>
-    <div id="add_div">
+    <div id="news_detail">
+        <input type="hidden" ref="newsId" th:value="${newsId}"/>
         <el-row :span="24">
-            <el-col :span="18" :offset="2">
-                <el-breadcrumb separator-class="el-icon-arrow-right"  class="breadcrumb">
-                    <el-breadcrumb-item><a href="/news">新闻列表</a></el-breadcrumb-item>
-                    <el-breadcrumb-item>新闻详情</el-breadcrumb-item>
-                </el-breadcrumb>
-            </el-col>
-        </el-row>
-        <el-row :span="24">
-            <el-col :span="18" :offset="2">
-                {{}}
+            <el-col :span="12" :offset="4">
+                <el-row>
+                    <el-breadcrumb separator-class="el-icon-arrow-right"  class="breadcrumb">
+                        <el-breadcrumb-item><a href="/news">新闻列表</a></el-breadcrumb-item>
+                        <el-breadcrumb-item>新闻详情</el-breadcrumb-item>
+                    </el-breadcrumb>
+                </el-row>
+                <el-row><h1>{{newsInfo.title}}</h1></el-row>
+                <el-row id="news_source">
+                    <el-col :span="5">{{newsInfo.createTime}}</el-col>
+                    <el-col :span="13" :offset="1"><span>来源:</span>{{newsInfo.source}} </el-col>
+                </el-row>
+                <el-row>
+                    <div v-html="newsInfo.body"></div>
+                </el-row>
             </el-col>
         </el-row>
     </div>
+    <script type="text/javascript" src="/js/util.js"></script>
     <script type="text/javascript" src="/plugs/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="/plugs/vue.min-2.5.13.js"></script>
     <script type="text/javascript" src="/plugs/element/index.js"></script>
-    <script type="text/javascript" src="/plugs/wangEditor-3.1.1/wangEditor.js"></script>
-    <script type="text/javascript" src="/js/news/news_add.js"></script>
+    <script type="text/javascript" src="/js/news/news_detail.js"></script>
 </body>
 </html>

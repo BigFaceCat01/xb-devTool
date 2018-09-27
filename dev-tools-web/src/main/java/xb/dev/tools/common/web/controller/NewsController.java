@@ -2,6 +2,7 @@ package xb.dev.tools.common.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -30,5 +31,13 @@ public class NewsController {
     @GetMapping("add")
     public ModelAndView addNews(){
         return new ModelAndView("news/news_add");
+    }
+
+    @GetMapping("{newsId}")
+    public ModelAndView newsDetail(@PathVariable("newsId") String newsId){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("newsId",newsId);
+        modelAndView.setViewName("news/news_detail");
+        return modelAndView;
     }
 }

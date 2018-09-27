@@ -70,7 +70,7 @@ public class MongoNewsController extends BaseController {
 
     @ApiOperation(value = "根据id获取新闻详情-huangxb",httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query",dataType = "String",name = "newsSn",value = "页数")
+            @ApiImplicitParam(paramType = "path",dataType = "String",name = "newsSn",value = "页数")
     })
     @GetMapping("news/{newsSn}")
     public Result<MongoNewsBasicInfo> insert(@PathVariable("newsSn") String newsSn){

@@ -118,6 +118,9 @@ public class MongoNewsServiceImpl implements MongoNewsService {
     @Override
     public MongoNewsBasicInfo getById(String id) {
 
-        return null;
+        MongoNewsModel mongoNewsModel = mongoTemplate.findOne(Query.query(Criteria.where("newsId").is(id)),MongoNewsModel.class);
+
+        MongoNewsBasicInfo basicInfo = JsonUtil.beanConvert(mongoNewsModel,MongoNewsBasicInfo.class);
+        return basicInfo;
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>新增新闻</title>
@@ -9,6 +9,7 @@
 </head>
 <body>
     <div id="add_div">
+        <input type="hidden" ref="newsId" th:value="${newsId}"/>
         <el-row :span="24">
             <el-col :span="18" :offset="2">
                 <el-breadcrumb separator-class="el-icon-arrow-right"  class="breadcrumb">
