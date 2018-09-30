@@ -12,7 +12,7 @@
         <module>dev-document-core</module>
         <module>dev-tools-web</module>
         <module>dev-tools-common</module>
-        <module>dev-basics-ervice</module>
+        <module>dev-basic-service</module>
         <module>dev-basic-service</module>
     </modules>
     <packaging>pom</packaging>
