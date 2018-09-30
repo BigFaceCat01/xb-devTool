@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 import xb.dev.tools.constant.RabbitConstant;
 
 /**
- * @Author: Created by huangxb on 2018-08-03 17:26:55
- * @Description:
+ * @author Created by huangxb on 2018-08-03 17:26:55
+ *
  */
 @Component
 @RabbitListener(queues = {RabbitConstant.HELLO_QUEUE})

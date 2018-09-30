@@ -32,7 +32,7 @@ public class GetWayResource implements SwaggerResourcesProvider {
         resources.add(this.swaggerResource("default", "/v2/api-docs", "1.0"));
         List<Route> routes = this.routeLocator.getRoutes();
         routes.forEach(route ->
-            resources.add(this.swaggerResource(route.getId(), route.getFullPath().replace("**", "v2/api-docs"), "1.0"))
+                resources.add(this.swaggerResource(route.getId(), route.getFullPath().replace("**", "v2/api-docs"), "1.0"))
         );
         return resources;
     }

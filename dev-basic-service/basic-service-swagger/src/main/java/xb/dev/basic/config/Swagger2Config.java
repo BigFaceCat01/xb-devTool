@@ -20,18 +20,20 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Swagger2Config {
     public Swagger2Config() {
     }
+
     @Bean
-    public Docket createRestApi(){
-    return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().apis(RequestHandlerSelectors.basePackage("xb.dev")).paths(PathSelectors.any()).build();
+    public Docket createRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().apis(RequestHandlerSelectors.basePackage("xb.dev")).paths(PathSelectors.any()).build();
     }
 
-    private ApiInfo apiInfo(){
+    private ApiInfo apiInfo() {
 
-            return new ApiInfoBuilder().title("api文档中心").description("简单优雅restfun风格").version("1.0").build();
+        return new ApiInfoBuilder().title("api文档中心").description("简单优雅restfun风格").version("1.0").build();
     }
+
     @Bean
-    public UiConfiguration uiConfig(){
-        return new UiConfiguration(null,"list","alpha","schema",UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS,false,true,60000L);
+    public UiConfiguration uiConfig() {
+        return new UiConfiguration(null, "list", "alpha", "schema", UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS, false, true, 60000L);
 
     }
 

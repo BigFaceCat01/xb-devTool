@@ -1,8 +1,12 @@
 package xb.dev.tools.tool.mongo.service.impl;
 
+import com.mongodb.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -98,7 +102,6 @@ public class MongoNewsServiceImpl implements MongoNewsService {
         if(pageSize==null||pageSize<=0){
             pageSize = 10;
         }
-
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(userId));
         Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC,"createTime"));
@@ -106,7 +109,6 @@ public class MongoNewsServiceImpl implements MongoNewsService {
         long offset = (pageNum-1)*pageSize;
         query.skip(offset);
         query.limit(pageSize);
-
         List<MongoNewsModel> lists = mongoTemplate.find(query,MongoNewsModel.class);
         List<MongoNewsListModel> re = new ArrayList<>(pageSize);
         lists.forEach(item->re.add(JsonUtil.beanConvert(item,MongoNewsListModel.class)));
