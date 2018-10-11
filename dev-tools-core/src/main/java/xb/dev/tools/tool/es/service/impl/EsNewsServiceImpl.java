@@ -1,7 +1,6 @@
 package xb.dev.tools.tool.es.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.sun.org.apache.regexp.internal.RE;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
@@ -21,7 +20,6 @@ import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xb.dev.tools.common.CodeEnum;
-import xb.dev.tools.common.Result;
 import xb.dev.tools.constant.EsConstant;
 import xb.dev.tools.dao.entity.NewsEntity;
 import xb.dev.tools.exception.XbServiceException;

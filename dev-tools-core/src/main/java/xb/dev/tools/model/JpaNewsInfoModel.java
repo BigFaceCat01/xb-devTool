@@ -1,94 +1,86 @@
-package xb.dev.tools.dao.entity;
+package xb.dev.tools.model;
 
-import javax.persistence.*;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author Created by huangxb on 2018-08-15 11:09:34
- *
+ * @author Created by huangxb
+ * @date 2018-10-11 14:50:20
  */
-@Entity
-@Table(name = "xb_news", schema = "test", catalog = "")
-public class JpaNewsEntity implements Serializable {
+@Data
+public class JpaNewsInfoModel implements Serializable {
     /**
      * 新闻id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty("新闻id")
     private Integer id;
 
-    @Basic
-    @Column(name = "news_id")
+    /**
+     * 新闻标识
+     */
+    @ApiModelProperty("新闻标识")
     private String newsId;
     /**
      * 新闻标题
      */
-    @Basic
-    @Column(name = "title")
+    @ApiModelProperty("新闻标题")
     private String title;
     /**
      * 新闻正文
      */
-    @Basic
-    @Column(name = "body")
+    @ApiModelProperty("新闻正文")
     private String body;
     /**
      * 新闻来源
      */
-    @Basic
-    @Column(name = "source")
+    @ApiModelProperty("新闻来源")
     private String source;
     /**
      * 新闻作者
      */
-    @Basic
-    @Column(name = "author")
+    @ApiModelProperty("新闻作者")
     private String author;
     /**
      * 新闻创建时间
      */
-    @Basic
-    @Column(name = "create_time")
+    @ApiModelProperty("新闻创建时间")
     private Date createTime;
     /**
      * 新闻分类标签
      */
-    @Basic
-    @Column(name = "type")
+    @ApiModelProperty("新闻分类标签")
     private String type;
     /**
      * 浏览数量
      */
-    @Basic
-    @Column(name = "browse_count")
+    @ApiModelProperty("浏览数量")
     private Long browseCount;
     /**
      * 点赞数量
      */
-    @Basic
-    @Column(name = "support_count")
+    @ApiModelProperty("点赞数量")
     private Long supportCount;
     /**
      * 差评数量
      */
-    @Basic
-    @Column(name = "oppose_count")
+    @ApiModelProperty("差评数量")
     private Long opposeCount;
     /**
      * 新闻状态
      */
-    @Basic
-    @Column(name = "status")
+    @ApiModelProperty("新闻状态")
     private Byte status;
     /**
      * 是否已删除
      */
-    @Basic
-    @Column(name = "deleteFlag")
+    @ApiModelProperty("是否已删除")
     private Boolean deleteFlag;
-    @Basic
-    @Column(name = "user_id")
+    /**
+     * 用户id
+     */
+    @ApiModelProperty("用户id")
     private Integer userId;
 }

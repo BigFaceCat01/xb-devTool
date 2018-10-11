@@ -1,15 +1,17 @@
 package xb.dev.tools.tool.jpa.config;
 
-/**
- * @Author: Created by huangxb on 2018-08-15 11:54:18
- * @Description:
- */
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.support.http.StatViewServlet;
+import com.alibaba.druid.support.http.WebStatFilter;
+import com.alibaba.druid.wall.WallConfig;
+import com.alibaba.druid.wall.WallFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -18,9 +20,12 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 /**
+ * @author Created by huangxb on 2018-08-15 11:54:18
+ *
+ *
  * Druid连接配置
  */
-//@Configuration
+@Configuration
 public class DataSourceFromDruidConfig {
 
     private Logger logger = LoggerFactory.getLogger(DataSourceFromDruidConfig.class);
@@ -56,47 +61,48 @@ public class DataSourceFromDruidConfig {
 //    @Value("${spring.datasource.primary.logSlowSql}")
 //    private String primary_logSlowSql;
 
-    //-------------------------------------------------------------
-    @Value("${spring.datasource.slave.url}")
-    private String slave_dbUrl;
-    @Value("${spring.datasource.slave.username}")
-    private String slave_username;
-    @Value("${spring.datasource.slave.password}")
-    private String slave_password;
-    @Value("${spring.datasource.driver-class-name}")
-    private String slave_driverClassName;
-    @Value("${spring.datasource.slave.initialSize}")
-    private int slave_initialSize;
-    @Value("${spring.datasource.slave.minIdle}")
-    private int slave_minIdle;
-    @Value("${spring.datasource.slave.maxActive}")
-    private int slave_maxActive;
-    @Value("${spring.datasource.slave.maxWait}")
-    private int slave_maxWait;
-    @Value("${spring.datasource.slave.removeAbandonedTimeout}")
-    private int slave_removeAbandonedTimeout;
-    @Value("${spring.datasource.slave.validationQuery}")
-    private String slave_validationQuery;
-    @Value("${spring.datasource.slave.testWhileIdle}")
-    private boolean slave_testWhileIdle;
-    @Value("${spring.datasource.slave.testOnBorrow}")
-    private boolean slave_testOnBorrow;
-    @Value("${spring.datasource.slave.testOnReturn}")
-    private boolean slave_testOnReturn;
-    @Value("${spring.datasource.slave.filters}")
-    private String slave_filters;
+//
+//    @Value("${spring.datasource.slave.url}")
+//    private String slave_dbUrl;
+//    @Value("${spring.datasource.slave.username}")
+//    private String slave_username;
+//    @Value("${spring.datasource.slave.password}")
+//    private String slave_password;
+//    @Value("${spring.datasource.driver-class-name}")
+//    private String slave_driverClassName;
+//    @Value("${spring.datasource.slave.initialSize}")
+//    private int slave_initialSize;
+//    @Value("${spring.datasource.slave.minIdle}")
+//    private int slave_minIdle;
+//    @Value("${spring.datasource.slave.maxActive}")
+//    private int slave_maxActive;
+//    @Value("${spring.datasource.slave.maxWait}")
+//    private int slave_maxWait;
+//    @Value("${spring.datasource.slave.removeAbandonedTimeout}")
+//    private int slave_removeAbandonedTimeout;
+//    @Value("${spring.datasource.slave.validationQuery}")
+//    private String slave_validationQuery;
+//    @Value("${spring.datasource.slave.testWhileIdle}")
+//    private boolean slave_testWhileIdle;
+//    @Value("${spring.datasource.slave.testOnBorrow}")
+//    private boolean slave_testOnBorrow;
+//    @Value("${spring.datasource.slave.testOnReturn}")
+//    private boolean slave_testOnReturn;
+//    @Value("${spring.datasource.slave.filters}")
+//    private String slave_filters;
 //    @Value("${spring.datasource.slave.logSlowSql}")
 //    private String slave_logSlowSql;
 
-	/*@Bean
+	@Bean
 	public ServletRegistrationBean druidServlet() {
 		ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
 		// 添加初始化参数：initParams
-		servletRegistrationBean.addInitParameter("allow", "127.0.0.1"); // 白名单
+        // 白名单
+		servletRegistrationBean.addInitParameter("allow", "127.0.0.1");
 		// servletRegistrationBean.addInitParameter("deny", "192.168.1.73"); // 黑名单 deny>allow
-		servletRegistrationBean.addInitParameter("loginUsername", slave_username);
+		servletRegistrationBean.addInitParameter("loginUsername", primary_username);
 		servletRegistrationBean.addInitParameter("loginPassword", primary_password);
-		servletRegistrationBean.addInitParameter("logSlowSql", primary_logSlowSql);
+		servletRegistrationBean.addInitParameter("logSlowSql", "true");
 		return servletRegistrationBean;
 	}
 
@@ -120,10 +126,12 @@ public class DataSourceFromDruidConfig {
 	@Bean
 	public WallConfig wallConfig() {
 		WallConfig wallConfig = new WallConfig();
-		wallConfig.setMultiStatementAllow(true);//允许一次执行多条语句
-		wallConfig.setNoneBaseStatementAllow(true);//允许一次执行多条语句
+        //允许一次执行多条语句
+		wallConfig.setMultiStatementAllow(true);
+        //允许一次执行多条语句
+		wallConfig.setNoneBaseStatementAllow(true);
 		return wallConfig;
-	}*/
+	}
 
     @Bean("primaryDataSource")
     @Primary
@@ -151,28 +159,28 @@ public class DataSourceFromDruidConfig {
         return datasource;
     }
 
-    @Bean("slaveDataSource")
-    @Qualifier("slaveDataSource")
-    public DataSource druidSlaveDataSource() {
-        DruidDataSource datasource = new DruidDataSource();
-        datasource.setUrl(slave_dbUrl);
-        datasource.setUsername(slave_username);
-        datasource.setPassword(slave_password);
-        datasource.setDriverClassName(slave_driverClassName);
-        datasource.setInitialSize(slave_initialSize);
-        datasource.setMinIdle(slave_minIdle);
-        datasource.setMaxActive(slave_maxActive);
-        datasource.setMaxWait(slave_maxWait);
-        datasource.setRemoveAbandonedTimeout(slave_removeAbandonedTimeout);
-        datasource.setValidationQuery(slave_validationQuery);
-        datasource.setTestWhileIdle(slave_testWhileIdle);
-        datasource.setTestOnBorrow(slave_testOnBorrow);
-        datasource.setTestOnReturn(slave_testOnReturn);
-        try {
-            datasource.setFilters(slave_filters);
-        } catch (SQLException e) {
-            logger.error("druid configuration initialization filter", e);
-        }
-        return datasource;
-    }
+//    @Bean("slaveDataSource")
+//    @Qualifier("slaveDataSource")
+//    public DataSource druidSlaveDataSource() {
+//        DruidDataSource datasource = new DruidDataSource();
+//        datasource.setUrl(slave_dbUrl);
+//        datasource.setUsername(slave_username);
+//        datasource.setPassword(slave_password);
+//        datasource.setDriverClassName(slave_driverClassName);
+//        datasource.setInitialSize(slave_initialSize);
+//        datasource.setMinIdle(slave_minIdle);
+//        datasource.setMaxActive(slave_maxActive);
+//        datasource.setMaxWait(slave_maxWait);
+//        datasource.setRemoveAbandonedTimeout(slave_removeAbandonedTimeout);
+//        datasource.setValidationQuery(slave_validationQuery);
+//        datasource.setTestWhileIdle(slave_testWhileIdle);
+//        datasource.setTestOnBorrow(slave_testOnBorrow);
+//        datasource.setTestOnReturn(slave_testOnReturn);
+//        try {
+//            datasource.setFilters(slave_filters);
+//        } catch (SQLException e) {
+//            logger.error("druid configuration initialization filter", e);
+//        }
+//        return datasource;
+//    }
 }

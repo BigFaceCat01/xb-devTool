@@ -19,16 +19,16 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 /**
- * @Author: Created by huangxb on 2018-08-15 13:54:26
- * @Description:
+ * @author Created by huangxb on 2018-08-15 13:54:26
+ *
  */
-//@Configuration
-//@EnableTransactionManagement
-//@EnableJpaRepositories(
-//        entityManagerFactoryRef = "primaryEntityManagerFactory",//配置连接工厂 entityManagerFactory
-//        transactionManagerRef = "primaryTransactionManager", //配置 事物管理器  transactionManager
-//        basePackages = {"xb.dev.tools.dao.repository"}//设置dao（repo）所在位置
-//)
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(
+        entityManagerFactoryRef = "primaryEntityManagerFactory",//配置连接工厂 entityManagerFactory
+        transactionManagerRef = "primaryTransactionManager", //配置 事物管理器  transactionManager
+        basePackages = {"xb.dev.tools.dao.repository"}//设置dao（repo）所在位置
+)
 public class JpaPrimaryConfig {
     @Autowired
     private JpaProperties jpaProperties;
@@ -43,10 +43,11 @@ public class JpaPrimaryConfig {
      */
     @Bean(name = "primaryEntityManagerFactoryBean")
     public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactoryBean(EntityManagerFactoryBuilder builder) {
+        //设置实体类所在位置
         return builder
                 .dataSource(primaryDataSource)
                 .properties(getVendorProperties(primaryDataSource))
-                .packages("com.ca.charge.impl.dao.jpa.data.entity") //设置实体类所在位置
+                .packages("xb.dev.tools.dao.entity")
                 .persistenceUnit("primaryPersistenceUnit")
                 .build();
         //.getObject();//不要在这里直接获取EntityManagerFactory
