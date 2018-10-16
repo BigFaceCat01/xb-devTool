@@ -1,20 +1,42 @@
 package xb.dev.tools.tool.es.service;
 
-import xb.dev.tools.base.BaseService;
-import xb.dev.tools.dao.entity.NewsEntity;
-
+import xb.dev.tools.dao.entity.es.EsNewsEntity;
+import java.util.List;
 import java.util.Set;
 
 /**
- * @Author: Created by huangxb on 2018-08-03 18:03
- * @Description:
+ * @author Created by huangxb on 2018-08-03 18:03
+ *
  */
-public interface EsNewsService extends BaseService<NewsEntity,String> {
+public interface EsNewsService {
     /**
      * 搜索建议
      * @param keywords 搜索的关键词
-     * @return
+     * @return 关键词相关的词条列表
      */
-    public Set<String> suggest(String keywords);
+    Set<String> suggest(String keywords);
+
+    /**
+     * 新增一个新闻到搜索引擎
+     * @param esNewsEntity 新闻信息
+     */
+    void insert(EsNewsEntity esNewsEntity);
+
+    /**
+     * 根据id查询新闻
+     * @param id 新闻id
+     * @return 新闻信息
+     */
+    EsNewsEntity getById(String id);
+
+
+    /**
+     * 精确匹配，使用条件或
+     * @param title 新闻标题
+     * @param source 来源
+     * @param type 分类标签
+     * @return 新闻列表
+     */
+    List<EsNewsEntity> listBy(String title,String source,String type);
 
 }

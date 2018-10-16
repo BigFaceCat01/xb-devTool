@@ -1,7 +1,8 @@
 package xb.dev.tools.tool.es.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.get.GetRequest;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -20,10 +21,15 @@ import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xb.dev.tools.common.CodeEnum;
+import xb.dev.tools.common.PageModule;
 import xb.dev.tools.constant.EsConstant;
 import xb.dev.tools.dao.entity.NewsEntity;
+import xb.dev.tools.dao.entity.es.EsNewsEntity;
 import xb.dev.tools.exception.XbServiceException;
+import xb.dev.tools.model.MongoNewsListModel;
 import xb.dev.tools.tool.es.service.EsNewsService;
+import xb.dev.tools.tool.mongo.service.MongoNewsService;
+import xb.dev.tools.utils.JsonUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,21 +38,23 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @Author: Created by huangxb on 2018-08-03 18:01
- * @Description:
+ * @author Created by huangxb on 2018-08-03 18:01
+ *
  */
 @Service
 public class EsNewsServiceImpl implements EsNewsService {
+    @Autowired
+    private MongoNewsService mongoNewsService;
 
     @Autowired
     private RestHighLevelClient client;
 
 
-    public List<NewsEntity> queryAll() throws XbServiceException {
+    public List<NewsEntity> queryAll() {
         String author = null;
         String title = null;
         String releaseDate = null;
-        SearchRequest searchRequest = new SearchRequest(EsConstant.NEWS_INDEX);
+        SearchRequest searchRequest = new SearchRequest(EsConstant.ES_NEWS_INDEX);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
         BoolQueryBuilder builder= QueryBuilders.boolQuery();
@@ -87,42 +95,12 @@ public class EsNewsServiceImpl implements EsNewsService {
         return newsEntityList;
     }
 
-    @Override
-    public void insert(NewsEntity newsEntity) throws XbServiceException {
-        String newsJson= JSON.toJSONStringWithDateFormat(newsEntity,EsConstant.DATE_FORMAT);
-        IndexRequest indexRequest = new IndexRequest(EsConstant.NEWS_INDEX,EsConstant.NEWS_TYPE,newsEntity.getNewsId()).source(newsJson,XContentType.JSON);
-        try {
-            client.index(indexRequest);
 
-        } catch (IOException e) {
-            throw new XbServiceException("新闻保存异常,cause by "+e.getMessage(),e);
-        }
-    }
 
-    @Override
-    public void delete(String id) throws XbServiceException {
-        DeleteRequest deleteRequest = new DeleteRequest(EsConstant.NEWS_INDEX,EsConstant.NEWS_TYPE,id);
-        try {
-            client.delete(deleteRequest);
-
-        } catch (IOException e) {
-            throw new XbServiceException("新闻删除异常,cause by "+e.getMessage(),e);
-        }
-    }
-
-    @Override
-    public NewsEntity queryOne(String id) throws XbServiceException {
-        return null;
-    }
-
-    @Override
-    public void update(NewsEntity newsEntity) throws XbServiceException {
-
-    }
 
     @Override
     public Set<String> suggest(String keywords) {
-        SearchRequest searchRequest = new SearchRequest(EsConstant.NEWS_INDEX);
+        SearchRequest searchRequest = new SearchRequest(EsConstant.ES_NEWS_INDEX);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         SuggestionBuilder completionSuggestionBuilder = SuggestBuilders.completionSuggestion("keywords.suggest").text(keywords);
         SuggestBuilder suggestBuilder = new SuggestBuilder();
@@ -152,7 +130,77 @@ public class EsNewsServiceImpl implements EsNewsService {
     }
 
     @Override
-    public void deleteWithLogic(String s) {
+    public void insert(EsNewsEntity esNewsEntity) {
+        IndexRequest indexRequest = new IndexRequest();
+        //获得mongodb中的100条数据
+        PageModule<MongoNewsListModel> result = mongoNewsService.listUserNewsForPage(1,100,2422736121541824512L);
+        result.getData().forEach(item->{
+            EsNewsEntity esNews = JsonUtil.beanConvert(item,EsNewsEntity.class);
+            esNews.setUserId(2422736121541824512L);
+            String json = JSON.toJSONString(esNews);
+            //设置存储到搜索引擎的index，type，这里使用自定义id，不使用es生成的id
+            indexRequest.index(EsConstant.ES_NEWS_INDEX)
+                    .type(EsConstant.ES_NEWS_TYPE)
+                    .source(json,XContentType.JSON)
+                    .id(esNews.getNewsId());
+            try {
+                //保存
+                client.index(indexRequest);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
+    @Override
+    public EsNewsEntity getById(String id) {
+        GetRequest getRequest = new GetRequest();
+        //设置index，type，id
+        getRequest.index(EsConstant.ES_NEWS_INDEX)
+                .type(EsConstant.ES_NEWS_TYPE)
+                .id(id);
+        try {
+            //获得响应结果
+            GetResponse getResponse = client.get(getRequest);
+            String result = getResponse.getSourceAsString();
+            return JSON.parseObject(result,EsNewsEntity.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<EsNewsEntity> listBy(String title, String source, String type) {
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        //创建多条件逻辑查询，逻辑或
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        if(source!=null) {
+            boolQueryBuilder.should(QueryBuilders.termQuery("source", source));
+        }
+        if(title != null) {
+            boolQueryBuilder.should(QueryBuilders.termQuery("title", title));
+        }
+        if(type!=null) {
+            boolQueryBuilder.should(QueryBuilders.termQuery("type", type));
+        }
+
+        searchSourceBuilder.query(boolQueryBuilder);
+
+        searchRequest.source(searchSourceBuilder);
+        List<EsNewsEntity> list = new ArrayList<>();
+        try {
+            //返回结果
+            SearchResponse searchResponse = client.search(searchRequest);
+            SearchHit[] searchHits = searchResponse.getHits().getHits();
+            for(SearchHit hit:searchHits){
+                list.add(JSON.parseObject(hit.getSourceAsString(),EsNewsEntity.class));
+            }
+            return list;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

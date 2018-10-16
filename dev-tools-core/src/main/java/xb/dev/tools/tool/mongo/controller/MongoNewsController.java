@@ -76,4 +76,14 @@ public class MongoNewsController extends BaseController {
     public Result<MongoNewsBasicInfo> insert(@PathVariable("newsSn") String newsSn){
         return Result.build(CodeEnum.SUCCESS.getCode(),mongoNewsService.getById(newsSn));
     }
+
+    @ApiOperation(value = "同步网易新闻到mongodb-huangxb",httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",dataType = "byte",name = "type",value = "类型,1-国内,2-航空")
+    })
+    @GetMapping("news/syncNews163com")
+    public Result<Void> syncNews163com(@RequestParam("type") Byte type){
+        mongoNewsService.syncNews163com(type);
+        return Result.build(CodeEnum.SUCCESS.getCode());
+    }
 }

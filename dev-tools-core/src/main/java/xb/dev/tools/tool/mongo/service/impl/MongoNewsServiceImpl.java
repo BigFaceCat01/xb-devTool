@@ -1,5 +1,8 @@
 package xb.dev.tools.tool.mongo.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.mongodb.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -12,11 +15,14 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import xb.dev.tools.common.PageModule;
+import xb.dev.tools.constant.MongoConstant;
+import xb.dev.tools.constant.News163CategoryEnum;
 import xb.dev.tools.constant.NewsContants;
 import xb.dev.tools.model.MongoNewsBasicInfo;
 import xb.dev.tools.model.MongoNewsListModel;
 import xb.dev.tools.model.mongo.MongoNewsModel;
 import xb.dev.tools.tool.mongo.service.MongoNewsService;
+import xb.dev.tools.utils.HttpUtil;
 import xb.dev.tools.utils.JsonUtil;
 
 import java.util.ArrayList;
@@ -124,5 +130,15 @@ public class MongoNewsServiceImpl implements MongoNewsService {
 
         MongoNewsBasicInfo basicInfo = JsonUtil.beanConvert(mongoNewsModel,MongoNewsBasicInfo.class);
         return basicInfo;
+    }
+
+    @Override
+    public void syncNews163com(Byte type) {
+        String url = MongoConstant.NEWS_163_COM_URL+MongoConstant.NEWS_163_COM_DEFAULT_TOKEN+"/"+News163CategoryEnum.getName(type)+".js?callback=data_callback%20HTTP/1.1";
+        String result = HttpUtil.getContentFromUrl(url);
+        String json = result.substring(0,result.length()-1).substring(result.indexOf("["));
+        JSONArray jsonObject = JSON.parseArray(json);
+        System.out.println(jsonObject);
+
     }
 }

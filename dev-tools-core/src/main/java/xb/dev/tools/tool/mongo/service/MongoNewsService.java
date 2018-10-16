@@ -32,4 +32,10 @@ public interface MongoNewsService extends BaseService<MongoNewsModel,String> {
      * @return 新闻详情
      */
     MongoNewsBasicInfo getById(String id);
+
+    /**
+     * 同步网易新闻到mongodb
+     * @param type 类型
+     */
+    void syncNews163com(Byte type);
 }

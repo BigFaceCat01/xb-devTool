@@ -6,7 +6,7 @@ package xb.dev.tools.constant;
  */
 public class EsConstant {
 
-    public static final String NEWS_INDEX = "xb_news";
-    public static final String NEWS_TYPE = "news";
+    public static final String ES_NEWS_INDEX = "xb_news";
+    public static final String ES_NEWS_TYPE = "news";
     public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 }

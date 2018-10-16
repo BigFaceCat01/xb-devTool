@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @Author: Created by huangxb on 2018-08-03 17:49:38
- * @Description:
+ * @author Created by huangxb on 2018-08-03 17:49:38
+ *
  */
 @Configuration
 public class EsConfig {
