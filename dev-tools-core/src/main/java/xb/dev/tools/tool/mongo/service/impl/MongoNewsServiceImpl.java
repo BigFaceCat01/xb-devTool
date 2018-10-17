@@ -135,7 +135,7 @@ public class MongoNewsServiceImpl implements MongoNewsService {
     @Override
     public void syncNews163com(Byte type) {
         String url = MongoConstant.NEWS_163_COM_URL+MongoConstant.NEWS_163_COM_DEFAULT_TOKEN+"/"+News163CategoryEnum.getName(type)+".js?callback=data_callback%20HTTP/1.1";
-        String result = HttpUtil.getContentFromUrl(url);
+        String result = HttpUtil.getTextContentFromUrl(url,"gbk",null);
         String json = result.substring(0,result.length()-1).substring(result.indexOf("["));
         JSONArray jsonObject = JSON.parseArray(json);
         System.out.println(jsonObject);
