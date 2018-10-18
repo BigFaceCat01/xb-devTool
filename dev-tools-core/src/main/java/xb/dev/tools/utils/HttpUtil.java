@@ -8,7 +8,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
 
 /**
@@ -70,5 +73,49 @@ public class HttpUtil {
             }
         }
         return null;
+    }
+
+    public static void downResource(String url,String path){
+        //判空
+        if(url==null){
+            return;
+        }
+        //创建
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        //创建http get请求对象
+        HttpGet httpGet = new HttpGet(url);
+        log.info("请求路径:{}",url);
+
+        try {
+            //执行请求
+            CloseableHttpResponse response = httpClient.execute(httpGet);
+            //请求是否成功
+            if(response.getStatusLine().getStatusCode()==OK_STATUS_CODE){
+                //获得响应实体对象
+                byte[] b = new byte[1024];
+                InputStream is = response.getEntity().getContent();
+                OutputStream os = new FileOutputStream(path);
+                int len = 0;
+                while((len = is.read(b))!=-1){
+                    os.write(b,0,len);
+                }
+                os.flush();
+                os.close();
+                is.close();
+            }else {
+                log.warn("{}响应状态码为{}",url,response.getStatusLine().getStatusCode());
+            }
+        } catch (IOException e) {
+            log.error("路径[{}]请求失败",url);
+            e.printStackTrace();
+        }
+        finally {
+            //关闭连接
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
