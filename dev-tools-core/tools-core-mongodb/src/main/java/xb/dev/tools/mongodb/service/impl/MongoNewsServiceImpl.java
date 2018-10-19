@@ -2,6 +2,7 @@ package xb.dev.tools.mongodb.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -10,19 +11,19 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import xb.dev.tools.common.PageModule;
+import xb.dev.tools.mongodb.config.RabbitConfig;
 import xb.dev.tools.mongodb.constant.MongoConstant;
 import xb.dev.tools.mongodb.constant.News163CategoryEnum;
 import xb.dev.tools.mongodb.constant.NewsContants;
 import xb.dev.tools.mongodb.model.MongoNewsBasicInfo;
 import xb.dev.tools.mongodb.model.MongoNewsListModel;
 import xb.dev.tools.mongodb.model.MongoNewsModel;
+import xb.dev.tools.mongodb.model.es.EsNewsEntity;
 import xb.dev.tools.mongodb.service.MongoNewsService;
 import xb.dev.tools.mongodb.util.HttpUtil;
 import xb.dev.tools.mongodb.util.JsonUtil;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author: Created by huangxb on 2018-08-01 18:12:07
@@ -32,6 +33,8 @@ import java.util.List;
 public class MongoNewsServiceImpl implements MongoNewsService {
     @Autowired
     private MongoTemplate mongoTemplate;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     public MongoNewsModel queryOne(String s) {
@@ -68,6 +71,11 @@ public class MongoNewsServiceImpl implements MongoNewsService {
         newsModel.setSupportCount(NewsContants.NEWS_ZERO);
 
         mongoTemplate.insert(newsModel);
+
+        EsNewsEntity esNewsEntity = JsonUtil.beanConvert(newsModel,EsNewsEntity.class);
+        //发送新闻新增消息,es同步新闻
+        String msg = JSON.toJSONString(esNewsEntity);
+        rabbitTemplate.convertAndSend(RabbitConfig.DIRECT_EXCHANGE_NEWS_INSERT,RabbitConfig.ROUTING_NEWS_INSERT,msg);
     }
 
     @Override

@@ -1,8 +1,7 @@
-package xb.dev.tools.es.dao.entity;
+package xb.dev.tools.mongodb.model.es;
 
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +9,7 @@ import java.util.Date;
  * @date 2018-10-12 11:01:58
  */
 @Data
-public class EsNewsEntity implements Serializable {
+public class EsNewsEntity {
     /**
      * 新闻标识
      */
