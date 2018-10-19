@@ -1,6 +1,0 @@
-1-首页
-导航栏:div class = navnm -> div class = co -> ul id = navul class = cl -> li -> a[href]
-壁纸尺寸:div class = wzfz fix -> div class=main cccd mt -> dl class = ccgl first fix -> dd -> a[href]
-
-
-
