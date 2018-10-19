@@ -12,6 +12,7 @@
 ### IntelliJ IDEA ###
 dev-basic-service/basic-service-eureka/target/*
 dev-basic-service/basic-service-swagger/target/*
+dev-basic-service/basic-service-gateway/target/*
 */target/*
 .idea/*
 *.iws
