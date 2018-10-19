@@ -38,9 +38,15 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     public Object handle(XbServiceException exception, HttpServletRequest request) {
         CodeEnum codeEnum = getCodeEnum(exception.getCode());
-        logger.error("[" + exception.getCode() + "]:" + codeEnum.getChDesc(), exception);
+        if(codeEnum != null) {
+            logger.error("[" + exception.getCode() + "]:" + codeEnum.getChDesc(), exception);
+        }else {
+            logger.error("[" + exception.getCode() + "]:" + codeEnum);
+        }
         //返回错误码对应信息，返回前端
-        return Result.build(exception.getCode(), exception.getMessage());
+        String code = exception.getCode();
+        String msg = exceptionCodeDesc(codeEnum, request);
+        return Result.build(code, msg);
     }
 
     //用户输入参数异常
@@ -83,36 +89,41 @@ public class GlobalExceptionHandler {
         return Result.build("-1", exception.getMessage());
     }
 
-//    //根据浏览器语言选择对应版本的说明
-//    public static String exceptionCodeDesc(CaCodeEnum caCodeEnum, HttpServletRequest request) {
-//
-//        String header = request.getHeader("accept-language");
-//        /**
-//         * @author: update by huangxb on 2018-7-20
-//         * @desc: 解决header在某些情况下可能为null的情况
-//         * */
-//        if(header == null){
-//            return caCodeEnum.getChDesc();
-//        }
-//        String[] headerStr = header.split(",");
-//        String desc = "";
-//        String language = headerStr[0].substring(0, 2);
-//        if ("zh".equals(language)) {
-//            return caCodeEnum.getChDesc();
-//        } else if ("fr".equals(language)) {
-//            return caCodeEnum.getFrDesc();
-//        } else if ("en".equals(language)) {
-//            return caCodeEnum.getEnDesc();
-//        } else { //其他都返回中文
-//            return caCodeEnum.getChDesc();
-//        }
-//    }
-//
-//    //缓存本地的caCodeEnum
+    /**
+     *根据浏览器语言选择对应版本的说明
+     */
+    public static String exceptionCodeDesc(CodeEnum caCodeEnum, HttpServletRequest request) {
+
+        String header = request.getHeader("accept-language");
+        /**
+         * @author update by huangxb on 2018-7-20
+         * @desc 解决header在某些情况下可能为null的情况
+         * */
+        if(header == null){
+            return caCodeEnum.getChDesc();
+        }
+        String[] headerStr = header.split(",");
+        String language = headerStr[0].substring(0, 2);
+        if ("zh".equals(language)) {
+            return caCodeEnum.getChDesc();
+        }else if ("en".equals(language)) {
+            return caCodeEnum.getEnDesc();
+        } else {
+            //其他都返回中文
+            return caCodeEnum.getChDesc();
+        }
+    }
+
+    /**
+     *缓存本地的caCodeEnum
+     */
     private static ConcurrentHashMap<String, CodeEnum> codeMap = new ConcurrentHashMap();
-//
-//    //懒加载
-    private static CodeEnum getCodeEnum(String code) {
+    /**
+     *
+     * @param code
+     * @return
+     */
+    private CodeEnum getCodeEnum(String code) {
         CodeEnum codeEnum = codeMap.get(code);
         //没有做null的判断,因为这里的null应该在开发测试阶段被消除,不应出现！！！
         if (codeEnum == null) {

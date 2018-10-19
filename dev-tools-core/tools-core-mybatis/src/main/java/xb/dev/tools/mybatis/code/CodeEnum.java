@@ -1,10 +1,11 @@
 package xb.dev.tools.mybatis.code;
 
 /**
- * @Author: Created by huangxb on 2018-08-08 17:56:00
- * @Description: 规范错误发生时错误代码返回
+ * @author Created by huangxb on 2018-08-08 17:56:00
+ * 规范错误发生时错误代码返回
  */
 public enum CodeEnum {
+    /*************公共错误****************/
     /**
      * 操作失败
      */
@@ -30,16 +31,21 @@ public enum CodeEnum {
      */
     PARAMS_ERROR("101", "请求参数错误", ""),
 
-    //在下方自定义错误码,使用固定规则，例如2(服务级错误(1为系统级错误),1位) 05(服务模块代码,2位) 02(具体错误代码,2位),共5位
+    /*************自定义错误****************/
 
-    TEST_ERROR("20101","错误码示例",""),
-    SUGGEST_NEWS_FAILD("20102","根据关键词获得搜索建议失败","");;
+    USER_ACCOUNT_USERNAME_OR_PASSWORD_WRONG("20101","用户名或密码错误","user name or password error");
 
-    //错误码
+    /**
+     *错误码
+     */
     private String code;
-    //错误代码中文描述
+    /**
+     *错误代码中文描述
+     */
     private String chDesc;
-    //错误码英文描述
+    /**
+     *错误码英文描述
+     */
     private String enDesc;
 
     CodeEnum(String code, String chDesc, String enDesc) {
@@ -58,5 +64,17 @@ public enum CodeEnum {
 
     public String getEnDesc() {
         return enDesc;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setChDesc(String chDesc) {
+        this.chDesc = chDesc;
+    }
+
+    public void setEnDesc(String enDesc) {
+        this.enDesc = enDesc;
     }
 }

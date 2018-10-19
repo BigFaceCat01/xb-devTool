@@ -21,6 +21,10 @@ public class XbServiceException extends RuntimeException{
         this.code = code;
     }
 
+    public XbServiceException(String code) {
+        this.code = code;
+    }
+
     public String getCode() {
         return code;
     }
