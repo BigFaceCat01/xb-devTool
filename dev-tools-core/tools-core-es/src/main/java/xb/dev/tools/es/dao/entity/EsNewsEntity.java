@@ -2,6 +2,8 @@ package xb.dev.tools.es.dao.entity;
 
 import lombok.Data;
 
+import javax.persistence.Id;
+import java.util.List;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,6 +16,7 @@ public class EsNewsEntity implements Serializable {
     /**
      * 新闻标识
      */
+    @Id
     private String newsId;
     /**
      * 标题
@@ -51,4 +54,14 @@ public class EsNewsEntity implements Serializable {
      * 分类标签
      */
     private String type;
+
+    /**
+     * 新闻主图
+     */
+    private String img;
+
+    /**
+     * 新闻关键词
+     */
+    private List<String> keywords;
 }

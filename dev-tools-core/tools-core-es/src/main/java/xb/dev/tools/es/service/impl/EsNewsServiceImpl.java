@@ -1,6 +1,7 @@
 package xb.dev.tools.es.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequest;
@@ -20,11 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xb.dev.tools.es.code.CodeEnum;
 import xb.dev.tools.es.constant.EsConstant;
+import xb.dev.tools.es.constant.News163Contants;
 import xb.dev.tools.es.dao.entity.EsNewsEntity;
 import xb.dev.tools.es.exception.XbServiceException;
 import xb.dev.tools.es.service.EsNewsService;
+import xb.dev.tools.es.util.HttpUtil;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -196,5 +200,45 @@ public class EsNewsServiceImpl implements EsNewsService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void syncNews163com(){
+        //定义请求前缀
+        String s1 = News163Contants.NEWS_163_SITE + "/special/00804KVA/";
+        //定义请求后缀
+        String s2 = ".js?callback=data_callback%20HTTP/1.1";
+        Class cls = News163Contants.class;
+        //得到常量表中常量
+        Field[] navs = cls.getFields();
+        for(Field f:navs){
+            //如果常量不是以CM开始，则表示该变量不是导航常量
+            if(!f.getName().startsWith("CM")) {
+                continue;
+            }
+            //用于翻页
+            for(int i=0;;i++){
+                String result = "";
+                //第一页不需要添加页数后缀
+                if(i==0) {
+                    String url = s1+f.getName().toLowerCase()+s2;
+                    result = HttpUtil.getTextContentFromUrl(url, "gbk", null);
+                }else {
+                    //其他页需要添加页数后缀，即xxx_02.xxx_03等
+                    String url = s1+f.getName().toLowerCase()+"0"+i+s2;
+                    result = HttpUtil.getTextContentFromUrl(url, "gbk", null);
+                }
+                //如果请求结果为空，则进入下一导航页
+                if(result==null||result.trim().equals("")){
+                    break;
+                }
+                //解析结果
+                String json = result.substring(0,result.length()-1).substring(result.indexOf("["));
+                JSONArray jsonObject = JSON.parseArray(json);
+
+            }
+
+        }
+
     }
 }

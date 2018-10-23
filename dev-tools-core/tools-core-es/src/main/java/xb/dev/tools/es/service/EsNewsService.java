@@ -41,4 +41,9 @@ public interface EsNewsService {
      */
     List<EsNewsEntity> listBy(String title, String source, String type);
 
+
+    /**
+     * 同步网易新闻到es
+     */
+    void syncNews163com();
 }
