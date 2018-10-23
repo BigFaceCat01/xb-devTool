@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="XbNewsMapper">
-  <resultMap id="BaseResultMap" type="xb.dev.tools.dao.entity.NewsEntity">
+  <resultMap id="BaseResultMap" type="xb.dev.tools.mybatis.dao.entity.NewsEntity">
     <id column="news_id" jdbcType="VARCHAR" property="newsId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="body" jdbcType="VARCHAR" property="body" />
@@ -15,7 +15,7 @@
     <result column="support_count" jdbcType="BIGINT" property="supportCount" />
     <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
   </resultMap>
-  <resultMap id="BaseResultMap2" type="xb.dev.tools.dao.entity.NewsEntity">
+  <resultMap id="BaseResultMap2" type="xb.dev.tools.mybatis.dao.entity.NewsEntity">
     <id column="news_id" jdbcType="VARCHAR" property="newsId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="body" jdbcType="VARCHAR" property="body" />
@@ -57,7 +57,7 @@
   </delete>
 
   <!-- 添加新闻，不过滤为空的字段    -->
-  <insert id="insertNews" parameterType="xb.dev.tools.dao.entity.NewsEntity">
+  <insert id="insertNews" parameterType="xb.dev.tools.mybatis.dao.entity.NewsEntity">
     insert into xb_news (news_id, title, body,
       source, author, create_time, 
       type, browse_count, oppose_count,
@@ -69,7 +69,7 @@
   </insert>
 
   <!-- 添加新闻，为空的属性不加入sql语句中    -->
-  <insert id="insertSelective" parameterType="xb.dev.tools.dao.entity.NewsEntity">
+  <insert id="insertSelective" parameterType="xb.dev.tools.mybatis.dao.entity.NewsEntity">
     insert into xb_news
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="newsId != null">
