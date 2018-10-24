@@ -1,12 +1,13 @@
 package xb.dev.tools.es.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -21,18 +22,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xb.dev.tools.es.code.CodeEnum;
 import xb.dev.tools.es.constant.EsConstant;
-import xb.dev.tools.es.constant.News163Contants;
 import xb.dev.tools.es.dao.entity.EsNewsEntity;
 import xb.dev.tools.es.exception.XbServiceException;
 import xb.dev.tools.es.service.EsNewsService;
-import xb.dev.tools.es.util.HttpUtil;
+import xb.dev.tools.es.task.DataGrabTask;
+import xb.dev.tools.es.task.DataSaveTask;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * @author Created by huangxb on 2018-08-03 18:01
@@ -128,25 +129,24 @@ public class EsNewsServiceImpl implements EsNewsService {
 
     @Override
     public void insert(EsNewsEntity esNewsEntity) {
-//        IndexRequest indexRequest = new IndexRequest();
-//        //获得mongodb中的100条数据
-////        PageModule<MongoNewsListModel> result = mongoNewsService.listUserNewsForPage(1,100,2422736121541824512L);
+        IndexRequest indexRequest = new IndexRequest();
+        //获得mongodb中的100条数据
+//        PageModule<MongoNewsListModel> result = mongoNewsService.listUserNewsForPage(1,100,2422736121541824512L);
 //        PageModule<MongoNewsListModel> result = null;
 //        result.getData().forEach(item->{
 //            EsNewsEntity esNews = JsonUtil.beanConvert(item,EsNewsEntity.class);
-//            esNews.setUserId(2422736121541824512L);
-//            String json = JSON.toJSONString(esNews);
-//            //设置存储到搜索引擎的index，type，这里使用自定义id，不使用es生成的id
-//            indexRequest.index(EsConstant.ES_NEWS_INDEX)
-//                    .type(EsConstant.ES_NEWS_TYPE)
-//                    .source(json,XContentType.JSON)
-//                    .id(esNews.getNewsId());
-//            try {
-//                //保存
-//                client.index(indexRequest);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+        esNewsEntity.setUserId(2422736121541824512L);
+            String json = JSON.toJSONString(esNewsEntity);
+            //设置存储到搜索引擎的index，type，这里使用自定义id，不使用es生成的id
+            indexRequest.index(EsConstant.ES_NEWS_INDEX)
+                    .type(EsConstant.ES_NEWS_TYPE)
+                    .source(json,XContentType.JSON);
+            try {
+                //保存
+                client.index(indexRequest);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 //        });
     }
 
@@ -203,42 +203,11 @@ public class EsNewsServiceImpl implements EsNewsService {
     }
 
     @Override
-    public void syncNews163com(){
-        //定义请求前缀
-        String s1 = News163Contants.NEWS_163_SITE + "/special/00804KVA/";
-        //定义请求后缀
-        String s2 = ".js?callback=data_callback%20HTTP/1.1";
-        Class cls = News163Contants.class;
-        //得到常量表中常量
-        Field[] navs = cls.getFields();
-        for(Field f:navs){
-            //如果常量不是以CM开始，则表示该变量不是导航常量
-            if(!f.getName().startsWith("CM")) {
-                continue;
-            }
-            //用于翻页
-            for(int i=0;;i++){
-                String result = "";
-                //第一页不需要添加页数后缀
-                if(i==0) {
-                    String url = s1+f.getName().toLowerCase()+s2;
-                    result = HttpUtil.getTextContentFromUrl(url, "gbk", null);
-                }else {
-                    //其他页需要添加页数后缀，即xxx_02.xxx_03等
-                    String url = s1+f.getName().toLowerCase()+"0"+i+s2;
-                    result = HttpUtil.getTextContentFromUrl(url, "gbk", null);
-                }
-                //如果请求结果为空，则进入下一导航页
-                if(result==null||result.trim().equals("")){
-                    break;
-                }
-                //解析结果
-                String json = result.substring(0,result.length()-1).substring(result.indexOf("["));
-                JSONArray jsonObject = JSON.parseArray(json);
-
-            }
-
-        }
-
+    public void syncNews163com() {
+        ArrayBlockingQueue<EsNewsEntity> dataQueue = new ArrayBlockingQueue<>(100);
+        Thread save = new Thread(new DataSaveTask(dataQueue,this));
+        Thread grab = new Thread(new DataGrabTask(dataQueue,save));
+        save.start();
+        grab.start();
     }
 }

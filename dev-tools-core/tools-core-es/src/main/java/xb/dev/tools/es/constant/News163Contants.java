@@ -10,7 +10,7 @@ public class News163Contants {
     /**
      * 网易新闻主站首页
      */
-    public static final String NEWS_163_SITE = "http://news.163.com";
+    public static final String NEWS_163_SITE = "http://temp.163.com";
 
 
     /********************导航栏常量********************************/
@@ -18,53 +18,53 @@ public class News163Contants {
     /**
      * 国内
      */
-    public static final String CM_GUONEI = "cm_guonei";
+    public static final String CM_GUONEI = "国内";
     /**
      * 要闻
      */
-    public static final String CM_YAOWEN = "cm_yaowen";
+    public static final String CM_YAOWEN = "要闻";
     /**
      * 国际
      */
-    public static final String CM_GUOJI = "cm_guoji";
+    public static final String CM_GUOJI = "国际";
     /**
      * 财经
      */
-    public static final String CM_MONEY = "cm_money";
+    public static final String CM_MONEY = "财经";
     /**
      * 体育
      */
-    public static final String CM_SPORTS = "cm_sports";
+    public static final String CM_SPORTS = "体育";
     /**
      * 娱乐
      */
-    public static final String CM_ENT = "cm_ent";
+    public static final String CM_ENT = "娱乐";
     /**
      * 科技
      */
-    public static final String CM_TECH = "cm_tech";
+    public static final String CM_TECH = "科技";
     /**
      * 健康
      */
-    public static final String CM_JIANKANG = "cm_jiankang";
+    public static final String CM_JIANKANG = "健康";
     /**
      * 汽车
      */
-    public static final String CM_AUTO = "cm_auto";
+    public static final String CM_AUTO = "汽车";
     /**
      * 女人
      */
-    public static final String CM_LADY = "cm_lady";
+    public static final String CM_LADY = "女人";
     /**
      * 军事
      */
-    public static final String CM_WAR = "cm_war";
+    public static final String CM_WAR = "军事";
     /**
      * 无人机
      */
-    public static final String CM_WURENJI = "cm_wurenji";
+    public static final String CM_WURENJI = "无人机";
     /**
      * 航空
      */
-    public static final String CM_HANGKONG = "cm_hangkong";
+    public static final String CM_HANGKONG = "航空";
 }

@@ -29,6 +29,13 @@ public class EsNewsController {
         return Result.build(CodeEnum.SUCCESS.getCode());
     }
 
+    @ApiOperation(value = "同步news.163.com新闻记录到es",httpMethod = "PUT")
+    @PutMapping("news163")
+    public Result<Void> insertFromNews163(){
+        esNewsService.syncNews163com();
+        return Result.build(CodeEnum.SUCCESS.getCode());
+    }
+
     @ApiOperation(value = "根据标识查询新闻",httpMethod = "GET")
     @ApiImplicitParams(
             @ApiImplicitParam(paramType = "path",dataType = "string",name = "id",value = "标识")
