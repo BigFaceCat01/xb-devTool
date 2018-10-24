@@ -20,7 +20,7 @@ public class EsConfig {
     @Value("elasticsearch")
     private String esClusterName;
     @Bean
-    public RestHighLevelClient client() throws Exception{
+    public RestHighLevelClient client(){
         RestHighLevelClient client=new RestHighLevelClient(RestClient.builder(new HttpHost(esHost,esPort,"http")));
         return client;
     }

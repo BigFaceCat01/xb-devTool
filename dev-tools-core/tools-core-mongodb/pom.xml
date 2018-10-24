@@ -22,6 +22,11 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-amqp</artifactId>
     </dependency>
+    <dependency>
+        <groupId>xb.dev</groupId>
+        <artifactId>tools-core-es-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
 </dependencies>
 
 </project>
