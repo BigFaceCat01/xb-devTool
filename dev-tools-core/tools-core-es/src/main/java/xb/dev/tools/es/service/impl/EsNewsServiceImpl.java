@@ -1,6 +1,7 @@
 package xb.dev.tools.es.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -9,6 +10,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -20,19 +22,20 @@ import org.elasticsearch.search.suggest.SuggestionBuilder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xb.dev.document.DocumentUtil;
+import xb.dev.document.exception.DocumentHandlerException;
+import xb.dev.tools.common.PageModule;
 import xb.dev.tools.es.code.CodeEnum;
 import xb.dev.tools.es.constant.EsConstant;
 import xb.dev.tools.es.dao.entity.EsNewsEntity;
 import xb.dev.tools.es.exception.XbServiceException;
+import xb.dev.tools.es.model.HSCodeModel;
 import xb.dev.tools.es.service.EsNewsService;
 import xb.dev.tools.es.task.DataGrabTask;
 import xb.dev.tools.es.task.DataSaveTask;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -40,6 +43,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  *
  */
 @Service
+@Slf4j
 public class EsNewsServiceImpl implements EsNewsService {
 //    @Autowired
 //    private MongoNewsService mongoNewsService;
@@ -209,5 +213,65 @@ public class EsNewsServiceImpl implements EsNewsService {
         Thread grab = new Thread(new DataGrabTask(dataQueue,save));
         save.start();
         grab.start();
+    }
+
+    @Override
+    public void syncHSCode() {
+        IndexRequest indexRequest = new IndexRequest();
+        try {
+            Map<String,List<HSCodeModel>> result =  DocumentUtil.getDataByPath(HSCodeModel.class,"D:/HSCode.xls");
+            List<HSCodeModel> codeModels = result.get("DOCUMENT");
+            codeModels.forEach(item->{
+                String json = JSON.toJSONString(item);
+                    indexRequest.index(EsConstant.ES_HS_CODE_INDEX)
+                            .type(EsConstant.ES_HS_CODE_TYPE)
+                            .source(json,XContentType.JSON);
+                try {
+                    //保存
+                    client.index(indexRequest);
+                    log.info("[保存:]{}",json);
+                } catch (IOException e) {
+                    log.warn("[失败:]{}",json);
+                }
+        });
+        } catch (DocumentHandlerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public PageModule<HSCodeModel> queryHSCode(Integer pageNum,Integer pageSize,String name) {
+        if(pageNum == null || pageNum <0){
+            pageNum = 1;
+        }
+        if(pageSize == null || pageSize <0){
+            pageSize = 10;
+        }
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+
+        searchSourceBuilder.query(QueryBuilders.matchQuery("name",name));
+        int from = pageNum -1;
+        int size = pageSize;
+        searchSourceBuilder.from(from);
+        searchSourceBuilder.size(size);
+        searchRequest.source(searchSourceBuilder);
+
+        List<HSCodeModel> list = new ArrayList<>();
+        try {
+            //返回结果
+            SearchResponse searchResponse = client.search(searchRequest);
+            SearchHit[] searchHits = searchResponse.getHits().getHits();
+            for(SearchHit hit:searchHits){
+                HSCodeModel model = JSON.parseObject(hit.getSourceAsString(),HSCodeModel.class);
+                model.setId(hit.getId());
+                list.add(model);
+            }
+            return new PageModule<>(searchResponse.getHits().totalHits,pageSize,pageNum,list);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

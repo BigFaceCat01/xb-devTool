@@ -1,7 +1,9 @@
 package xb.dev.tools.es.service;
 
 
+import xb.dev.tools.common.PageModule;
 import xb.dev.tools.es.dao.entity.EsNewsEntity;
+import xb.dev.tools.es.model.HSCodeModel;
 
 import java.util.List;
 import java.util.Set;
@@ -46,4 +48,16 @@ public interface EsNewsService {
      * 同步网易新闻到es
      */
     void syncNews163com();
+
+    /**
+     * 同步海关编码
+     */
+    void syncHSCode();
+
+    /**
+     * 通过名称查询海关编码
+     * @param name
+     * @return
+     */
+    PageModule<HSCodeModel> queryHSCode(Integer pageNum,Integer pageSize,String name);
 }

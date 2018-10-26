@@ -3,12 +3,12 @@ package xb.dev.document.temp;
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xb.dev.document.DocumentUtil;
+import xb.dev.document.exception.DocumentHandlerException;
 import xb.dev.document.handler.impl.DefaultExcelHandle;
+import xb.dev.document.model.HSCatagoryModel;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -50,8 +50,10 @@ public class ExcelUtils {
     }
 
     public static void main(String[] args) throws Exception {
+        //海关编码类目
+        hsCatagory();
         //添加类目
-        category();
+//        category();
         //添加参数
 //        prop();
         //添加商品参数
@@ -240,6 +242,15 @@ public class ExcelUtils {
             System.err.println("insert "+name+" error");
             throw new RuntimeException("数据异常");
         }
+    }
+
+    public static void hsCatagory(){
+
+
+    }
+
+    public static void test(){
+
     }
 }
 
