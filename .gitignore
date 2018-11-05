@@ -8,6 +8,7 @@
 .project
 .settings
 .springBeans
+dev-tools-core/tools-spider/src/main/resources/t.txt
 .sts4-cache
 ### IntelliJ IDEA ###
 dev-basic-service/basic-service-eureka/target/*
@@ -18,6 +19,7 @@ dev-tools-core/tools-core-jpa/target/*
 dev-tools-core/tools-core-mongodb/target/*
 dev-tools-core/tools-core-mybatis/target/*
 dev-tools-api/tools-core-es-api/target/*
+dev-tools-core/tools-spider/target/
 log/
 */target/*
 .idea/*
