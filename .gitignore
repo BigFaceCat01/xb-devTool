@@ -18,6 +18,7 @@ dev-tools-core/tools-core-jpa/target/*
 dev-tools-core/tools-core-mongodb/target/*
 dev-tools-core/tools-core-mybatis/target/*
 dev-tools-api/tools-core-es-api/target/*
+log/
 */target/*
 .idea/*
 *.iws

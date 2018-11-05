@@ -38,4 +38,6 @@ public interface MongoNewsService extends BaseService<MongoNewsModel,String> {
      * @param type 类型
      */
     void syncNews163com(Byte type);
+
+    void hsCodeTest();
 }

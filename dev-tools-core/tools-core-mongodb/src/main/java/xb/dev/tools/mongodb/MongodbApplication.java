@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @EnableFeignClients("xb.dev.tools.api.es")
-@ComponentScan(basePackages = {"xb.dev.tools.api.es"})
+@ComponentScan(basePackages = {"xb.dev.tools.api.es","xb.dev.tools.mongodb","xb.dev.tools.mongodb.task"})
 public class MongodbApplication {
 
     public static void main(String[] args) {

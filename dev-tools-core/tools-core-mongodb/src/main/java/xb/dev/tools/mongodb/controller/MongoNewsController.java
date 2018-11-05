@@ -85,4 +85,12 @@ public class MongoNewsController extends BaseController {
         mongoNewsService.syncNews163com(type);
         return Result.build(CodeEnum.SUCCESS.getCode());
     }
+
+    @ApiOperation(value = "同步海关编码到mongodb-huangxb",httpMethod = "GET")
+    @GetMapping("hsCode/site")
+    public Result<Void> hsCodeSite(){
+        mongoNewsService.hsCodeTest();
+        return Result.build(CodeEnum.SUCCESS.getCode());
+    }
+
 }

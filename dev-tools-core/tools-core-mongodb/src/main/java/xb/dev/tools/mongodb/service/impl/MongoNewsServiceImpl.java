@@ -15,15 +15,23 @@ import xb.dev.tools.mongodb.config.RabbitConfig;
 import xb.dev.tools.mongodb.constant.MongoConstant;
 import xb.dev.tools.mongodb.constant.News163CategoryEnum;
 import xb.dev.tools.mongodb.constant.NewsContants;
+import xb.dev.tools.mongodb.model.HSCodeCatagoryModel;
 import xb.dev.tools.mongodb.model.MongoNewsBasicInfo;
 import xb.dev.tools.mongodb.model.MongoNewsListModel;
 import xb.dev.tools.mongodb.model.MongoNewsModel;
 import xb.dev.tools.mongodb.model.es.EsNewsEntity;
 import xb.dev.tools.mongodb.service.MongoNewsService;
+import xb.dev.tools.mongodb.task.HSDataGrabTask;
+import xb.dev.tools.mongodb.task.HSDataSaveTask;
+import xb.dev.tools.mongodb.task.HSDocumentSaveTask;
 import xb.dev.tools.mongodb.util.HttpUtil;
 import xb.dev.tools.mongodb.util.JsonUtil;
 
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author: Created by huangxb on 2018-08-01 18:12:07
@@ -32,9 +40,16 @@ import java.util.*;
 @Service
 public class MongoNewsServiceImpl implements MongoNewsService {
     @Autowired
+    private HSDataSaveTask hsDataSaveTask;
+    @Autowired
     private MongoTemplate mongoTemplate;
     @Autowired
     private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private HSDocumentSaveTask hSDocumentSaveTask;
+
+    @Autowired
+    private HSDataGrabTask hSDataGrabTask;
 
     @Override
     public MongoNewsModel queryOne(String s) {
@@ -144,5 +159,24 @@ public class MongoNewsServiceImpl implements MongoNewsService {
         JSONArray jsonObject = JSON.parseArray(json);
         System.out.println(jsonObject);
 
+    }
+
+    @Override
+    public void hsCodeTest() {
+//        AtomicLong total = new AtomicLong(0);
+//        ArrayBlockingQueue<HSCodeCatagoryModel> dataQueue = new ArrayBlockingQueue<>(100);
+//        hsDataSaveTask.setDataQueue(dataQueue);
+//        Thread save = new Thread(hsDataSaveTask);
+//        Thread grab = new Thread(new HSDataGrabTask(dataQueue,save,1,hSDocumentSaveTask,total));
+//        Thread grab2 = new Thread(new HSDataGrabTask(dataQueue,save,2,hSDocumentSaveTask,total));
+//        save.start();
+//        grab.start();
+//        grab2.start();
+//        Thread grab = new Thread(new HSDataGrabTask(1,total,mongoTemplate));
+////        hSDataGrabTask.setPage(2);
+//        Thread grab2 = new Thread(new HSDataGrabTask(2,total,mongoTemplate));
+//        grab.start();
+//        grab2.start();
+        new Thread(hSDocumentSaveTask).start();
     }
 }

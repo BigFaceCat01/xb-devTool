@@ -19,6 +19,7 @@
         <module>tools-core-es</module>
         <module>tools-core-mybatis</module>
         <module>tools-core-jpa</module>
+        <module>tools-spider</module>
     </modules>
 
     <properties>

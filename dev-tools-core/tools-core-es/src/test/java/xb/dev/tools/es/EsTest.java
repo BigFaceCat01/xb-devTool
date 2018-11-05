@@ -26,4 +26,8 @@ public class EsTest {
             e.printStackTrace();
         }
     }
+    @Test
+    public void hsCodeTest(){
+
+    }
 }
