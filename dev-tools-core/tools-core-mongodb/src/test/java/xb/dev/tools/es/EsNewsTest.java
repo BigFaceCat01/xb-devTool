@@ -9,6 +9,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,8 @@ import xb.dev.tools.api.es.entity.EsNewsEntity;
 import xb.dev.tools.api.es.provider.EsNewsClient;
 import xb.dev.tools.common.Result;
 import xb.dev.tools.mongodb.MongodbApplication;
+import xb.dev.tools.mongodb.config.ExpirationMessageConfig;
+import xb.dev.tools.mongodb.config.RabbitConfig;
 import xb.dev.tools.mongodb.model.HSCodeCatagoryModel;
 import xb.dev.tools.mongodb.task.HSDataGrabTask;
 import xb.dev.tools.mongodb.task.HSDataSaveTask;
@@ -37,10 +40,28 @@ public class EsNewsTest {
     private HSDataSaveTask hsDataSaveTask;
     @Autowired
     private EsNewsClient esNewsClient;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
     @Test
     public void testFeign(){
         Result<List<EsNewsEntity>> a = esNewsClient.listBy("中国",null,null);
         System.out.println();
+    }
+
+    /**
+     * 延时队列单元测试
+     */
+    @Test
+    public void testDelayMessage(){
+        //设置消息1000毫秒后过期
+        long expire = 1000L;
+        rabbitTemplate.convertAndSend(RabbitConfig.DELAY_QUEUE, (Object) "{\"message\":\"this is a test message\"}",new ExpirationMessageConfig(expire));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("2s后.....");
     }
     @Test
     public void downHSCode(){

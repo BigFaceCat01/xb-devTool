@@ -1,9 +1,8 @@
 package xb.dev.tools.mongodb.config;
 
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,7 +24,64 @@ public class RabbitConfig {
     public static final String ROUTING_NEWS_UPDATE = "mongo.routing.news.update";
     public static final String ROUTING_NEWS_DELETE = "mongo.routing.news.delete";
 
+    /**
+     * 延迟队列
+     */
+    public static final String DELAY_QUEUE = "mongo.queue.delay";
+    /**
+     * 延迟后实际消费队列
+     */
+    public static final String DELAY_CONSUME_QUEUE = "mongo.queue.delay.consume";
+    /**
+     * 消息延迟后转发到实际消费队列的交换机
+     */
+    public static final String DELAY_EXCHANGE_CONSUME = "mongo.exchange.delay.consume";
+    /**
+     * 消息延迟后转发到实际消费队列的交换机
+     */
+    public static final String DELAY_EXCHANGE = "mongo.exchange.delay";
+    /**
+     * 转发路由
+     */
+    public static final String DELAY_ROUTING_KEY = "mongo.routing.key.delay";
 
+
+
+    @Bean
+    public Queue delayQueue(){
+        return QueueBuilder.durable(DELAY_QUEUE)
+                .withArgument("x-dead-letter-exchange",DELAY_EXCHANGE_CONSUME)
+                .withArgument("x-dead-letter-routing-key",DELAY_ROUTING_KEY)
+                .build();
+    }
+
+    @Bean
+    public Queue delayConsumeQueue() {
+        return new Queue(DELAY_CONSUME_QUEUE);
+    }
+
+    @Bean
+    public DirectExchange delayConsumeDirectExchange(){
+        return new DirectExchange(DELAY_EXCHANGE_CONSUME);
+    }
+    @Bean
+    public DirectExchange delayDirectExchange(){
+        return new DirectExchange(DELAY_EXCHANGE);
+    }
+
+    @Bean
+    Binding dlxConsumeBinding(Queue delayConsumeQueue, DirectExchange delayConsumeDirectExchange) {
+        return BindingBuilder.bind(delayConsumeQueue)
+                .to(delayConsumeDirectExchange)
+                .with(DELAY_ROUTING_KEY);
+    }
+
+    @Bean
+    Binding dlxBinding(Queue delayQueue, DirectExchange delayDirectExchange) {
+        return BindingBuilder.bind(delayQueue)
+                .to(delayDirectExchange)
+                .with("delay.key");
+    }
 
     @Bean
     public Queue newsInsertQueue() {
@@ -69,4 +125,6 @@ public class RabbitConfig {
     public Binding bindingDirectExchangeProductDeleteQueue(Queue newsDeleteQueue,DirectExchange newsDeleteDirectExchange){
         return BindingBuilder.bind(newsDeleteQueue).to(newsDeleteDirectExchange).with(ROUTING_NEWS_DELETE);
     }
+
+
 }
