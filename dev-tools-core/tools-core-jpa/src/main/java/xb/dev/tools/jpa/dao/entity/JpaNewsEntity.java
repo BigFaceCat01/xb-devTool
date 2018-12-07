@@ -1,5 +1,7 @@
 package xb.dev.tools.jpa.dao.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -10,6 +12,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "xb_news", schema = "test", catalog = "")
+@Data
 public class JpaNewsEntity implements Serializable {
     /**
      * 新闻id
@@ -86,8 +89,8 @@ public class JpaNewsEntity implements Serializable {
      * 是否已删除
      */
     @Basic
-    @Column(name = "deleteFlag")
-    private Boolean deleteFlag;
+    @Column(name = "delete_flag")
+    private Byte deleteFlag;
     @Basic
     @Column(name = "user_id")
     private Integer userId;

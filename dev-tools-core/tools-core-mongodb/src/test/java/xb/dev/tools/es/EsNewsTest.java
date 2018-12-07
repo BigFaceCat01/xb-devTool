@@ -2,9 +2,11 @@ package xb.dev.tools.es;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
@@ -68,17 +70,22 @@ public class EsNewsTest {
         //从excel表格中获得待查询词组列表
 //        buildWordsFromExcel("D:/hs-catagory-02.xlsx");
         //读取词组，爬取网页结果
-        ArrayBlockingQueue<HSCodeCatagoryModel> dataQueue = new ArrayBlockingQueue<>(100);
-        hsDataSaveTask.setDataQueue(dataQueue);
-        Thread save = new Thread(hsDataSaveTask);
+//        ArrayBlockingQueue<HSCodeCatagoryModel> dataQueue = new ArrayBlockingQueue<>(100);
+//        hsDataSaveTask.setDataQueue(dataQueue);
+//        Thread save = new Thread(hsDataSaveTask);
 //        Thread grab = new Thread(new HSDataGrabTask(dataQueue,save));
-        save.start();
+//        save.start();
 //        grab.start();
         //生成excel
+
     }
 
     public static void main(String[] args){
-        buildWordsFromExcel("D:/hs-catagory-02.xlsx");
+//        buildWordsFromExcel("D:/hs-catagory-02.xlsx");
+        Map<String,Object> map = new HashMap<>();
+        map.put(null,null);
+        List<String> strings = new ArrayList<>();
+        strings.stream().collect(Collectors.toMap(key->key,value->value));
     }
 
     /**
