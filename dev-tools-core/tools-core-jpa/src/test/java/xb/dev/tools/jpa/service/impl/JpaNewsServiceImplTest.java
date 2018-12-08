@@ -10,7 +10,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import xb.dev.tools.jpa.JpaApplication;
 import xb.dev.tools.jpa.dao.entity.JpaNewsEntity;
 import xb.dev.tools.jpa.dao.entity.QJpaNewsEntity;
+import xb.dev.tools.jpa.util.DateUtils;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,5 +40,13 @@ public class JpaNewsServiceImplTest {
                 .fetch();
         Map<Integer, Long> countMap = fetch.stream().collect(Collectors.toMap(key -> key.get(qJpaNewsEntity.userId), value -> value.get(qJpaNewsEntity.userId.count())));
         System.out.println();
+    }
+
+    public static void main(String[] args) {
+        Calendar calendar = Calendar.getInstance();
+//        calendar.add(Calendar.MONTH,1);
+        calendar.add(Calendar.MONTH,-1);
+        Date expire = DateUtils.getSpecifiedDayFromNow(DateUtils.TYPE_AFTER, 30);
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.getTime()));
     }
 }
