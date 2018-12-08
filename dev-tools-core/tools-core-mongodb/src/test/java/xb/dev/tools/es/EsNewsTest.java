@@ -2,13 +2,16 @@ package xb.dev.tools.es;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +22,8 @@ import xb.dev.tools.api.es.entity.EsNewsEntity;
 import xb.dev.tools.api.es.provider.EsNewsClient;
 import xb.dev.tools.common.Result;
 import xb.dev.tools.mongodb.MongodbApplication;
+import xb.dev.tools.mongodb.config.ExpirationMessageConfig;
+import xb.dev.tools.mongodb.config.RabbitConfig;
 import xb.dev.tools.mongodb.model.HSCodeCatagoryModel;
 import xb.dev.tools.mongodb.task.HSDataGrabTask;
 import xb.dev.tools.mongodb.task.HSDataSaveTask;
@@ -37,27 +42,50 @@ public class EsNewsTest {
     private HSDataSaveTask hsDataSaveTask;
     @Autowired
     private EsNewsClient esNewsClient;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
     @Test
     public void testFeign(){
         Result<List<EsNewsEntity>> a = esNewsClient.listBy("中国",null,null);
         System.out.println();
+    }
+
+    /**
+     * 延时队列单元测试
+     */
+    @Test
+    public void testDelayMessage(){
+        //设置消息1000毫秒后过期
+        long expire = 1000L;
+        rabbitTemplate.convertAndSend(RabbitConfig.DELAY_QUEUE, (Object) "{\"message\":\"this is a test message\"}",new ExpirationMessageConfig(expire));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("2s后.....");
     }
     @Test
     public void downHSCode(){
         //从excel表格中获得待查询词组列表
 //        buildWordsFromExcel("D:/hs-catagory-02.xlsx");
         //读取词组，爬取网页结果
-        ArrayBlockingQueue<HSCodeCatagoryModel> dataQueue = new ArrayBlockingQueue<>(100);
-        hsDataSaveTask.setDataQueue(dataQueue);
-        Thread save = new Thread(hsDataSaveTask);
+//        ArrayBlockingQueue<HSCodeCatagoryModel> dataQueue = new ArrayBlockingQueue<>(100);
+//        hsDataSaveTask.setDataQueue(dataQueue);
+//        Thread save = new Thread(hsDataSaveTask);
 //        Thread grab = new Thread(new HSDataGrabTask(dataQueue,save));
-        save.start();
+//        save.start();
 //        grab.start();
         //生成excel
+
     }
 
     public static void main(String[] args){
-        buildWordsFromExcel("D:/hs-catagory-02.xlsx");
+//        buildWordsFromExcel("D:/hs-catagory-02.xlsx");
+        Map<String,Object> map = new HashMap<>();
+        map.put(null,null);
+        List<String> strings = new ArrayList<>();
+        strings.stream().collect(Collectors.toMap(key->key,value->value));
     }
 
     /**

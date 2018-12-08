@@ -3,12 +3,15 @@ package xb.dev.tools.mongodb.controller;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xb.dev.tools.common.PageModule;
 import xb.dev.tools.common.Result;
 import xb.dev.tools.mongodb.base.BaseController;
 import xb.dev.tools.mongodb.code.CodeEnum;
+import xb.dev.tools.mongodb.config.ExpirationMessageConfig;
+import xb.dev.tools.mongodb.config.RabbitConfig;
 import xb.dev.tools.mongodb.model.MongoNewsBasicInfo;
 import xb.dev.tools.mongodb.model.MongoNewsInsertModel;
 import xb.dev.tools.mongodb.model.MongoNewsListModel;
@@ -27,6 +30,8 @@ import javax.validation.Valid;
 public class MongoNewsController extends BaseController {
     @Autowired
     private MongoNewsService mongoNewsService;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @ApiOperation(value = "添加一个新闻到mongodb上-huangxb",httpMethod = "POST")
     @ApiImplicitParams({
@@ -90,6 +95,16 @@ public class MongoNewsController extends BaseController {
     @GetMapping("hsCode/site")
     public Result<Void> hsCodeSite(){
         mongoNewsService.hsCodeTest();
+        return Result.build(CodeEnum.SUCCESS.getCode());
+    }
+
+    @ApiOperation(value = "测试延时队列",httpMethod = "GET")
+    @GetMapping("/delay/queue")
+    public Result<Void> delayQueue(){
+        long expire = 3000L;
+        String msg = "{\"message\":\"this is a test message\"}";
+        System.out.println("发送消息:"+msg);
+        rabbitTemplate.convertAndSend(RabbitConfig.DELAY_EXCHANGE,"delay.key", msg,new ExpirationMessageConfig(expire));
         return Result.build(CodeEnum.SUCCESS.getCode());
     }
 

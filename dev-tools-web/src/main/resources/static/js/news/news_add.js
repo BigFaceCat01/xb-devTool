@@ -90,6 +90,56 @@ var addNews = new Vue({
                     }
                 }
             });
+        },
+        test:function () {
+            var name;
+            if(false){
+                name = "";
+            }
+            var data={"name":"aaaaaa"};
+
+            var url = "http://localhost:19098/news/test?name=123";
+            var d = JSON.stringify(data);
+            $.ajax({
+                headers: {
+                    "Content-type": "application/json; charset=utf-8"
+                },
+                type: "GET",
+                url:url,
+                success: function (res) {
+                    if(res.code=="0"){
+
+                    }else {
+                        newsDetail.$message.error(res.msg);
+                    }
+                }
+            });
+        },
+        exportExcel:function () {
+            var name;
+            if(false){
+                name = "";
+            }
+            var data={"data":[],"header":{},"format":"","request":{"pageNum":1,"pageSize":10}};
+
+            var url = "http://localhost:8088/brands/export";
+            var d = JSON.stringify(data);
+            $.ajax({
+                headers: {
+                    "Content-type": "application/json; charset=utf-8",
+                    "X-AUTH-USERID":1
+                },
+                data:d,
+                type: "POST",
+                url:url,
+                success: function (res) {
+                    if(res.code=="0"){
+
+                    }else {
+                        newsDetail.$message.error(res.msg);
+                    }
+                }
+            });
         }
     }
 });
