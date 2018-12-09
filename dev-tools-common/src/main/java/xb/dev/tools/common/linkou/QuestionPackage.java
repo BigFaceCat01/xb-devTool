@@ -76,4 +76,57 @@ public final class QuestionPackage {
         System.out.println("最长子串："+ maxLengthSubString);
         System.out.println("最长子串长度："+ maxLength);
     }
+
+    /**
+     * 题目 2
+     * 给定两个大小为 m 和 n 的有序数组 nums1 和 nums2
+     * 请你找出这两个有序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
+     * 你可以假设 nums1 和 nums2 不会同时为空。
+     *
+     * nums1 = [1, 2]
+     * nums2 = [3, 4]
+     * 则中位数是 (2 + 3)/2 = 2.5
+     *
+     * @param num1
+     * @param num2
+     */
+    public static void question_two(int[] num1,int[] num2){
+        //获得两个数组的长度
+        int len = num1.length;
+        int len2 = num2.length;
+        if(num1[len -1] <= num2[0]){
+            //如果num1的最大值小于等于num2的最小值
+
+        }else if(num1[0] >= num2[len2 -1]){
+            //如果num1的最小值大于等于num2的最大值
+
+        }
+        //获得num1,num2较大的一组
+        int[] max = num1[0] >= num2[0] ? num1 : num2;
+        int[] min = num1[0] >= num2[0] ? num2 : num1;
+        //获得中位数索引
+        int[] index ;
+        int indexCount = 0;
+        if(len + len2 % 2 == 0){
+            //总长度为偶数，中位数用中间两个数求得
+            index = new int[]{((len + len2) /2 -1),(len + len2) / 2};
+            indexCount = 2;
+        }else {
+            //总长度为奇数，中位数等于中间那个数
+            index = new int[]{(len + len2) /2};
+            indexCount = 1;
+        }
+        int left = 0, right = min.length , middle;
+        while (true){
+            middle = (left + right) / 2;
+            if(min[middle] > max[0]){
+                right = middle;
+            }else {
+                left = middle;
+            }
+            if(right - left == 1){
+                break;
+            }
+        }
+    }
 }
