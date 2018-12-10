@@ -1,5 +1,7 @@
 package xb.dev.tools.common.linkou;
 
+import sun.security.util.Length;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -94,6 +96,20 @@ public final class QuestionPackage {
         //获得两个数组的长度
         int len = num1.length;
         int len2 = num2.length;
+        boolean numLeft = false;
+        boolean num2Left = false;
+        //判断两个数组的有序性状态，从小到大，或者从大到小
+        if(num1[0] <= num1[len -1]){
+            //从小到大
+            numLeft = true;
+        }
+        if(num2[0]<=num2[len2 - 1]){
+            //从小到大
+            num2Left = true;
+        }
+        //存储两个数组最终排序结果
+        int[] temp = new int[len+len2];
+
         if(num1[len -1] <= num2[0]){
             //如果num1的最大值小于等于num2的最小值
 
