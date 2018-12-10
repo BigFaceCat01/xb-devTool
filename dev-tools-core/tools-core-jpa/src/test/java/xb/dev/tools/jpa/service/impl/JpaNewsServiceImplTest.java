@@ -2,6 +2,7 @@ package xb.dev.tools.jpa.service.impl;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.hibernate.dialect.Dialect;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import xb.dev.tools.jpa.JpaApplication;
 import xb.dev.tools.jpa.dao.entity.JpaNewsEntity;
 import xb.dev.tools.jpa.dao.entity.QJpaNewsEntity;
+import xb.dev.tools.jpa.dao.repository.JpaNewsRepository;
 import xb.dev.tools.jpa.util.DateUtils;
 
 import java.text.SimpleDateFormat;
@@ -32,13 +34,21 @@ import static org.junit.Assert.*;
 public class JpaNewsServiceImplTest {
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
+    @Autowired
+    private JpaNewsRepository jpaNewsRepository;
     @Test
     public void queryOne() {
         QJpaNewsEntity qJpaNewsEntity = QJpaNewsEntity.jpaNewsEntity;
-        List<Tuple> fetch = jpaQueryFactory.select(qJpaNewsEntity.userId, qJpaNewsEntity.userId.count())
+        List<JpaNewsEntity> fetch = jpaQueryFactory.select(qJpaNewsEntity)
                 .from(qJpaNewsEntity)
+                .where(qJpaNewsEntity.createTime.loe(new Date()))
                 .fetch();
-        Map<Integer, Long> countMap = fetch.stream().collect(Collectors.toMap(key -> key.get(qJpaNewsEntity.userId), value -> value.get(qJpaNewsEntity.userId.count())));
+        System.out.println();
+    }
+
+    @Test
+    public void testQueryAnotation() {
+        List<String> strings = jpaNewsRepository.testQuery(new Date());
         System.out.println();
     }
 
