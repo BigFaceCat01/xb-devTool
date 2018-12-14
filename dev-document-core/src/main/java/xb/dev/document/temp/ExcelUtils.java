@@ -1,11 +1,14 @@
 package xb.dev.document.temp;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xb.dev.document.DocumentUtil;
 import xb.dev.document.exception.DocumentHandlerException;
 import xb.dev.document.handler.impl.DefaultExcelHandle;
+import xb.dev.document.model.BackCategoryData;
+import xb.dev.document.model.CategoryModel;
 import xb.dev.document.model.HSCatagoryModel;
 
 import java.io.*;
@@ -51,9 +54,11 @@ public class ExcelUtils {
 
     public static void main(String[] args) throws Exception {
         //海关编码类目
-        hsCatagory();
+//        hsCatagory();
         //添加类目
 //        category();
+        //添加类目
+        backCategory();
         //添加参数
 //        prop();
         //添加商品参数
@@ -169,27 +174,127 @@ public class ExcelUtils {
     }
 
     public static void category() throws Exception{
-        Map<String,List<CategoryData>> map = excelParse(CategoryData.class,"D:/category_1.xlsx",logger);
+        Map<String,List<CategoryData>> map = excelParse(CategoryData.class,"D:/category-2.0.0.xlsx",logger);
+        List<CategoryModel> categoryModels = new ArrayList<>(32);
+        CategoryModel zero = null;
+        CategoryModel one = null;
+        CategoryModel two = null;
+        List<CategoryData> result = map.get("前台类目模板");
+            for (CategoryData c : result) {
+                if (c.getZero() != null && (!"".equals(c.getZero().trim()))) {
+                    CategoryModel categoryModel = new CategoryModel();
+                    categoryModel.setCategoryNameCn(c.getZero());
+                    categoryModel.setGetCategoryNameEn(c.getZeroEn());
+                    categoryModel.setSort(1);
+                    zero = categoryModel;
+                    categoryModels.add(categoryModel);
+                }
+                if (c.getOne() != null && (!"".equals(c.getOne().trim()))) {
+                    CategoryModel categoryModel = new CategoryModel();
+                    categoryModel.setCategoryNameCn(c.getOne());
+                    categoryModel.setGetCategoryNameEn(c.getOneEn());
+                    categoryModel.setSort(1);
+                    if (zero.getChilds() == null) {
+                        List<CategoryModel> list = new ArrayList<>();
+                        list.add(categoryModel);
+                        zero.setChilds(list);
+                    } else {
+                        zero.getChilds().add(categoryModel);
+                    }
+                    one = categoryModel;
+                }
+                if (c.getTwo() != null && (!"".equals(c.getTwo().trim()))) {
+                    CategoryModel categoryModel = new CategoryModel();
+                    categoryModel.setCategoryNameCn(c.getTwo());
+                    categoryModel.setGetCategoryNameEn(c.getTwoEn());
+                    categoryModel.setSort(1);
+                    if (one.getChilds() == null) {
+                        List<CategoryModel> list = new ArrayList<>();
+                        list.add(categoryModel);
+                        one.setChilds(list);
+                    } else {
+                        one.getChilds().add(categoryModel);
+                    }
+                    two = categoryModel;
+                }
+                if (c.getRelated() != null && (!"".equals(c.getRelated().trim()))) {
+                    if (two.getRelated() == null) {
+                        List<String> list = new ArrayList<>();
+                        list.add(c.getRelated());
+                        two.setRelated(list);
+                    } else {
+                        two.getRelated().add(c.getRelated());
+                    }
+                }
+            }
+        OutputStream os = new FileOutputStream("D:\\category-2.0.0.json");
+        JSON.writeJSONString(os,categoryModels);
+        os.close();
+        System.out.println();
+    }
 
-        int zero = 0;
-        int one = 0;
-        int two = 0;
-        int  three= 0;
-        List<CategoryData> result = map.get("零级+一级+二级+三级");
-        for(CategoryData c:result){
-            if (c.getZero()!=null&&(!"".equals(c.getZero().trim()))) {
-                zero = getId(c.getZero(),0);
+    public static void backCategory() throws Exception{
+        Map<String,List<BackCategoryData>> map = excelParse(BackCategoryData.class,"D:/category-2.0.0.xlsx",logger);
+        List<CategoryModel> categoryModels = new ArrayList<>(32);
+        CategoryModel zero = null;
+        CategoryModel one = null;
+        CategoryModel two = null;
+        List<BackCategoryData> result = map.get("后台类目模板");
+        for (BackCategoryData c : result) {
+            if (c.getZero() != null && (!"".equals(c.getZero().trim()))) {
+                CategoryModel categoryModel = new CategoryModel();
+                categoryModel.setCategoryNameCn(c.getZero());
+                categoryModel.setGetCategoryNameEn(c.getZeroEn());
+                categoryModel.setSort(1);
+                zero = categoryModel;
+                categoryModels.add(categoryModel);
             }
-            if (c.getOne()!=null&&(!"".equals(c.getOne().trim()))) {
-                one = getId(c.getOne(),zero);
+            if (c.getOne() != null && (!"".equals(c.getOne().trim()))) {
+                CategoryModel categoryModel = new CategoryModel();
+                categoryModel.setCategoryNameCn(c.getOne());
+                categoryModel.setGetCategoryNameEn(c.getOneEn());
+                categoryModel.setSort(1);
+                if (zero.getChilds() == null) {
+                    List<CategoryModel> list = new ArrayList<>();
+                    list.add(categoryModel);
+                    zero.setChilds(list);
+                } else {
+                    zero.getChilds().add(categoryModel);
+                }
+                one = categoryModel;
             }
-            if (c.getTwo()!=null&&(!"".equals(c.getTwo().trim()))) {
-                two = getId(c.getTwo(),one);
+            if (c.getTwo() != null && (!"".equals(c.getTwo().trim()))) {
+                CategoryModel categoryModel = new CategoryModel();
+                categoryModel.setCategoryNameCn(c.getTwo());
+                categoryModel.setGetCategoryNameEn(c.getTwoEn());
+                categoryModel.setSort(1);
+                if (one.getChilds() == null) {
+                    List<CategoryModel> list = new ArrayList<>();
+                    list.add(categoryModel);
+                    one.setChilds(list);
+                } else {
+                    one.getChilds().add(categoryModel);
+                }
+                two = categoryModel;
             }
-            if (c.getThree()!=null&&(!"".equals(c.getThree().trim()))) {
-                three = getId(c.getThree(),two);
+            if (c.getThree() != null && (!"".equals(c.getThree().trim()))) {
+                CategoryModel categoryModel = new CategoryModel();
+                categoryModel.setCategoryNameCn(c.getThree());
+                categoryModel.setGetCategoryNameEn(c.getThreeEn());
+                categoryModel.setSort(1);
+                if (two.getChilds() == null) {
+                    List<CategoryModel> list = new ArrayList<>();
+                    list.add(categoryModel);
+                    two.setChilds(list);
+                } else {
+                    two.getChilds().add(categoryModel);
+                }
             }
         }
+        OutputStream os = new FileOutputStream("D:\\backCategory-2.0.0.json");
+        JSON.writeJSONString(os,categoryModels);
+        os.close();
+        System.out.println();
     }
 
     public static void insertProp(String propName, String categoryName1, String categoryName2, String categoryName3){

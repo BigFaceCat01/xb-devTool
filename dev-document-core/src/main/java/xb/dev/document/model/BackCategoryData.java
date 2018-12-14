@@ -1,8 +1,8 @@
-package xb.dev.document.temp;
+package xb.dev.document.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import xb.dev.document.temp.Excel;
+import xb.dev.document.temp.TableHead;
 
 import java.io.Serializable;
 
@@ -11,8 +11,8 @@ import java.io.Serializable;
  * @Description:
  */
 @Data
-@Excel(sheetFrom = 0,sheetTo = 1)
-public class CategoryData implements Serializable {
+@Excel(sheetFrom = 1,sheetTo = 2)
+public class BackCategoryData implements Serializable {
     @TableHead(name = "一级类目的中文名称")
     private String zero;
     @TableHead(name = "一级类目英文名称")
@@ -25,6 +25,8 @@ public class CategoryData implements Serializable {
     private String two;
     @TableHead(name = "三级类目英文名称")
     private String twoEn;
-    @TableHead(name = "四级关联类目中文")
-    private String related;
+    @TableHead(name = "四级类目的中文名称")
+    private String three;
+    @TableHead(name = "四级类目英文名称")
+    private String threeEn;
 }
