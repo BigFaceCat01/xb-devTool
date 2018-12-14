@@ -1,6 +1,8 @@
 package xb.dev.tools.jpa.service.impl;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.NullExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.hibernate.dialect.Dialect;
 import org.junit.Test;
@@ -8,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import xb.dev.tools.jpa.JpaApplication;
 import xb.dev.tools.jpa.dao.entity.JpaNewsEntity;
 import xb.dev.tools.jpa.dao.entity.QJpaNewsEntity;
@@ -37,12 +40,23 @@ public class JpaNewsServiceImplTest {
     @Autowired
     private JpaNewsRepository jpaNewsRepository;
     @Test
+    @Transactional(rollbackFor = Exception.class)
     public void queryOne() {
         QJpaNewsEntity qJpaNewsEntity = QJpaNewsEntity.jpaNewsEntity;
-        List<JpaNewsEntity> fetch = jpaQueryFactory.select(qJpaNewsEntity)
-                .from(qJpaNewsEntity)
-                .where(qJpaNewsEntity.createTime.loe(new Date()))
-                .fetch();
+//        List<JpaNewsEntity> fetch = jpaQueryFactory.select(qJpaNewsEntity)
+//                .from(qJpaNewsEntity)
+//                .where(qJpaNewsEntity.createTime.loe(new Date()))
+//                .fetch();
+//        System.out.println();
+//        List<JpaNewsEntity> fetch = jpaQueryFactory.selectFrom(qJpaNewsEntity)
+//                .where(qJpaNewsEntity.newsId.startsWith("AB"))
+//                .fetch();
+        JpaNewsEntity jpaNewsEntity = jpaQueryFactory.selectFrom(qJpaNewsEntity).where(qJpaNewsEntity.id.eq(6)).fetchOne();
+        String s = null;
+        jpaQueryFactory.update(qJpaNewsEntity)
+                .setNull(qJpaNewsEntity.title)
+                .where(qJpaNewsEntity.id.eq(6))
+                .execute();
         System.out.println();
     }
 

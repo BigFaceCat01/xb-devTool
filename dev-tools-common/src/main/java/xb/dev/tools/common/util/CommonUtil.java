@@ -1,10 +1,16 @@
 package xb.dev.tools.common.util;
 
+import java.util.Optional;
+
 /**
  * @author Created by huang xiao bao
  * @date 2018-12-10 17:42:41
  */
 public class CommonUtil {
+
+    public static void main(String[] args) {
+        System.out.println(Optional.<Integer>ofNullable(null).filter(item->item>0).orElse(1));
+    }
 
     private CommonUtil(){}
     /**
