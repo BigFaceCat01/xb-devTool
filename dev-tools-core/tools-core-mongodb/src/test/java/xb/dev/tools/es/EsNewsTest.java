@@ -82,10 +82,16 @@ public class EsNewsTest {
 
     public static void main(String[] args){
 //        buildWordsFromExcel("D:/hs-catagory-02.xlsx");
-        Map<String,Object> map = new HashMap<>();
-        map.put(null,null);
-        List<String> strings = new ArrayList<>();
-        strings.stream().collect(Collectors.toMap(key->key,value->value));
+//        Map<String,Object> map = new HashMap<>();
+//        map.put(null,null);
+//        List<String> strings = new ArrayList<>();
+//        strings.stream().collect(Collectors.toMap(key->key,value->value));
+        try{
+            String[] s = new String[0];
+            System.out.println(s[1]);
+        }catch (Exception e){
+            System.out.println(e.getStackTrace()[0]);
+        }
     }
 
     /**
