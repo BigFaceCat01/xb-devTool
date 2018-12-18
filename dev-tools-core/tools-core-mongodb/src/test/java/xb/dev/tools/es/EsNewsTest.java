@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
@@ -86,12 +87,21 @@ public class EsNewsTest {
 //        map.put(null,null);
 //        List<String> strings = new ArrayList<>();
 //        strings.stream().collect(Collectors.toMap(key->key,value->value));
-        try{
-            String[] s = new String[0];
-            System.out.println(s[1]);
-        }catch (Exception e){
-            System.out.println(e.getStackTrace()[0]);
-        }
+//        try{
+//            String[] s = new String[0];
+//            System.out.println(s[1]);
+//        }catch (Exception e){
+//            System.out.println(e.getStackTrace()[0]);
+//        }
+        List<Integer> in = new ArrayList<>();
+        in.add(1);
+        in.add(2);
+        in.add(3);
+        in.add(4);
+        in.stream().filter(v -> v > 2).collect(Collectors.toList());
+        AtomicInteger atomicInteger = new AtomicInteger(10000);
+        System.out.println(atomicInteger.getAndIncrement());
+        System.out.println(atomicInteger.getAndIncrement());
     }
 
     /**

@@ -104,7 +104,8 @@ public class MongoNewsController extends BaseController {
         long expire = 3000L;
         String msg = "{\"message\":\"this is a test message\"}";
         System.out.println("发送消息:"+msg);
-        rabbitTemplate.convertAndSend(RabbitConfig.DELAY_EXCHANGE,"delay.key", msg,new ExpirationMessageConfig(expire));
+        Integer s = 1;
+        rabbitTemplate.convertAndSend(RabbitConfig.DELAY_EXCHANGE,"delay.key", s,new ExpirationMessageConfig(expire));
         return Result.build(CodeEnum.SUCCESS.getCode());
     }
 

@@ -110,6 +110,7 @@ public class MongoNewsServiceImpl implements MongoNewsService {
         Update update = new Update();
         update.set("deleteFlag",NewsContants.NEWS_DELETE);
         update.set("updateTime",new Date());
+
         mongoTemplate.updateFirst(query,update,MongoNewsModel.class);
     }
 

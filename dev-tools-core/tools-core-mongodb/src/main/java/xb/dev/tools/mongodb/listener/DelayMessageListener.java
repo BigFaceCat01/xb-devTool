@@ -1,10 +1,15 @@
 package xb.dev.tools.mongodb.listener;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.MessageProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import xb.dev.tools.mongodb.config.RabbitConfig;
+
+import java.io.IOException;
 
 /**
  * @author Created by huang xiao bao
@@ -16,7 +21,12 @@ import xb.dev.tools.mongodb.config.RabbitConfig;
 public class DelayMessageListener {
 
     @RabbitHandler
-    public void process(String msg){
+    public void process(String msg, Channel channel, Message message){
         log.info("收到消息:{}",msg);
+        try {
+            channel.basicReject(message.getMessageProperties().getDeliveryTag(),false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
