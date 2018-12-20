@@ -178,6 +178,10 @@ public class ExcelHandler<T> {
                         //结束当前循环
                         break;
                     };
+                    if(current.getRow(rowIndex) == null){
+                        add = false;
+                        break;
+                    }
                     if(current.getRow(rowIndex).getLastCellNum()<0){
                         add=false;
                         break;

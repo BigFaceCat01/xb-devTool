@@ -9,6 +9,7 @@ var addNews = new Vue({
             source:'',
             type:''
         },
+        fileList:[],
         typeOptions:[
             {
             value:'technology',
@@ -40,6 +41,13 @@ var addNews = new Vue({
         }
     },
     methods:{
+        beforeUpload:function(file){
+            console.log(file);
+            return false;
+        },
+        defineUpload:function(){
+            console.log(123132132)
+        },
         clear:function(){
             this.newsInfo.type = '';
             this.newsInfo.body = '';
@@ -141,7 +149,8 @@ var addNews = new Vue({
                 }
             });
         }
-    }
+    },
+
 });
 
 //editor
