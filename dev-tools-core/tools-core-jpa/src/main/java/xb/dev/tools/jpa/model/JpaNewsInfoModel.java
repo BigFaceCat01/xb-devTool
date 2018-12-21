@@ -77,7 +77,7 @@ public class JpaNewsInfoModel implements Serializable {
      * 是否已删除
      */
     @ApiModelProperty("是否已删除")
-    private Boolean deleteFlag;
+    private Byte deleteFlag;
     /**
      * 用户id
      */

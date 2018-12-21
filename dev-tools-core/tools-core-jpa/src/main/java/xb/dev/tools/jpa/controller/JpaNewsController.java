@@ -5,16 +5,21 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xb.dev.tools.common.Result;
 import xb.dev.tools.jpa.code.CodeEnum;
 import xb.dev.tools.jpa.dao.entity.QJpaNewsEntity;
 import xb.dev.tools.jpa.model.JpaNewsInfoModel;
+import xb.dev.tools.jpa.model.NewsSaveModel;
+import xb.dev.tools.jpa.model.request.NewsQueryRequest;
 import xb.dev.tools.jpa.service.JpaNewsService;
+import xb.dev.tools.jpa.service.impl.NewsUpsertService;
+
+import java.util.List;
 
 /**
  * @author Created by huangxb
@@ -28,6 +33,8 @@ public class JpaNewsController {
 
     @Autowired
     private JpaNewsService jpaNewsService;
+    @Autowired
+    private NewsUpsertService newsUpsertService;
 
     @ApiOperation(value = "查询新闻详情",httpMethod = "GET")
     @ApiImplicitParams(
@@ -43,6 +50,19 @@ public class JpaNewsController {
     public Result<Void> queryInfoBySnT(){
         testTra();
         return Result.build("0");
+    }
+    @ApiOperation(value = "新增新闻")
+    @ApiImplicitParam(paramType = "body" , dataType = "NewsSaveModel",name = "saveModel",value = "新闻信息")
+    @PostMapping("")
+    public Result<Void> insert(@RequestBody NewsSaveModel saveModel){
+        newsUpsertService.insert(saveModel,1);
+        return Result.build(CodeEnum.SUCCESS.getCode());
+    }
+
+    @ApiOperation(value = "查询所有新闻")
+    @GetMapping("")
+    public Result<List<JpaNewsInfoModel>> listAll(NewsQueryRequest request){
+        return Result.build(CodeEnum.SUCCESS.getCode(), jpaNewsService.listAll(request));
     }
 
     private void testTra(){
