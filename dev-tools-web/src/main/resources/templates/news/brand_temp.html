@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻详情</title>
+    <link type="text/css" rel="stylesheet" href="/plugs/element/index.css" />
+    <style>
+
+        .image {
+            width: 100%;
+            display: block;
+        }
+        #las:last-child{margin-left:0px}
+    </style>
+</head>
+<body>
+    <div id="news_detail">
+        <el-row :span="24">
+            <el-col :span="12" :offset="4">
+
+                <el-row>
+                    <el-table
+                            :data="newsInfo"
+                            style="width: 100%">
+
+                        <el-table-column
+                                prop="url"
+                                label="图片"
+                                width="180">
+                            <template slot-scope="scope">
+                                <img :src="scope.row.url"  style="width: 100px;height: 100px">
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="id"
+                                label="编号"
+                                width="180">
+                        </el-table-column>
+                        <el-table-column
+                                prop="操作"
+                                label="地址">
+                            <template slot-scope="scope">
+                                <el-button @click="registButton(scope.row)" type="text" size="small">商标注册证</el-button>
+                                <el-button @click="supplyButton(scope.row)" type="text" size="small">补充材料</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-row>
+            </el-col>
+        </el-row>
+    </div>
+    <script type="text/javascript" src="/js/util.js"></script>
+    <script type="text/javascript" src="/plugs/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/plugs/vue.min-2.5.13.js"></script>
+    <script type="text/javascript" src="/plugs/element/index.js"></script>
+    <script type="text/javascript" src="/js/news/brand_temp.js"></script>
+
+</body>
+</html>
