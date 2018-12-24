@@ -5,7 +5,8 @@ var newsDetail = new Vue({
     data:{
         newsInfo:[{
             url:'http://element-cn.eleme.io/static/hamburger.50e4091.png',
-            id:1
+            id:1,
+            type:-1
         }],
         type:'',
         currentDate:new Date(),
@@ -36,7 +37,7 @@ var newsDetail = new Vue({
         },
         supplyButton:function(row){
             console.log(row);
-
+            row.type=3;
         },
         queryInfo:function () {
             var url = "http://localhost:19094/mongo/news/brand";

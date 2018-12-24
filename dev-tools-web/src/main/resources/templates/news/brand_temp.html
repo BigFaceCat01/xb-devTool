@@ -40,8 +40,8 @@
                                 prop="操作"
                                 label="地址">
                             <template slot-scope="scope">
-                                <el-button @click="registButton(scope.row)" type="text" size="small">商标注册证</el-button>
-                                <el-button @click="supplyButton(scope.row)" type="text" size="small">补充材料</el-button>
+                                <el-button v-if="scope.row.type==-1" @click="registButton(scope.row)" type="text" size="small">商标注册证</el-button>
+                                <el-button v-if="scope.row.type==-1"  @click="supplyButton(scope.row)" type="text" size="small">补充材料</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
