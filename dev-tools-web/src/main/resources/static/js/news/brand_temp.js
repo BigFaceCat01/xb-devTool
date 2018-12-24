@@ -36,6 +36,7 @@ var newsDetail = new Vue({
         },
         supplyButton:function(row){
             console.log(row);
+
         },
         queryInfo:function () {
             var url = "http://localhost:19094/mongo/news/brand";
