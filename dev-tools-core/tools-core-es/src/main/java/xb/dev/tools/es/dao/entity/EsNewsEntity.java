@@ -3,9 +3,9 @@ package xb.dev.tools.es.dao.entity;
 import lombok.Data;
 
 import javax.persistence.Id;
-import java.util.List;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Created by huangxb

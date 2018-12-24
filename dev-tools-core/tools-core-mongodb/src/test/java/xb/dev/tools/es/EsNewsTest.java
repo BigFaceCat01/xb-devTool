@@ -1,13 +1,4 @@
 package xb.dev.tools.es;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
@@ -25,11 +16,16 @@ import xb.dev.tools.common.Result;
 import xb.dev.tools.mongodb.MongodbApplication;
 import xb.dev.tools.mongodb.config.ExpirationMessageConfig;
 import xb.dev.tools.mongodb.config.RabbitConfig;
-import xb.dev.tools.mongodb.model.HSCodeCatagoryModel;
-import xb.dev.tools.mongodb.task.HSDataGrabTask;
 import xb.dev.tools.mongodb.task.HSDataSaveTask;
 
 import javax.validation.constraints.NotNull;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * @author Created by huangxb

@@ -1,7 +1,6 @@
 package xb.dev.document.temp;
 
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @Author: Created by huangxb on 2018-08-23 16:46:16

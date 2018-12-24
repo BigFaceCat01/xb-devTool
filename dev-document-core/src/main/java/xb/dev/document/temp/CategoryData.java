@@ -1,8 +1,6 @@
 package xb.dev.document.temp;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 

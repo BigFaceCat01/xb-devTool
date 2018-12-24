@@ -2,9 +2,6 @@ package xb.dev.document.temp;
 
 import lombok.Getter;
 import lombok.Setter;
-import xb.dev.document.annotation.Document;
-import xb.dev.document.annotation.Head;
-import xb.dev.document.common.DocumentType;
 
 import java.io.Serializable;
 

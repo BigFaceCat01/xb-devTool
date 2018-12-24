@@ -4,7 +4,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +58,7 @@ public class JpaNewsServiceImpl implements JpaNewsService {
     }
 
     @Override
-    @Cacheable(value = "news::all",key="#root.args[0]")
+    @Cacheable(value = "news::all",keyGenerator = "objectKeyGenerator")
     public List<JpaNewsInfoModel> listAll(NewsQueryRequest request) {
         QJpaNewsEntity qJpaNewsEntity = QJpaNewsEntity.jpaNewsEntity;
         QJpaUserEntity qJpaUserEntity = QJpaUserEntity.jpaUserEntity;

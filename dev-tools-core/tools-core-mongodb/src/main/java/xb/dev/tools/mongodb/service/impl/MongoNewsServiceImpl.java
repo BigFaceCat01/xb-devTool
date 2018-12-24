@@ -15,7 +15,6 @@ import xb.dev.tools.mongodb.config.RabbitConfig;
 import xb.dev.tools.mongodb.constant.MongoConstant;
 import xb.dev.tools.mongodb.constant.News163CategoryEnum;
 import xb.dev.tools.mongodb.constant.NewsContants;
-import xb.dev.tools.mongodb.model.HSCodeCatagoryModel;
 import xb.dev.tools.mongodb.model.MongoNewsBasicInfo;
 import xb.dev.tools.mongodb.model.MongoNewsListModel;
 import xb.dev.tools.mongodb.model.MongoNewsModel;
@@ -27,11 +26,9 @@ import xb.dev.tools.mongodb.task.HSDocumentSaveTask;
 import xb.dev.tools.mongodb.util.HttpUtil;
 import xb.dev.tools.mongodb.util.JsonUtil;
 
-import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author: Created by huangxb on 2018-08-01 18:12:07

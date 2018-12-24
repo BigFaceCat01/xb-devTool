@@ -1,7 +1,6 @@
 package xb.dev.tools.mongodb.listener;
 
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.MessageProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;

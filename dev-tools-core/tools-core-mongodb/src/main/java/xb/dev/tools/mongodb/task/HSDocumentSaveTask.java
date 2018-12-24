@@ -1,16 +1,11 @@
 package xb.dev.tools.mongodb.task;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 import xb.dev.document.DocumentUtil;
-import xb.dev.document.exception.DocumentHandlerException;
 import xb.dev.tools.mongodb.model.HSCodeCatagoryModel;
 
 import java.io.FileOutputStream;

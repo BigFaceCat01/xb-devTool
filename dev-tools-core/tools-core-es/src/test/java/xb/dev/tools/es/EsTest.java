@@ -1,6 +1,5 @@
 package xb.dev.tools.es;
 
-import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +7,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import xb.dev.document.DocumentUtil;
 import xb.dev.document.exception.DocumentHandlerException;
 import xb.dev.tools.es.model.HSCodeModel;
+
+import java.util.List;
 import java.util.Map;
 
 /**

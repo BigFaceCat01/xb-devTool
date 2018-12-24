@@ -12,4 +12,5 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class NewsQueryRequest extends PageRequest implements Serializable {
+
 }
