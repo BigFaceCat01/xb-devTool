@@ -133,9 +133,11 @@ public final class QuestionPackage {
     }
 
     private static double fromRightAndFromRight(int[] temp, int[] num1, int[] num2, int len, int len2, boolean odd, int middle) {
+        return 0;
     }
 
     private static double fromRightAndFromLeft(int[] temp, int[] num1, int[] num2, int len, int len2, boolean odd, int middle) {
+        return 0;
     }
 
     private static double fromLeftAndFromLeft(int[] temp,int[] num1,int[] num2,int len,int len2,boolean odd,int middle){
@@ -143,30 +145,32 @@ public final class QuestionPackage {
         int i = 0;
         int n2 = 0;
         while(true) {
+            //判断是否某一数组已经循环结束
             if(n1 == len){
                 //数组1循环结束,只需要循环数组2
                 for(;n2<len2;n2++){
-                    if(odd){
-                        //如果两个数组长度和是偶数
-                        if(i - middle == 1){
+                    if(i - middle == 1){
+                        if(odd){
                             //如果是偶数，中位数为middle,middle+1，两个索引位置的值得平均值
-                            return (temp[i-1]+temp[i]) / 2.0;
+                            return (temp[i-1]+num2[n2]) / 2.0;
+                        }else {
+                            //如果两个数组长度和是奇数
+                            return temp[i];
                         }
-                    }else {
-                        //如果两个数组长度和是奇数
-                        return temp[i];
                     }
                     temp[i] = num2[n2];
                 }
             }else if(n2 == len2){
                 //数组2循环结束,只需要循环数组1
                 for(;n1<len;n1++){
-                    if(odd){
-                        if(i - middle == 1){
-                            return (temp[i-1]+temp[i])/2.0;
+                    if(i - middle == 1){
+                        if(odd){
+                            //如果是偶数，中位数为middle,middle+1，两个索引位置的值得平均值
+                            return (temp[i-1]+num1[n1])/2.0;
+                        }else {
+                            //如果两个数组长度和是奇数
+                            return temp[i-1];
                         }
-                    }else {
-                        return temp[i];
                     }
                     temp[i] = num1[n1];
                 }
@@ -178,19 +182,18 @@ public final class QuestionPackage {
                 temp[i] = num2[n1];
                 n1++;
             }
-            if(odd){
-                //如果两个数组长度和是偶数
-                if(i - middle == 1){
+            //如果已到中位数的索引位置
+            if(i - middle == 1){
+                if(odd){
                     //如果是偶数，中位数为middle,middle+1，两个索引位置的值得平均值
-                    return (temp[i-1]+temp[i]) / 2.0;
+                    return (temp[i-1]+temp[i])/2.0;
+                }else {
+                    //如果两个数组长度和是奇数
+                    return temp[i-1];
                 }
-            }else {
-                //如果两个数组长度和是奇数
-                return temp[i];
             }
             i++;
         }
-        return -1;
     }
     private static double fromLeftAndFromRight(int[] temp,int[] num1,int[] num2,int len,int len2,boolean odd,int middle){
         int n1 = 0;
