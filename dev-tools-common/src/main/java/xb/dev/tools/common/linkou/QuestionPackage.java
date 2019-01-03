@@ -90,12 +90,16 @@ public final class QuestionPackage {
      * @param num1
      * @param num2
      */
-    public static void question_two(int[] num1,int[] num2){
+    public static double question_two(int[] num1,int[] num2){
         //获得两个数组的长度
         int len = num1.length;
         int len2 = num2.length;
         boolean numLeft = false;
         boolean num2Left = false;
+        //中位数索引
+        int middle = (len + len2) / 2;
+        //总长度是否是偶数
+        boolean odd = (len + len2) % 2 == 0;
         //判断两个数组的有序性状态，从小到大，或者从大到小
         if(num1[0] <= num1[len -1]){
             //从小到大
@@ -107,40 +111,100 @@ public final class QuestionPackage {
         }
         //存储两个数组最终排序结果
         int[] temp = new int[len+len2];
-
-        if(num1[len -1] <= num2[0]){
-            //如果num1的最大值小于等于num2的最小值
-
-        }else if(num1[0] >= num2[len2 -1]){
-            //如果num1的最小值大于等于num2的最大值
-
-        }
-        //获得num1,num2较大的一组
-        int[] max = num1[0] >= num2[0] ? num1 : num2;
-        int[] min = num1[0] >= num2[0] ? num2 : num1;
-        //获得中位数索引
-        int[] index ;
-        int indexCount = 0;
-        if(len + len2 % 2 == 0){
-            //总长度为偶数，中位数用中间两个数求得
-            index = new int[]{((len + len2) /2 -1),(len + len2) / 2};
-            indexCount = 2;
-        }else {
-            //总长度为奇数，中位数等于中间那个数
-            index = new int[]{(len + len2) /2};
-            indexCount = 1;
-        }
-        int left = 0, right = min.length , middle;
-        while (true){
-            middle = (left + right) / 2;
-            if(min[middle] > max[0]){
-                right = middle;
+        if(numLeft){
+            //数组1从小到大
+            if(num2Left){
+                //数组2从小到大
+                return fromLeftAndFromLeft(temp,num1,num2,len,len2,odd,middle);
             }else {
-                left = middle;
+                //数组2从大到小
+                return fromLeftAndFromRight(temp,num1,num2,len,len2,odd,middle);
             }
-            if(right - left == 1){
-                break;
+        }else {
+            //数组1从大到小
+            if(num2Left){
+                //数组2从小到大
+                return fromRightAndFromLeft(temp,num1,num2,len,len2,odd,middle);
+            }else {
+                //数组2从大到小
+                return fromRightAndFromRight(temp,num1,num2,len,len2,odd,middle);
             }
+        }
+    }
+
+    private static double fromRightAndFromRight(int[] temp, int[] num1, int[] num2, int len, int len2, boolean odd, int middle) {
+    }
+
+    private static double fromRightAndFromLeft(int[] temp, int[] num1, int[] num2, int len, int len2, boolean odd, int middle) {
+    }
+
+    private static double fromLeftAndFromLeft(int[] temp,int[] num1,int[] num2,int len,int len2,boolean odd,int middle){
+        int n1 = 0;
+        int i = 0;
+        int n2 = 0;
+        while(true) {
+            if(n1 == len){
+                //数组1循环结束,只需要循环数组2
+                for(;n2<len2;n2++){
+                    if(odd){
+                        //如果两个数组长度和是偶数
+                        if(i - middle == 1){
+                            //如果是偶数，中位数为middle,middle+1，两个索引位置的值得平均值
+                            return (temp[i-1]+temp[i]) / 2.0;
+                        }
+                    }else {
+                        //如果两个数组长度和是奇数
+                        return temp[i];
+                    }
+                    temp[i] = num2[n2];
+                }
+            }else if(n2 == len2){
+                //数组2循环结束,只需要循环数组1
+                for(;n1<len;n1++){
+                    if(odd){
+                        if(i - middle == 1){
+                            return (temp[i-1]+temp[i])/2.0;
+                        }
+                    }else {
+                        return temp[i];
+                    }
+                    temp[i] = num1[n1];
+                }
+            }
+            if (num1[n1] > num2[n2]) {
+                temp[i] = num2[n2];
+                n2++;
+            }else {
+                temp[i] = num2[n1];
+                n1++;
+            }
+            if(odd){
+                //如果两个数组长度和是偶数
+                if(i - middle == 1){
+                    //如果是偶数，中位数为middle,middle+1，两个索引位置的值得平均值
+                    return (temp[i-1]+temp[i]) / 2.0;
+                }
+            }else {
+                //如果两个数组长度和是奇数
+                return temp[i];
+            }
+            i++;
+        }
+        return -1;
+    }
+    private static double fromLeftAndFromRight(int[] temp,int[] num1,int[] num2,int len,int len2,boolean odd,int middle){
+        int n1 = 0;
+        int i = 0;
+        int n2 = len2-1;
+        while(true) {
+            if (num1[n1] > num2[n2]) {
+                temp[i] = num2[n2];
+                n2--;
+            }else {
+                temp[i] = num2[n1];
+                n1++;
+            }
+            i++;
         }
     }
 }
