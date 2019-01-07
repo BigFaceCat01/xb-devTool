@@ -3,6 +3,7 @@ package xb.dev.document.temp;
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xb.dev.document.DocumentUtil;
 import xb.dev.document.model.*;
 
 import java.io.*;
@@ -10,6 +11,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * excel parse tool
@@ -56,11 +59,27 @@ public class ExcelUtils {
         //添加类目
 //        backCategory();
 //      mallBackCategory();
-        mallCategory();
+//        mallCategory();
+        newCategoryAndOld();
         //添加参数
 //        prop();
         //添加商品参数
 //        goodsProp();
+    }
+
+    public static void newCategoryAndOld() throws Exception{
+        Map<String, List<NewAndOld>> map = DocumentUtil.getDataByPath(NewAndOld.class, "D:/hscode/newCategoryAndOld.xlsx");
+        List<NewAndOld> newAndOlds = map.get("DOCUMENT");
+//        List<NewAndOld> newAndOlds1 = map.get("");
+        System.out.println();
+        Map<String, String> collect = newAndOlds.stream().collect(Collectors.toMap(key -> key.getOldCategory(), value -> value.getNewCategory(),(vNew,vOld)->vNew));
+//        Map<String, String> collect1 = newAndOlds1.stream().collect(Collectors.toMap(key -> key.getOldCategory(), value -> value.getNewCategory(),(vNew,vOld)->vNew));
+        OutputStream os = new FileOutputStream("D:/hscode/MallNewAndOld.json");
+//        OutputStream os2 = new FileOutputStream("D:/hscode/BulkNewAndOld.json");
+        JSON.writeJSONString(os, collect);
+//        JSON.writeJSONString(os2, collect1);
+        os.close();
+//        os2.close();
     }
 
 
