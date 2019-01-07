@@ -14,7 +14,11 @@ public final class QuestionPackage {
 
     public static void main(String[] args) {
         //题目 1
-        question_one("pwwkew");
+//        question_one("pwwkew");
+        //题目2
+//        System.out.println(question_two(new int[]{},new int[]{10,12}));
+        //题目3
+        System.out.println(question_three("abb"));
     }
 
     /**
@@ -90,57 +94,197 @@ public final class QuestionPackage {
      * @param num1
      * @param num2
      */
-    public static void question_two(int[] num1,int[] num2){
+    public static double question_two(int[] num1,int[] num2){
         //获得两个数组的长度
         int len = num1.length;
         int len2 = num2.length;
         boolean numLeft = false;
         boolean num2Left = false;
+        //中位数索引
+        int middle = (len + len2) / 2;
+        //总长度是否是偶数
+        boolean odd = (len + len2) % 2 == 0;
         //判断两个数组的有序性状态，从小到大，或者从大到小
-        if(num1[0] <= num1[len -1]){
+        if(len == 0 || num1[0] <= num1[len -1]){
             //从小到大
             numLeft = true;
         }
-        if(num2[0]<=num2[len2 - 1]){
+        if(len2 == 0 || num2[0]<=num2[len2 - 1]){
             //从小到大
             num2Left = true;
         }
         //存储两个数组最终排序结果
         int[] temp = new int[len+len2];
-
-        if(num1[len -1] <= num2[0]){
-            //如果num1的最大值小于等于num2的最小值
-
-        }else if(num1[0] >= num2[len2 -1]){
-            //如果num1的最小值大于等于num2的最大值
-
-        }
-        //获得num1,num2较大的一组
-        int[] max = num1[0] >= num2[0] ? num1 : num2;
-        int[] min = num1[0] >= num2[0] ? num2 : num1;
-        //获得中位数索引
-        int[] index ;
-        int indexCount = 0;
-        if(len + len2 % 2 == 0){
-            //总长度为偶数，中位数用中间两个数求得
-            index = new int[]{((len + len2) /2 -1),(len + len2) / 2};
-            indexCount = 2;
-        }else {
-            //总长度为奇数，中位数等于中间那个数
-            index = new int[]{(len + len2) /2};
-            indexCount = 1;
-        }
-        int left = 0, right = min.length , middle;
-        while (true){
-            middle = (left + right) / 2;
-            if(min[middle] > max[0]){
-                right = middle;
+        if(numLeft){
+            //数组1从小到大
+            if(num2Left){
+                //数组2从小到大
+                return fromLeftAndFromLeft(temp,num1,num2,len,len2,odd,middle);
             }else {
-                left = middle;
+                //数组2从大到小
+                return fromLeftAndFromRight(temp,num1,num2,len,len2,odd,middle);
             }
-            if(right - left == 1){
-                break;
+        }else {
+            //数组1从大到小
+            if(num2Left){
+                //数组2从小到大
+                return fromRightAndFromLeft(temp,num1,num2,len,len2,odd,middle);
+            }else {
+                //数组2从大到小
+                return fromRightAndFromRight(temp,num1,num2,len,len2,odd,middle);
             }
         }
+    }
+
+    /**
+     * 给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000
+     * 输入: "babad"
+     * 输出: "bab"
+     * 注意: "aba" 也是一个有效答案。
+     * @param s 源字符串
+     * @return 回文子串
+     */
+    public static String question_three(String s){
+        int currentIndex=0;
+        int len = s.length();
+        if(len == 1 || len ==0){
+            return s;
+        }
+        String subString = String.valueOf(s.charAt(0));
+        for(int i=0;i<len;i++){
+            if(currentIndex != i){
+                String ss = getSubString(currentIndex,i,s,len);
+                if(ss.length() > subString.length()){
+                    subString = ss;
+                }
+                currentIndex = i;
+            }else {
+                currentIndex = i;
+            }
+        }
+        return subString;
+    }
+    private static String getSubString(int start,int end,String source,int len){
+        if(source.charAt(start) == source.charAt(end)){
+            if(end != len && start == 0 ){
+                return source.substring(start,end+1);
+            }else if(end == (len-1) || start == 0 ){
+                return source.substring(start,len);
+            }
+            return getSubString(--start,++end,source,len);
+        }else {
+            if(end - start ==1) {
+                return "";
+            }else {
+                return source.substring(start+1,len-1);
+            }
+        }
+    }
+
+    private static double fromRightAndFromRight(int[] temp, int[] num1, int[] num2, int len, int len2, boolean odd, int middle) {
+        int tem ;
+        for(int i = 0;i<len/2;i++){
+            tem = num1[len-i-1];
+            num1[len-i-1] = num1[i];
+            num1[i] = tem;
+        }
+        for(int i = 0;i<len2/2;i++){
+            tem = num2[len2-i-1];
+            num2[len2-i-1] = num2[i];
+            num2[i] = tem;
+        }
+        return fromLeftAndFromLeft(temp,num1,num2,len,len2,odd,middle);
+    }
+
+    private static double fromRightAndFromLeft(int[] temp, int[] num1, int[] num2, int len, int len2, boolean odd, int middle) {
+        int tem ;
+        for(int i = 0;i<len/2;i++){
+            tem = num1[len-i-1];
+            num1[len-i-1] = num1[i];
+            num1[i] = tem;
+        }
+        return fromLeftAndFromLeft(temp,num1,num2,len,len2,odd,middle);
+    }
+
+    private static double fromLeftAndFromLeft(int[] temp,int[] num1,int[] num2,int len,int len2,boolean odd,int middle){
+        int n1 = 0;
+        int i = 0;
+        int n2 = 0;
+        while(true) {
+            //判断是否某一数组已经循环结束
+            if(n1 == len){
+                //数组1循环结束,只需要循环数组2
+                for(;n2<len2;n2++){
+                    if(i == middle ){
+                        if(odd){
+                            //如果是偶数，中位数为middle,middle+1，两个索引位置的值得平均值
+                            System.out.println("数组："+temp);
+                            System.out.println("偶数时："+num2[n2]);
+                            return (temp[i-1]+num2[n2]) / 2.0;
+                        }else {
+                            //如果两个数组长度和是奇数
+                            System.out.println("数组："+temp.toString());
+                            return num2[n2];
+                        }
+                    }
+                    temp[i] = num2[n2];
+                    i++;
+                }
+            }else if(n2 == len2){
+                //数组2循环结束,只需要循环数组1
+                for(;n1<len;n1++){
+                    if(i == middle ){
+                        if(odd){
+                            //如果是偶数，中位数为middle,middle+1，两个索引位置的值得平均值
+                            System.out.println("数组："+temp.toString());
+                            System.out.println("偶数时："+num1[n1]);
+                            return (temp[i-1]+num1[n1])/2.0;
+                        }else {
+                            //如果两个数组长度和是奇数
+                            System.out.println("数组："+temp.toString());
+                            return num1[n1];
+                        }
+                    }
+                    temp[i] = num1[n1];
+                    i++;
+                }
+            }
+            if(len == 0){
+                temp[i] = num2[n2];
+                n2++;
+            }else if(len2 == 0){
+                temp[i] = num1[n1];
+                n1++;
+            }else if (num1[n1] > num2[n2]) {
+                temp[i] = num2[n2];
+                n2++;
+            }else {
+                temp[i] = num1[n1];
+                n1++;
+            }
+            //如果已到中位数的索引位置
+            if(i == middle ){
+                if(odd){
+                    //如果是偶数，中位数为middle,middle+1，两个索引位置的值得平均值
+                    System.out.println("数组："+temp.toString());
+                    System.out.println("偶数时："+temp[i]);
+                    return (temp[i-1]+temp[i])/2.0;
+                }else {
+                    //如果两个数组长度和是奇数
+                    System.out.println("数组："+temp.toString());
+                    return temp[i];
+                }
+            }
+            i++;
+        }
+    }
+    private static double fromLeftAndFromRight(int[] temp,int[] num1,int[] num2,int len,int len2,boolean odd,int middle){
+        int tem ;
+        for(int i = 0;i<len2/2;i++){
+            tem = num2[len2-i-1];
+            num2[len2-i-1] = num2[i];
+            num2[i] = tem;
+        }
+        return fromLeftAndFromLeft(temp,num1,num2,len,len2,odd,middle);
     }
 }

@@ -54,4 +54,11 @@ public class NewsController {
         modelAndView.setViewName("news/news_detail");
         return modelAndView;
     }
+
+    @GetMapping("temp")
+    public ModelAndView temp(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("news/brand_temp");
+        return modelAndView;
+    }
 }
