@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.EnableCaching;
  * @author Created by huangxb
  * @date 2018-10-19 11:26:24
  */
+
 @SpringBootApplication
 @EnableCaching
 public class JpaApplication {
