@@ -29,7 +29,7 @@ public class MallExcelPropData {
     /**
      *是否必选：0不必选，1必选
      */
-    @TableHead(name = "必选")
+    @TableHead(name = "必填/非必填")
     private String required;
     /**
      * 输入类型：0单选，1多选，2输入

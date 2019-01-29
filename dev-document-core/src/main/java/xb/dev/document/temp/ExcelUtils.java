@@ -74,7 +74,7 @@ public class ExcelUtils {
         System.out.println();
         Map<String, String> collect = newAndOlds.stream().collect(Collectors.toMap(key -> key.getOldCategory(), value -> value.getNewCategory(),(vNew,vOld)->vNew));
 //        Map<String, String> collect1 = newAndOlds1.stream().collect(Collectors.toMap(key -> key.getOldCategory(), value -> value.getNewCategory(),(vNew,vOld)->vNew));
-        OutputStream os = new FileOutputStream("D:/hscode/MallNewAndOld.json");
+        OutputStream os = new FileOutputStream("D:/hscode/MallNewAndOld2.json");
 //        OutputStream os2 = new FileOutputStream("D:/hscode/BulkNewAndOld.json");
         JSON.writeJSONString(os, collect);
 //        JSON.writeJSONString(os2, collect1);
@@ -94,16 +94,16 @@ public class ExcelUtils {
         List<MallPropData> goodsPropList = new ArrayList<>();
         String[] category = null;
         for (MallExcelPropData g : result) {
-            if (g.getPropEn() != null && !"".equals(g.getPropEn().trim())) {
+
                 //等于product name
-                if (g.getPropEn().replaceAll("\\s", "").equalsIgnoreCase("Product name".replaceAll("\\s", ""))) {
+                if (g.getCategory() != null && !g.getCategory().trim().equals("")) {
                     if (start) {//start = true 表示遇到的是第二个产品名称
                         //表示到达下一属性集合，此时应该进行保存操作再继续向下
                         MallPropData goodsPropInsert = new MallPropData();
                         goodsPropInsert.setCategory(category);
                         List<MallGoodsProp> list = new ArrayList<>(inserts);
                         goodsPropInsert.setMallGoodsProp(list);
-                        category = g.getCategory().split("，");
+                        category = g.getCategory().split("，|,");
                         goodsPropList.add(goodsPropInsert);
                         inserts.clear();
                         MallGoodsProp goodsProp = new MallGoodsProp();
@@ -125,7 +125,7 @@ public class ExcelUtils {
                     } else {//start = false 表示遇到的是第一个个产品名称
                         //不等于product name表示是参数
                         MallGoodsProp goodsProp = new MallGoodsProp();
-                        category = g.getCategory().split("，");
+                        category = g.getCategory().split("，|,");
                         goodsProp.setPropZh(g.getPropZh());
                         goodsProp.setPropEn(g.getPropEn());
                         goodsProp.setPropType(g.getPropType());
@@ -143,22 +143,31 @@ public class ExcelUtils {
                     }
                 } else {
                     //不等于product name表示是参数
-                    MallGoodsProp goodsProp = new MallGoodsProp();
-                    goodsProp.setPropZh(g.getPropZh());
-                    goodsProp.setPropEn(g.getPropEn());
-                    goodsProp.setPropType(g.getPropType());
-                    goodsProp.setInputType(g.getInputType());
-                    goodsProp.setNav(g.getNav());
-                    goodsProp.setRequired(g.getRequired());
-                    if (g.getPropValueEn() != null) {
-                        goodsProp.setPropValueEn(g.getPropValueEn().split("、"));
+                    if(g.getPropEn() != null && !g.getPropEn().trim().equals("")) {
+                        MallGoodsProp goodsProp = new MallGoodsProp();
+                        goodsProp.setPropZh(g.getPropZh());
+                        goodsProp.setPropEn(g.getPropEn());
+                        goodsProp.setPropType(g.getPropType());
+                        goodsProp.setInputType(g.getInputType());
+                        goodsProp.setNav(g.getNav());
+                        goodsProp.setRequired(g.getRequired());
+                        if (g.getPropValueEn() != null) {
+                            goodsProp.setPropValueEn(g.getPropValueEn().split("、"));
+                        }
+                        if (g.getPropValueZh() != null) {
+                            goodsProp.setPropValueZh(g.getPropValueZh().split("、"));
+                        }
+                        inserts.add(goodsProp);
+                    }else {
+                        MallPropData goodsPropInsert = new MallPropData();
+                        goodsPropInsert.setCategory(category);
+                        List<MallGoodsProp> list = new ArrayList<>(inserts);
+                        goodsPropInsert.setMallGoodsProp(list);
+                        category = g.getCategory().split("，|,");
+                        goodsPropList.add(goodsPropInsert);
                     }
-                    if (g.getPropValueZh() != null) {
-                        goodsProp.setPropValueZh(g.getPropValueZh().split("、"));
-                    }
-                    inserts.add(goodsProp);
                 }
-            }
+
         }
         OutputStream os = new FileOutputStream("D:/hscode/mall-prop/prop.json");
         JSON.writeJSONString(os, goodsPropList);

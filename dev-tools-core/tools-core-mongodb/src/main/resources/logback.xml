@@ -4,7 +4,7 @@
     <property name="log.path" value="./log" />
     <property name="appName" value="hs-code" />
     <!--输出到控制台-->
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="console" class="com.xxl.job.core.ConsoleAppender">
 
         <encoder>
             <pattern>[%d{HH:mm:ss.SSS}][%thread][%2level][%logger{36}] - %msg%n</pattern>
@@ -12,9 +12,9 @@
     </appender>
 
     <!--输出到文件-->
-    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="file" class="com.xxl.job.core.rolling.RollingFileAppender">
         <file>${log.path}/hs-code.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="com.xxl.job.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log.path}/${appName}.%d{yyyy-MM-dd}.log</fileNamePattern>
         </rollingPolicy>
         <encoder>
