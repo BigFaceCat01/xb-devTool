@@ -145,40 +145,38 @@ public final class QuestionPackage {
      * @return 回文子串
      */
     public static String question_three(String s){
-        int currentIndex=0;
-        int len = s.length();
-        if(len == 1 || len ==0){
-            return s;
+        //abb - > $#a#b#b#$
+        //所以最终长度为s.length*2 + 3
+        int len = (s.length() << 1) + 3;
+        int  count = 0;
+        char[] temp = new char[len];
+        int[] redius = new int[len];
+        char[] source = s.toCharArray();
+        temp[count++] = '$';
+        temp[len - 2] = '#';
+        temp[len - 1] = '$';
+
+        for (int i = 0; i < s.length(); i++) {
+            temp[count++] = '#';
+            temp[count++] = source[i];
         }
-        String subString = String.valueOf(s.charAt(0));
-        for(int i=0;i<len;i++){
-            if(currentIndex != i){
-                String ss = getSubString(currentIndex,i,s,len);
-                if(ss.length() > subString.length()){
-                    subString = ss;
-                }
-                currentIndex = i;
-            }else {
-                currentIndex = i;
+
+        int mx = 0, id = 0, resLen = 0, resCenter = 0;
+        for (int i = 1; i < len-1; ++i) {
+            redius[i] = mx > i ? Math.min(redius[2 * id - i], mx - i) : 1;
+            while (temp[i + redius[i]] == temp[i - redius[i]]) {
+                ++redius[i];
+            }
+            if (mx < i + redius[i]) {
+                mx = i + redius[i];
+                id = i;
+            }
+            if (resLen < redius[i]) {
+                resLen = redius[i];
+                resCenter = i;
             }
         }
-        return subString;
-    }
-    private static String getSubString(int start,int end,String source,int len){
-        if(source.charAt(start) == source.charAt(end)){
-            if(end != len && start == 0 ){
-                return source.substring(start,end+1);
-            }else if(end == (len-1) || start == 0 ){
-                return source.substring(start,len);
-            }
-            return getSubString(--start,++end,source,len);
-        }else {
-            if(end - start ==1) {
-                return "";
-            }else {
-                return source.substring(start+1,len-1);
-            }
-        }
+        return s.substring((resCenter - resLen) / 2, resLen - 1);
     }
 
     private static double fromRightAndFromRight(int[] temp, int[] num1, int[] num2, int len, int len2, boolean odd, int middle) {
@@ -278,6 +276,7 @@ public final class QuestionPackage {
             i++;
         }
     }
+
     private static double fromLeftAndFromRight(int[] temp,int[] num1,int[] num2,int len,int len2,boolean odd,int middle){
         int tem ;
         for(int i = 0;i<len2/2;i++){

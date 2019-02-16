@@ -1,6 +1,5 @@
 package xb.dev.tools.common.spring.impl;
 
-import org.junit.Assert;
 import xb.dev.tools.common.spring.BeanDefinition;
 import xb.dev.tools.common.spring.BeanDefinitionRegistery;
 import xb.dev.tools.common.spring.BeanFactory;
@@ -29,8 +28,8 @@ public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistery,
 
     @Override
     public void register(BeanDefinition bd, String beanName) {
-        Assert.assertNotNull("BeanDefinition不能为空",bd);
-        Assert.assertNotNull("beanName不能为空",beanName);
+//        Assert.assertNotNull("BeanDefinition不能为空",bd);
+//        Assert.assertNotNull("beanName不能为空",beanName);
         if(bdMap.containsKey(beanName)){
             System.out.println("["+beanName+"]"+"已经存在");
         }
