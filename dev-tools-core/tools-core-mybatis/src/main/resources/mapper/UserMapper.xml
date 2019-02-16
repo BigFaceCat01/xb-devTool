@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="UserMapper">
+<mapper namespace="xb.dev.tools.mybatis.mapper.UserMapper">
 
   <resultMap id="BaseResultMap" type="xb.dev.tools.mybatis.dao.entity.UserEntity">
     <id column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="user_name" jdbcType="VARCHAR" property="username" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
@@ -13,10 +13,31 @@
     user_id, user_name, password, create_time
   </sql>
 
+  <!--  返回数据表当前最大id  -->
+  <select id="queryMaxId" resultType="int">
+        select case  when  max(user_id) is null then 0 else max(user_id) end as m from t_user
+  </select>
+
+  <insert id="insert" parameterType="xb.dev.tools.mybatis.dao.entity.UserEntity">
+    insert into t_user (
+        user_id,
+        user_name,
+        password,
+        create_time
+    )
+    values(
+    #{userId},
+    #{userName},
+    #{password},
+    #{createTime}
+    )
+
+  </insert>
+
   <!-- 根据用户名和密码查询用户    -->
   <select id="login" resultType="xb.dev.tools.mybatis.model.UserLoginInfoModel" parameterType="map">
     select
-    user_id userId, user_name username
+    user_id userId, user_name userName
     from xb_user
     where user_name = #{username,jdbcType=VARCHAR} AND password = #{password,jdbcType=VARCHAR}
   </select>

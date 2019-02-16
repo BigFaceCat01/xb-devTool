@@ -1,5 +1,6 @@
 package xb.dev.tools.mybatis.dao.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,12 +11,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @Author: Created by huangxb on 2018-08-01 17:58:24
- * @Description: 新闻实体类
+ * @author Created by huangxb on 2018-08-01 17:58:24
+ * 新闻实体类
  */
-@Getter
-@Setter
-@ToString
+@Data
 public class NewsEntity implements Serializable {
     @Id
     private Integer id;
@@ -64,11 +63,12 @@ public class NewsEntity implements Serializable {
      */
     private Byte status;
     /**
-     * 评论列表
-     */
-    private List<Comment> comments;
-    /**
      * 是否已删除
      */
-    private Boolean deleteFlag;
+    private Byte deleteFlag;
+    /**
+     * 用户id
+     *
+     */
+    private Integer userId;
 }

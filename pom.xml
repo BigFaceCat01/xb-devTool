@@ -15,6 +15,7 @@
         <module>dev-basic-service</module>
         <module>dev-basic-service</module>
         <module>dev-xxl-job</module>
+        <module>dev-feign-builder</module>
     </modules>
     <packaging>pom</packaging>
 

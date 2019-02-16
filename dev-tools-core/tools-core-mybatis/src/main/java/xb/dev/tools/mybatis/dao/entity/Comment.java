@@ -1,5 +1,6 @@
 package xb.dev.tools.mybatis.dao.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,23 +9,37 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @Author: Created by huangxb on 2018-08-01 18:02:33
- * @Description: 新闻评论实体类
+ * @author Created by huangxb on 2018-08-01 18:02:33
+ * 新闻评论实体类
  */
-@Getter
-@Setter
-@ToString
+@Data
 public class Comment implements Serializable {
+    /**
+     * 主键id
+     */
+    private Integer id;
+    /**
+     * 评论人id
+     */
+    private Integer userId;
+    /**
+     * 评论新闻id
+     */
+    private Integer newsId;
     /**
      * 评论内容
      */
-    private String content;
+    private String commentContent;
     /**
-     * 评论时间
+     * 创建时间
      */
-    private Date commentTime;
+    private Date createTime;
     /**
-     * 评论状态
+     * 是否删除
      */
-    private Byte status;
+    private Byte isDelete;
+    /**
+     * 修改时间
+     */
+    private Date updateTime;
 }

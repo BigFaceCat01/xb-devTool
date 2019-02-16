@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="XbNewsMapper">
+<mapper namespace="xb.dev.tools.mybatis.mapper.NewsMapper">
+
   <resultMap id="BaseResultMap" type="xb.dev.tools.mybatis.dao.entity.NewsEntity">
     <id column="news_id" jdbcType="VARCHAR" property="newsId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
@@ -15,6 +16,7 @@
     <result column="support_count" jdbcType="BIGINT" property="supportCount" />
     <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
   </resultMap>
+
   <resultMap id="BaseResultMap2" type="xb.dev.tools.mybatis.dao.entity.NewsEntity">
     <id column="news_id" jdbcType="VARCHAR" property="newsId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
@@ -35,6 +37,11 @@
     status, support_count,delete_flag
   </sql>
 
+  <!--  返回数据表当前最大id  -->
+  <select id="queryMaxId" resultType="int">
+        select  case  when  max(id) is null then 0 else max(id) end as m from t_news
+  </select>
+
   <!-- 查询全部新闻，没有任何过滤条件    -->
   <select id="queryAll" resultMap="BaseResultMap">
     select
@@ -43,7 +50,7 @@
   </select>
 
   <!-- 根据id查询新闻    -->
-  <select id="queryById" resultMap="BaseResultMap2">
+  <select id="queryById" parameterType="int" resultMap="BaseResultMap2">
     select
     <include refid="Base_Column_List"></include>
     from xb_news
@@ -51,102 +58,43 @@
   </select>
 
   <!-- 通过新闻id删除新闻    -->
-  <delete id="deleteById" parameterType="java.lang.String">
+  <delete id="deleteById" parameterType="int">
     delete from xb_news
     where news_id = #{newsId,jdbcType = VARCHAR}
   </delete>
 
   <!-- 添加新闻，不过滤为空的字段    -->
   <insert id="insertNews" parameterType="xb.dev.tools.mybatis.dao.entity.NewsEntity">
-    insert into xb_news (news_id, title, body,
-      source, author, create_time, 
-      type, browse_count, oppose_count,
-      status, support_count,delete_flag)
-    values (#{newsId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{body,jdbcType=VARCHAR}, 
-      #{source,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{type,jdbcType=VARCHAR}, #{browseCount,jdbcType=BIGINT}, #{opposeCount,jdbcType=BIGINT},
-      #{status,jdbcType=TINYINT}, #{supportCount,jdbcType=BIGINT},#{deleteFlag,jdbcType=TINYINT})
-  </insert>
-
-  <!-- 添加新闻，为空的属性不加入sql语句中    -->
-  <insert id="insertSelective" parameterType="xb.dev.tools.mybatis.dao.entity.NewsEntity">
-    insert into xb_news
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="newsId != null">
-        news_id,
-      </if>
-      <if test="title != null">
-        title,
-      </if>
-      <if test="body != null">
-        body,
-      </if>
-      <if test="source != null">
-        source,
-      </if>
-      <if test="author != null">
-        author,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="type != null">
-        type,
-      </if>
-      <if test="browseCount != null">
-        browse_count,
-      </if>
-      <if test="opposeCount != null">
-        oppose_count,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="deleteFlag != null">
-        delete_flag,
-      </if>
-      <if test="supportCount != null">
-        support_count,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="newsId != null">
-        #{newsId,jdbcType=VARCHAR},
-      </if>
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="body != null">
-        #{body,jdbcType=VARCHAR},
-      </if>
-      <if test="source != null">
-        #{source,jdbcType=VARCHAR},
-      </if>
-      <if test="author != null">
-        #{author,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="browseCount != null">
-        #{browseCount,jdbcType=BIGINT},
-      </if>
-      <if test="opposeCount != null">
-        #{opposeCount,jdbcType=BIGINT},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="deleteFlag != null">
-        #{deleteFlag,jdbcType=TINYINT},
-      </if>
-      <if test="supportCount != null">
-        #{supportCount,jdbcType=BIGINT},
-      </if>
-    </trim>
+    insert into t_news (
+      id,
+      news_id,
+      title,
+      body,
+      source,
+      author,
+      create_time,
+      type,
+      browse_count,
+      oppose_count,
+      status,
+      support_count,
+      delete_flag,
+      user_id)
+    values (
+      #{id,jdbcType=INTEGER},
+      #{newsId,jdbcType=VARCHAR},
+      #{title,jdbcType=VARCHAR},
+      #{body,jdbcType=VARCHAR},
+      #{source,jdbcType=VARCHAR},
+      #{author,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP},
+      #{type,jdbcType=VARCHAR},
+      #{browseCount,jdbcType=BIGINT},
+      #{opposeCount,jdbcType=BIGINT},
+      #{status,jdbcType=TINYINT},
+      #{supportCount,jdbcType=BIGINT},
+      #{deleteFlag,jdbcType=TINYINT},
+      #{userId,jdbcType=INTEGER})
   </insert>
 
   <!-- 查询新闻总数，没有任何过滤条件    -->
@@ -155,7 +103,7 @@
   </select>
 
   <!-- 修改新闻，为空的字段不参与修改    -->
-  <update id="updateSelective" parameterType="map">
+  <update id="updateCommonById" parameterType="xb.dev.tools.mybatis.dao.entity.NewsEntity">
     update xb_news
     <set>
       <if test="record.newsId != null">
@@ -192,25 +140,11 @@
         support_count = #{record.supportCount,jdbcType=BIGINT},
       </if>
     </set>
+    where
+    id = #{id}
   </update>
 
-  <!-- 修改新闻，不对空字段进行判断    -->
-  <update id="update" parameterType="map">
-    update xb_news
-    set news_id = #{record.newsId,jdbcType=VARCHAR},
-      title = #{record.title,jdbcType=VARCHAR},
-      body = #{record.body,jdbcType=VARCHAR},
-      source = #{record.source,jdbcType=VARCHAR},
-      author = #{record.author,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      type = #{record.type,jdbcType=VARCHAR},
-      browse_count = #{record.browseCount,jdbcType=BIGINT},
-      oppose_count = #{record.opposeCount,jdbcType=BIGINT},
-      status = #{record.status,jdbcType=TINYINT},
-      delete_flag = #{record.deleteFlag,jdbcType=TINYINT},
-      support_count = #{record.supportCount,jdbcType=BIGINT}
-  </update>
-
+  <!--   逻辑删除新闻  -->
   <update id="deleteNewsById" parameterType="map">
     update xb_news set delete_flag = #{deleteFlag,jdbcType=BIT} where news_id = #{newsId,jdbcType=VARCHAR}
   </update>

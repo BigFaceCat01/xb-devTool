@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xb.dev.tools.mybatis.mapper.CommentMapper">
+
+  <resultMap id="BaseResultMap" type="xb.dev.tools.mybatis.dao.entity.Comment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    <result column="news_id" jdbcType="INTEGER" property="newsId"/>
+    <result column="comment_content" jdbcType="VARCHAR" property="commentContent"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, user_id, news_id, comment_content,create_time,is_delete,update_time
+  </sql>
+
+  <!--  返回数据表当前最大id  -->
+  <select id="queryMaxId" resultType="int">
+        select  case  when  max(id) is null then 0 else max(id) end as m from t_comment
+  </select>
+  
+  <insert id="insert" parameterType="xb.dev.tools.mybatis.dao.entity.Comment">
+    insert into t_comment (
+       id,
+       user_id,
+       news_id,
+       comment_content,
+       create_time,
+       is_delete,
+       update_time)
+    values(
+        #{id},
+        #{userId},
+        #{newsId},
+        #{commentContent},
+        #{createTime},
+        #{isDelete},
+        #{updateTime}
+    )
+  </insert>
+
+  <!-- 根据新闻id查询新闻下的评论列表    -->
+  <select id="queryByNewsId" resultMap="BaseResultMap" parameterType="int">
+    select
+    <include refid="Base_Column_List"/>
+    from t_comment
+    where news_id = #{newsId}
+  </select>
+
+</mapper>
